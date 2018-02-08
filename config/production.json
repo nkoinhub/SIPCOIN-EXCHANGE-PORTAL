@@ -1,0 +1,27 @@
+{
+  "Credentials":{
+    "sipCoinEmailId" : "coinsipbit@gmail.com",
+    "sipCoinEmailPass" : "SMuley1@3"
+  },
+
+  "Server":{
+    "IP" : "http://sipcoin.io"
+  },
+
+  "Transporter":{
+    "service" : "gmail",
+    "auth" : {
+      "user" : "coinsipbit@gmail.com",
+      "pass" : "SMuley1@3"
+    }
+  },
+
+  "Captcha":{
+    "key" : "6LfXbzsUAAAAABJ4ZCatF2KQ5C8uDVVRTTsjhP1H"
+  },
+
+  "Referral":{
+    "Admin" : "SIP35970SIPADM"
+  }
+
+}

@@ -1,0 +1,68 @@
+/*
+
+Template: COINEX - Crypto Currency HTML Template 
+Author: iqonicthemes.in
+Version: 1.5
+Design and Developed by: iqonicthemes.in
+
+NOTE: This is main stylesheet of template, This file contains the styling for the actual Template. Please do not change anything here! write in a custom.css file if required!
+
+*/
+
+/************************* selection *************************/
+*::-moz-selection { background: #2dcc70; color: #fff; text-shadow: none; }
+::-moz-selection { background: #2dcc70; color: #fff; text-shadow: none; }
+::selection { background: #2dcc70; color: #fff; text-shadow: none; }
+a:focus, a:hover { color: #2dcc70; }
+
+/*----------------------------------------------------------------------
+                        Buttons
+-----------------------------------------------------------------------*/
+.button, .button.white:hover, .button.white:focus { background: #2dcc70; }
+
+/*---------------------------------------------------------------------
+                           Section Title
+-----------------------------------------------------------------------*/
+.heading-title .title:before, .heading-left .title:before { background: #2dcc70; }
+
+/*---------------------------------------------------------------------
+                            Text Color 
+-----------------------------------------------------------------------*/
+.iq-font-yellow, .iq-team1 .team-blog .team-social ul li a:hover, ul li:after, .iq-news-box .news-title a:hover h5, header.transparent .menu li a:hover, header.transparent .menu li:hover>a, header.transparent .menu li a.active, .topbar .topbar-right li a:hover, .iq-login .modal-footer .iq-media-blog li a, .iq-register .modal-footer .iq-media-blog li a, .iq-features1:hover h5, .iq-footer .footer-menu li a:hover, .iq-footer .iq-copyright a, .iq-footer .iq-contact .blog i, .menu li a:hover, .menu li:hover>a, .menu li a.active, .iq-pricing .icon, .iq-testimonial2 .feedback ul li, .iq-footer-2 .footer-menu li a:hover, .iq-footer-2 .iq-contact .blog i, .iq-footer-2 .post-blog a:hover, .iq-footer-3 .iq-contact .blog i, .iq-footer-3 .iq-copyright a, .iq-footer-3 .footer-menu li a:hover, .button.dark.white:hover, .button.dark.white:focus, header.simpal-transparent .menu li a:hover, header.simpal-transparent .menu li:hover>a, header.simpal-transparent .menu li a.active, .iq-feature7 .iq-icon i, .counter-info .iq-video, .iq-footer-4 .post-blog a:hover, .iq-footer-4 .iq-contact .blog i, .iq-feature4 .Work-icon i, .iq-footer-4 .footer-menu li a:hover, .iq-breadcrumb .breadcrumb li, .iq-breadcrumb .breadcrumb li a:hover, .iq-event .tab-content ul li i, .iq-clients .iq-clients-blog ul li a:hover, .iq-blog-detail a:hover, .iq-blog-detail .blog-title a:hover h5, .iq-sidebar-widget .iq-widget-search i, .iq-sidebar-widget .iq-recent-post .media-body span .fa, .iq-sidebar-widget .iq-recent-post .media-body > a:hover, .iq-tags li a:hover, .iq-widget-archives li a:hover, .iq-widget-menu ul li a span:hover, .iq-post-info .shop-price strong, .iq-page-shop .nav-tabs li a.active, .iq-page-shop .nav-tabs li a:hover, .tab-pane .media-body .rating-star ul li a i, .iq-list li i, .pdt-image .pdt-icon a:hover{ color: #2dcc70; }
+
+/*---------------------------------------------------------------------
+                          Background Color 
+-----------------------------------------------------------------------*/
+.info-share li a:hover, .iq-features1 .iq-blog .step, .yellow-bg, .iq-news-box .iq-news-image .news-date, header.transparent .menu ul li a:hover, header.transparent .menu ul li:hover>a, .iq-login .modal-footer .iq-media-blog li a:hover, .iq-register .modal-footer .iq-media-blog li a:hover, .iq-footer .iq-media-blog li a:hover, #back-to-top .top:hover, .menu ul li a:hover, .menu ul li:hover>a, .iq-feature4 .Work-icon .step, .iq-pricing:after, .iq-footer-2 .iq-media-blog li a:hover, header.simpal-yellow .topbar, .iq-feature7 .feature-content .tag, .owl-carousel.owl-theme .owl-dots .owl-dot.active span, .iq-footer-3 .iq-media-blog li a:hover, header.simpal-transparent .menu ul li a:hover, header.simpal-transparent .menu ul li:hover>a, .button.dark:hover, .button.dark:focus, .iq-feature6:before, .iq-faqs .card-header a, .iq-faqs .card-header a:hover, .iq-faqs .card-header a, .iq-faqs .card-header a:hover, .iq-footer-4 .iq-media-blog li a:hover, .banner-form .form-icon, .pricing-small h3:before, .iq-footer-5 .iq-media-blog li a:hover, .iq-tab .nav-pills .nav-link.active, .iq-tab .nav-pills .show>.nav-link, .iq-timeline .year, .iq-timeline .timeline-icon:before, .iq-event .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .iq-team2 .iq-media-blog li a:hover, .iq-buy .nav-pills .nav-link.active, .iq-buy .nav-pills .show>.nav-link, .page-item:hover .page-link, .page-item.active .page-link, .pdt-image .pdt-icon li a { background: #2dcc70; }
+
+
+/*--------------------------------------------------------------------
+                       Background Gradient 
+---------------------------------------------------------------------*/
+
+/*---- yellow Overlay ----*/
+.iq-over-yellow-10:before { background: rgba(45, 204, 112, 0.1); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-20:before { background: rgba(45, 204, 112, 0.2); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-30:before { background: rgba(45, 204, 112, 0.3); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-40:before { background: rgba(45, 204, 112, 0.4); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-50:before { background: rgba(45, 204, 112, 0.5); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-60:before { background: rgba(45, 204, 112, 0.6); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-70:before { background: rgba(45, 204, 112, 0.7); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-80:before { background: rgba(45, 204, 112, 0.8); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-90:before { background: rgba(45, 204, 112, 0.9); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+.iq-over-yellow-95:before { background: rgba(45, 204, 112, 0.95); content: ""; height: 100%; left: 0; position: absolute; top: 0; width: 100%; }
+
+/*---------------------------------------------------------------------
+                      		 Boder Color 
+---------------------------------------------------------------------*/
+.info-share li a:hover, .iq-testimonial .owl-carousel.owl-theme .owl-dots .owl-dot.active span, .iq-login .modal-footer .iq-media-blog li a:hover, .iq-login .modal-footer .iq-media-blog li a, .iq-register .modal-footer .iq-media-blog li a, .iq-register .modal-footer .iq-media-blog li a:hover, .iq-footer .iq-media-blog li a:hover, .iq-footer-2 .iq-media-blog li a:hover, .iq-team2 .team-blog:hover, .iq-footer-3 .iq-media-blog li a:hover, .iq-footer-4 .iq-media-blog li a:hover, .iq-footer-5 .iq-media-blog li a:hover, .iq-footer-2 .iq-media-blog li a:hover, .iq-event .nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active, .iq-pricing-2:hover, .page-item:hover .page-link, .page-item.active .page-link, .iq-tags li a:hover { border-color: #2dcc70;}
+
+/*---------------------------------------------------------------------
+                          border and bg
+-----------------------------------------------------------------------*/
+.price-silder .price-title{background: linear-gradient(270deg, rgba(45,204,112, 0) 0%, rgb(45, 204, 112) 51%, rgb(45, 204, 112) 100%);}
+.iq-timeline .year:before {border-right: 18px solid #2dcc70;}
+.iq-timeline .timeline:nth-child(2n) .year:before{border-left: 18px solid #2dcc70;}
+.iq-page-shop .nav-tabs li a.active, .iq-page-shop .nav-tabs li a:hover{border-bottom: 3px solid #2dcc70;}
+
+@media(max-width:767px) { }

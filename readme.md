@@ -1,0 +1,1 @@
+SIPcoin Project's README
