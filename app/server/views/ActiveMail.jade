@@ -1,7 +1,7 @@
 doctype html
 html(lang='en')
   head
-    title COINEX - Crypto Currency HTML Template 
+    title SIPcoin - Crypto Currency for the People 
     // Required meta tags
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
@@ -33,21 +33,69 @@ html(lang='en')
     link(rel='stylesheet', type='text/css', href='/css/responsive.css')
     // Custom CSS
     link(rel='stylesheet', type='text/css', href='/css/custom.css')
-    
     style.
+      #button_style{
+      background-color:#f9b707;
+      color:white;
+      -webkit-transition: all 0.5s ease-in-out;
+      cursor:pointer;
+      }
+      #button_style:hover{
+      background-color:#151d2e;
+      color:white;
+      -webkit-transition: all 0.5s ease-in-out;
+      cursor:pointer;
+      }
+      
+      #img_type{
+        margin-left:20%;
+      }
+      
+      #resend_link{
+        margin-left:20%;
+      }
+      
+      #forgot_left{
+        margin-left:27%;
+      }
+      
+      #check_remember{
+        margin-left:5%;
+      }
+      
       #captcha_input{
-      margin-top:10%;
-      margin-left:6%;
+        margin-top:10%;
+        margin-left:6%;
       }
       
       #captcha_input1{
-      margin-top:10%;
+        margin-top:10%;
       }
 
       @media(max-width:767px) {
-      #captcha_input{
-      margin-left:-4%;
+        #img_type{
+          margin:5%;
+        }
+        
+        #resend_link{
+          margin:0%;
+        }
+        
+        #forgot_left{
+          margin-left:18%;
+        }
+        
+        #captcha_input{
+          margin-left:-4%;
+        }
       }
+      
+      input[type=number]::-webkit-inner-spin-button, 
+      input[type=number]::-webkit-outer-spin-button { 
+          -webkit-appearance: none;
+          -moz-appearance: none;
+          appearance: none;
+          margin: 0; 
       }
 
   body
@@ -66,7 +114,7 @@ html(lang='en')
                 ul.list-inline
                   li.list-inline-item
                     i.fa.fa-envelope-o  
-                    |  support@coinex.com
+                    |  support@sipcoin.io
             .col-lg-6.col-md-6.col-sm-6
               .topbar-right.text-right
                 ul.list-inline
@@ -893,7 +941,7 @@ html(lang='en')
                 input#recipient-name.form-control(type='text', placeholder='Enter Name',required='')
               .form-group
                 input#recipient-password.form-control(type='password', placeholder='Password',required='')
-              .form-buttons#captcha_input
+              .form-buttons#captcha_input1
                 center
                   .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
                   //production - 6LfXbzsUAAAAALCk_NicLha3d-KG_0GRNRxAJUMs
@@ -902,20 +950,20 @@ html(lang='en')
               hr
               a.button.iq-mtb-10(href='#') Sign In
               .row
-                .col-xs-6
+                .col-xs-6#check_remember
                   .form-check
                     label.form-check-label
                       input.form-check-input(type='checkbox')
                       | Remember Me
-                .col-xs-6.text-right
+                .col-xs-6.text-right#forgot_left
                   a(href='#') Forgot Password
           .modal-footer.text-center
             div
               | Don't Have an Account? 
               a.iq-font-yellow(href='#') Register Now
             div
-              | Did't received Activation Link? 
-              a.iq-font-yellow(href='#') Send Mail
+              | Didn't received mail? 
+              a.iq-font-yellow(href='#') Resend Mail
               
     //
       =================================
@@ -951,12 +999,11 @@ html(lang='en')
                   | I Agree to the Terms and Conditions
               p
                 | Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-              .form-buttons#captcha_input1
-                center
-                  .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
-                  //production - 6LfXbzsUAAAAALCk_NicLha3d-KG_0GRNRxAJUMs
-                  //development - 6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P
-                  br
+              .form-buttons#captcha_input
+                .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
+                //production - 6LfXbzsUAAAAALCk_NicLha3d-KG_0GRNRxAJUMs
+                //development - 6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P
+                br
               a.button.iq-mtb-10(href='#') Sign Up
           .modal-footer.text-center
             div
@@ -966,6 +1013,28 @@ html(lang='en')
     //
       =================================
       Register
+      
+    // 2fa
+    .modal.fade.iq-active(tabindex='-1', role='dialog', aria-hidden='true')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header.text-center
+            h4.modal-title.iq-tw-5 Account Inactive
+            a.close(data-dismiss='modal', aria-label='Close')
+              span(aria-hidden='true') ×
+          .modal-body
+            .row(style='margin:0;')
+              col-sm-12
+                center
+                  | Your Account is Not Active !!! &nbsp;
+              col-sm-12
+                center
+                  | Check your email for confirmation link
+              br
+              br
+              col-sm-12#resend_link
+                | Did't Receive Mail? 
+                a.iq-font-yellow(href='#') Resend Activation Link
 
     // back-to-top
     #back-to-top
@@ -1005,6 +1074,7 @@ html(lang='en')
       var revapi4,
       tpj = jQuery;
       tpj(document).ready(function() {
+      $('.iq-active').modal('show');
       if (tpj("#rev_slider_4_1").revolution == undefined) {
       revslider_showDoubleJqueryError("#rev_slider_4_1");
       } else {
@@ -1069,4 +1139,5 @@ html(lang='en')
       {
         $('.iq-register').modal('hide');
         $('.iq-login').modal('show');
+        
       }
