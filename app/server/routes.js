@@ -1,4 +1,4 @@
-process.env.NODE_ENV = "production";
+process.env.NODE_ENV = "default";
 
 console.log("========================= NODE ENVIRONMENT : " + process.env.NODE_ENV + "============================\n")
 
@@ -564,18 +564,70 @@ app.get('/resent_verfication_page',function(req,res){
 	});
 
 	app.post('/login', function(req, res){
-		AM.manualLogin(req.body['user'], req.body['pass'], function(e, o){
-			if (!o){
-				res.status(400).send(e);
-			}	else{
-				req.session.user = o;
-				if (req.body['remember-me'] == 'true'){
-					res.cookie('user', o.user, { maxAge: 100000 });
-					res.cookie('pass', o.pass, { maxAge: 100000 });
-				}
-				res.status(200).send(o);
-			}
-		});
+    console.log("post login");
+    var username = req.body['username'];
+    var password = req.body['password'];
+    var twoFAcode = req.body['2faCode'];
+    var userFA = req.body['userFA'];
+
+    console.log("username : " + username);
+    console.log("two fa : " + twoFAcode);
+    console.log("user FA : " + userFA);
+
+    if(username != undefined && twoFAcode == undefined)
+    {
+      AM.manualLogin(username, password, function(e,o){
+        if(!o){
+          res.status(400).send(e);
+        }
+        else {
+          if(o) {
+            if(o.accountVerified)
+            {
+              if(o.twoFA)
+              {
+                //render twofa
+                res.render('fa',{
+                  username : username
+                });
+              }
+              else {
+                //if twofa not enabled, create session and direct to dashboard
+                req.session.user = o;
+                res.redirect('/dashboard');
+              }
+            }
+            else {
+              //render activeMail.jade if account not yet verified
+              res.render('ActiveMail');
+            }
+          }
+        }
+      })
+    }
+    else if(twoFAcode != undefined && userFA != undefined) {
+      //check if twoFA is correct or not, if correct
+      console.log(twoFAcode);
+      AM.getAccountByUsername(userFA,function(o){
+        req.session.user = o;
+        res.redirect('/dashboard');
+      })
+    }
+
+
+		// AM.manualLogin(req.body['username'], req.body['password'], function(e, o){
+		// 	if (!o){
+		// 		res.status(400).send(e);
+		// 	}	else{
+		// 		// req.session.user = o;
+		// 		// if (req.body['remember-me'] == 'true'){
+		// 		// 	res.cookie('user', o.user, { maxAge: 100000 });
+		// 		// 	res.cookie('pass', o.pass, { maxAge: 100000 });
+		// 		// }
+		// 		res.status(200).send(o);
+		// 	}
+		// });
+
 	});
 
 // logged-in user homepage //
@@ -599,11 +651,8 @@ app.get('/resent_verfication_page',function(req,res){
 				btc = value;
 				console.log(btc);
 			})
-			.then((value)=>{
-				updateTokenValueOfUser(req.session.user.user,req.session.user.email).then((value)=>{
-					return getAccountDetails(req.session.user.user,req.session.user.email).then((details)=>{return details});
-				})
-				.then((userDetails)=>{
+
+      getAccountDetails(req.session.user.user,req.session.user.email).then((userDetails)=>{
 					console.log(btc);
 					res.render('home', {
 						title : 'Control Panel',
@@ -614,7 +663,6 @@ app.get('/resent_verfication_page',function(req,res){
 						sipValue : sip
 					});
 				})
-			})
 			.catch((err)=>{
 				console.log("Error while fetching dashboard for user : "+req.session.user.user + " :: Error : "+err);
 				res.redirect('/dashboard');
@@ -927,169 +975,61 @@ app.get('/resent_verfication_page',function(req,res){
 //signup submission of registration form along with referral
 	app.post('/signup', function(req, res){
 
-		if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null) {
-			res.status(200).send('Captcha_not_selected');
-			console.log("hey captcha not selected");
-			// res.json({"responseCode" : 1,"responseDesc" : "Please select captcha"});
-		}else {
+		// if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null) {
+		// 	res.status(200).send('Captcha_not_selected');
+		// 	console.log("hey captcha not selected");
+		// 	// res.json({"responseCode" : 1,"responseDesc" : "Please select captcha"});
+		// }else {
 
 			var newAccount = {
 				name 	: req.body['name'],
-				email 	: req.body['email'],
-				user 	: req.body['user'],
-				pass	: req.body['pass'],
-				country : req.body['country'],
-				tokens : 0,
-				referralTokens : 0,
-				valueOfTokens : 0,
-				valueOfReferralTokens : 0,
-				selfReferralCode : ((req.body['user']).substr(0,3) + ((moment().format('x')).toString()).substr(4,3) + (req.body['user']).substr(0,Math.floor(Math.random()*3 + 1))).toUpperCase() + ((moment().format('x')).toString()).substr(8,3),
-				referralCode : (req.body['sponsorReferralCode']).toUpperCase(), // referral changed to sponsorReferralCode
-				planAmountSet : false,
+				email 	: req.body['emailUser'],
+				user 	: req.body['username'],
+        mobile : req.body['mobileUser'],
+				pass	: req.body['passUser'],
+        PIN : req.body['pinUser'],
+        twoFA : false,
 				secret : makeid(20),
 				accountVerified : false
 			}
 
-			//var parentReferralCode = (req.body['parentReferralCode']).toUpperCase();
+      AM.addNewAccount(newAccount, function(e){
+        if (e){
+          res.status(400).send(e);
+        }	else{
+          var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
 
-	// req.connection.remoteAddress will provide IP address of connected user.
-			var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + captchaSecret + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
-			// Hitting GET request to the URL, Google will respond with success or error scenario.
-			request(verificationUrl,function(error,response,body) {
-				body = JSON.parse(body);
-				// Success will be true or false depending upon captcha validation.
-				if(body.success !== undefined && !body.success) {
-					res.status(200).send('captcha_not_validated');
-					// res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
-				}else {
-					//new method without parentID insertion
-					if(newAccount.referralCode != "")
-					{
-						if(req.body['link'] != undefined)
-						{
-							AM.checkForReferral(newAccount.referralCode, function(result){
-							if(result == true)
-							{
-								console.log("Sponsor Referral Code : Present");
+          var mailOptions = {
+            from: sipCoinEmailId,
+            to: newAccount.email,
+            subject: 'SIPCOIN || Successful Registration',
+            html: part1 +URLforVerification+part2,
+          };
 
-								AM.findParentForNewNode(newAccount.referralCode, req.body['link'], function(parentNode){
-									console.log("Parent Node found for New Node : " + parentNode);
+          transporter.sendMail(mailOptions, function(error, info){
+            if (error) {
+              console.log("Email Not Sent, Error : " + error);
+            } else {
+              console.log('Email Sent: ' + info.response);
+            }
+            res.status(200).send('ok');
+          });
+        }
+      });
 
-									AM.addNewAccount(newAccount, function(e){
-									if (e){
-										res.status(400).send(e);
-										}	else{
-											AM.referralCreate(newAccount.user, newAccount.email, newAccount.selfReferralCode, newAccount.referralCode, parentNode, req.body['link'], function(){
-												var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
-
-												var mailOptions = {
-													from: sipCoinEmailId,
-													to: newAccount.email,
-													subject: 'SIPCOIN || Successful Registration',
-													html: part1 +URLforVerification+part2,
-												};
-
-												AM.referralAddInParent(parentNode, newAccount.selfReferralCode, req.body['link'], function(message){console.log(message)});
-												AM.referralAddInSponsor(newAccount.referralCode, newAccount.selfReferralCode, function(message){console.log(message)});
-
-												transporter.sendMail(mailOptions, function(error, info){
-													if (error) {
-														console.log("Email Not Sent, Error : " + error);
-													} else {
-														console.log('Email Sent: ' + info.response);
-													}
-													res.status(200).send('ok');
-												});
-											})
-										}
-									});
-								})
-							}
-							else {
-								console.log("Sponsor referral code invalid")
-								res.status(200).send('Sponsor_Referral_Code_Invalid');
-							}
-						})
-						}
-						else {
-							console.log("Link invalid")
-							res.status(200).send('Link_Invalid');
-						}
-					}
-
-					else {
-
-						//============================dont remove this portion of code, can be used for inital user creation - for e.g. ADMIN, without the need of sponsor code and without looking for parent referral code
-						// AM.addNewAccount(newAccount, function(e){
-						// if (e){
-						// 	res.status(400).send(e);
-						// 	}	else{
-						// 		AM.referralCreate(newAccount.user, newAccount.email, newAccount.selfReferralCode, "SIP35970SIPADM", "SIP35970SIPADM", "root", function(){
-						// 			var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
-            //
-						// 			var mailOptions = {
-						// 				from: sipCoinEmailId,
-						// 				to: newAccount.email,
-						// 				subject: ' SIPCOIN || Successful Registration',
-						// 				html: part1 +URLforVerification+part2,
-						// 			};
-            //
-						// 			transporter.sendMail(mailOptions, function(error, info){
-						// 			 if (error) {
-						// 				 console.log(error);
-						// 				 console.log("email_not_sent");
-						// 				 //response_value="Not Registred Sucessfully";
-						// 				 //res.json({"mail_value" : "mail_not_sent"});
-						// 			 } else {
-						// 				 console.log('Email sent: ' + info.response);
-						// 				 //res.json({"mail_value" : "mail_sent"});
-						// 				 //response_value="Registred Sucessfully";
-						// 			 }
-						// 			 res.status(200).send('ok');
-						// 			})
-						// 		})
-						// 	}
-						// });
-
-						AM.findParentForNewNode(adminSponsorCode, "right", function(parentNode){
-							console.log("Parent Node found for New Node : " + parentNode);
-
-							AM.addNewAccount(newAccount, function(e){
-							if (e){
-								res.status(400).send(e);
-								}	else{
-									AM.referralCreate(newAccount.user, newAccount.email, newAccount.selfReferralCode,  adminSponsorCode, parentNode, "right", function(){
-										var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
-
-										var mailOptions = {
-											from: sipCoinEmailId,
-											to: newAccount.email,
-											subject: 'SIPCOIN || Successful Registration',
-											html: part1 +URLforVerification+part2,
-										};
-
-										AM.referralAddInParent(parentNode, newAccount.selfReferralCode, "right", function(message){console.log(message)});
-										AM.referralAddInSponsor(adminSponsorCode, newAccount.selfReferralCode, function(message){console.log(message)});
-
-										transporter.sendMail(mailOptions, function(error, info){
-											if (error) {
-												console.log("Email Not Sent, Error : " + error);
-											} else {
-												console.log('Email Sent: ' + info.response);
-											}
-											res.status(200).send('ok');
-										});
-									})
-								}
-							});
-						})
-
-						}
-					}
-
-		 });
-	 }
-
+	   //  // req.connection.remoteAddress will provide IP address of connected user.
+			// var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + captchaSecret + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
+			// // Hitting GET request to the URL, Google will respond with success or error scenario.
+			// request(verificationUrl,function(error,response,body) {
+			// 	body = JSON.parse(body);
+			// 	// Success will be true or false depending upon captcha validation.
+			// 	if(body.success !== undefined && !body.success) {
+			// 		res.status(200).send('captcha_not_validated');
+			// 		// res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
+			// 	}else {
+			// 	}
+		 // });
+	 //}
 	});
 
 

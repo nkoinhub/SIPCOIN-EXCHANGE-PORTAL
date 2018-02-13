@@ -921,9 +921,9 @@ html(lang='en')
           .modal-body
             form
               .form-group
-                input#recipient-name.form-control(type='text', placeholder='Enter Name',required='')
+                input#recipient-name.form-control(type='text', name='username', placeholder='Enter Name',required='')
               .form-group
-                input#recipient-password.form-control(type='password', placeholder='Password',required='')
+                input#recipient-password.form-control(type='password', name='password', placeholder='Password',required='')
               .form-buttons
                 center
                   .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
@@ -968,6 +968,8 @@ html(lang='en')
               .form-group
                 input#recipient-email.form-control(type='text', placeholder='Email',required='',name='emailUser')
               .form-group
+                input#recipient-name.form-control(type='text', placeholder='Full Name',required='',name='name')
+              .form-group
                 input#mobile-number.form-control(type='number', placeholder='Mobile Number',required='',name='mobileUser')
               .form-group
                 input#password.form-control(type='password', placeholder='Password',required='',name='passUser')
@@ -1010,8 +1012,10 @@ html(lang='en')
             .row
               col-xs-12#img_type
                   img(src='/images/2FA.png', height='100px', width='300px')
-            form
+            form(method='post', action='/login')
               br
+              .form-group
+                input#username.form-control(type='text', name='userFA', value = '#{username}', hidden='')
               .form-group
                 input#2fa_code.form-control(type='number', placeholder='Enter 2FA Authentication code',required='',name='2faCode')
               .form-buttons

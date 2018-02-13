@@ -18,7 +18,7 @@ var RefSysTimer = 60; // minutes
 	ESTABLISH DATABASE CONNECTION
 */
 
-var dbName = process.env.DB_NAME || 'SIPCOIN';
+var dbName = process.env.DB_NAME || 'EXCHANGE';
 var dbHost = process.env.DB_HOST || 'localhost'
 var dbPort = process.env.DB_PORT || 27017;
 

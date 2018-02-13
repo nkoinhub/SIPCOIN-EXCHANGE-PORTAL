@@ -888,11 +888,11 @@ html(lang='en')
             a.close(data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
           .modal-body
-            form
+            form(method='post', action='/login')
               .form-group
-                input#recipient-name.form-control(type='text', placeholder='Enter Name',required='')
+                input#recipient-name.form-control(type='text', name='username', placeholder='Enter Name',required='')
               .form-group
-                input#recipient-password.form-control(type='password', placeholder='Password',required='')
+                input#recipient-password.form-control(type='password', name='password', placeholder='Password',required='')
               .form-buttons#captcha_input
                 center
                   .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
@@ -900,7 +900,7 @@ html(lang='en')
                   //development - 6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P
                   br
               hr
-              a.button.iq-mtb-10(href='#') Sign In
+              button.iq-mtb-10(type='submit') Sign In
               .row
                 .col-xs-6
                   .form-check
@@ -914,7 +914,7 @@ html(lang='en')
               | Don't Have an Account? 
               a.iq-font-yellow(href='#') Register Now
             div
-              | Did't received Activation Link? 
+              | Didn't receive Activation Link? 
               a.iq-font-yellow(href='#') Send Mail
               
     //
@@ -931,11 +931,13 @@ html(lang='en')
             a.close(data-dismiss='modal', aria-label='Close')
               span(aria-hidden='true') ×
           .modal-body
-            form
+            form(method='post', action='/signup')
               .form-group
-                input#recipient-username.form-control(type='text', placeholder='User Name',required='',name='username')
+                input#recipient-username.form-control(type='text', placeholder='Username',required='',name='username')
               .form-group
                 input#recipient-email.form-control(type='text', placeholder='Email',required='',name='emailUser')
+              .form-group
+                input#recipient-name.form-control(type='text', placeholder='Full Name',required='',name='name')
               .form-group
                 input#mobile-number.form-control(type='number', placeholder='Mobile Number',required='',name='mobileUser')
               .form-group
@@ -957,7 +959,7 @@ html(lang='en')
                   //production - 6LfXbzsUAAAAALCk_NicLha3d-KG_0GRNRxAJUMs
                   //development - 6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P
                   br
-              a.button.iq-mtb-10(href='#') Sign Up
+              button.iq-mtb-10(type='submit') Sign Up
           .modal-footer.text-center
             div
               | Already Have an Account? 
