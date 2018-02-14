@@ -16,6 +16,7 @@
     "config": "^1.29.2",
     "connect-mongo": "0.8.2",
     "cookie-parser": "1.4.0",
+    "cors": "^2.8.4",
     "emailjs": "^1.0.4",
     "errorhandler": "1.4.2",
     "express": "^4.13.3",
@@ -24,7 +25,9 @@
     "moment": "2.10.3",
     "mongodb": "^2.2.34",
     "nodemailer": "^4.4.1",
+    "qrcode": "^1.2.0",
     "request": "^2.83.0",
+    "speakeasy": "^2.0.0",
     "stylus": "0.52.4"
   },
   "engines": {

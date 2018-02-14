@@ -606,6 +606,27 @@ exports.getAccount = function(username, emailid, callback)
 	})
 }
 
+//enable two FA and update the secret
+exports.enable2FA = function(username, secret, callback)
+{
+	//accounts.update({user:username},{$set:{twoFA:true,secret:secret}},callback("updated"));
+	accounts.findOne({user:username},function(e,o){
+		o.twoFA = true;
+		o.twoFAsecret = secret;
+		accounts.save(o,{safe:true},callback(o));
+	})
+}
+
+//disable two FA and delete the secret
+exports.disable2FA = function(username, callback)
+{
+	accounts.findOne({user:username},function(e,o){
+		o.twoFA = false;
+		o.twoFAsecret = "TWO FA DISABLED";
+		accounts.save(o,{safe:true},callback(o));
+	})
+}
+
 exports.currentTokenValue = function(callback)
 {
 	console.log("inside teh exports");

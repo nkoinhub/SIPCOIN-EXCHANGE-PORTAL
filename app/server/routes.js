@@ -11,6 +11,9 @@ var Promise = require("bluebird");
 var moment 		= require('moment');
 var nodemailer = require('nodemailer');
 var config = require('config');
+var speakeasy = require('speakeasy');
+var qrcode = require('qrcode');
+
 //=================================================================================
 
 //=====================config file access==========================================
@@ -563,6 +566,7 @@ app.get('/resent_verfication_page',function(req,res){
 		}
 	});
 
+// new exchange post login======================================================
 	app.post('/login', function(req, res){
     console.log("post login");
     var username = req.body['username'];
@@ -574,18 +578,15 @@ app.get('/resent_verfication_page',function(req,res){
     console.log("two fa : " + twoFAcode);
     console.log("user FA : " + userFA);
 
-    if(username != undefined && twoFAcode == undefined)
-    {
+    if(username != undefined && twoFAcode == undefined){
       AM.manualLogin(username, password, function(e,o){
         if(!o){
           res.status(400).send(e);
         }
         else {
-          if(o) {
-            if(o.accountVerified)
-            {
-              if(o.twoFA)
-              {
+          if(o){
+            if(o.accountVerified){
+              if(o.twoFA){
                 //render twofa
                 res.render('fa',{
                   username : username
@@ -609,12 +610,25 @@ app.get('/resent_verfication_page',function(req,res){
       //check if twoFA is correct or not, if correct
       console.log(twoFAcode);
       AM.getAccountByUsername(userFA,function(o){
-        req.session.user = o;
-        res.redirect('/dashboard');
+        var verified = speakeasy.totp.verify({
+          secret: o.twoFAsecret.base32,
+          encoding: 'base32',
+          token: twoFAcode
+        });
+
+        if(verified){
+          req.session.user = o;
+          res.redirect('/dashboard');
+        }
+        else {
+          res.render('fa',{
+            username : userFA
+          })
+        }
       })
     }
 
-
+    //
 		// AM.manualLogin(req.body['username'], req.body['password'], function(e, o){
 		// 	if (!o){
 		// 		res.status(400).send(e);
@@ -629,6 +643,46 @@ app.get('/resent_verfication_page',function(req,res){
 		// });
 
 	});
+
+  //enable twoFA route for exchange portal =====================================
+  app.post('/enable2FA',function(req,res){
+    if(req.session.user == null) res.redirect('/');
+    else {
+      var secret = speakeasy.generateSecret({length:20});
+      AM.enable2FA(req.session.user.user, secret, function(result){
+        req.session.user = result;
+        qrcode.toDataURL(secret.otpauth_url, function(err, imageData){
+          res.send({
+            image : imageData,
+            secret : secret.base32
+          })
+        })
+      })
+    }
+  })
+
+  //disable twoFA route for exchange portal ====================================
+  app.post('/disable2FA',function(req,res){
+    if(req.session.user == null) res.redirect('/');
+    else {
+      var twoFAcode = req.body['twoFAcode'];
+      var verified = speakeasy.totp.verify({
+        secret: req.session.user.twoFAsecret.base32,
+        encoding: 'base32',
+        token: twoFAcode
+      });
+
+      if(verified){
+        AM.disable2FA(req.session.user.user, function(result){
+          req.session.user = result;
+          res.send(200);
+        })
+      }
+      else {
+        //wrong two fa entered
+      }
+    }
+  })
 
 // logged-in user homepage //
 
@@ -989,6 +1043,7 @@ app.get('/resent_verfication_page',function(req,res){
 				pass	: req.body['passUser'],
         PIN : req.body['pinUser'],
         twoFA : false,
+        twoFAsecret : "TWO FA DISABLED",
 				secret : makeid(20),
 				accountVerified : false
 			}

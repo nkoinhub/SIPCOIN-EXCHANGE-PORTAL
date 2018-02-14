@@ -1,5 +1,6 @@
 var http = require('http');
 var express = require('express');
+var cors = require('cors');
 var session = require('express-session');
 var bodyParser = require('body-parser');
 var errorHandler = require('errorhandler');
@@ -17,6 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(require('stylus').middleware({ src: __dirname + '/app/public' }));
 app.use(express.static(__dirname + '/app/public'));
+app.use(cors());
 
 // build mongo database connection url //
 
