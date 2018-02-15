@@ -74,6 +74,7 @@ var updateTokenValueOfUser = function(user, email) {
 	})
 }
 
+//current bitcoin value in USD
 var btcCheck = function(){
 	return new Promise(function(resolve,reject){
 		console.log("inside btcCheck");
@@ -83,6 +84,54 @@ var btcCheck = function(){
 		});
 	});
 }
+
+//current ethereum value in USD
+var ethCheck = function(){
+  return new Promise(function(resolve,reject){
+    request("https://api.coinmarketcap.com/v1/ticker/ethereum/",{json:true},(err,res,body)=>{
+      if(err) { return console.log(err);}
+      console.log(body);
+      resolve(body[0].price_usd);
+    })
+  })
+}
+
+//account balance via blockchain
+var acntBalance = function(address){
+  return new Promise(function(resolve,reject){
+    request({
+      headers : {'content-type' : 'application/x-www-form-urlencoded'},
+      url : 'http://18.220.204.121:9326/acntBalance',
+      method : 'POST',
+      form : {
+        'apikey' : "ironmandiesininfinityWars",
+        'address' : address //"0x57E43858eA63b9e1F8fA21Fa4C6e571195fCf74F"
+      }
+    },(err,res,body)=>{
+      console.log(body)
+      resolve(body); //body.etherBalance and body.tokenBalance
+    })
+  })
+}
+
+//create wallet address on ether blockchain
+var createAccount = function(username){
+  return new Promise(function(resolve,reject){
+    request({
+      headers : {'content-type' : 'application/x-www-form-urlencoded'},
+      url : 'http://18.220.204.121:9326/ethAcnt',
+      method : "POST",
+      form : {
+        'apikey' : "ironmandiesininfinityWars",
+        'username' : "rohan"
+      }
+    },(err,res,body)=>{
+      console.log(body)
+      resolve(body) //body.address , body.privateKey
+    })
+  })
+}
+
 
 var getPublicAddress = function(TID){
 	return new Promise(function(resolve,reject){
@@ -645,7 +694,7 @@ app.get('/resent_verfication_page',function(req,res){
 	});
 
   //enable twoFA route for exchange portal =====================================
-  app.post('/enable2FA',function(req,res){
+  app.get('/enable2FA',function(req,res){
     if(req.session.user == null) res.redirect('/');
     else {
       var secret = speakeasy.generateSecret({length:20});
@@ -662,7 +711,7 @@ app.get('/resent_verfication_page',function(req,res){
   })
 
   //disable twoFA route for exchange portal ====================================
-  app.post('/disable2FA',function(req,res){
+  app.get('/disable2FA',function(req,res){
     if(req.session.user == null) res.redirect('/');
     else {
       var twoFAcode = req.body['twoFAcode'];
