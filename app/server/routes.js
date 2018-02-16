@@ -90,7 +90,7 @@ var ethCheck = function(){
   return new Promise(function(resolve,reject){
     request("https://api.coinmarketcap.com/v1/ticker/ethereum/",{json:true},(err,res,body)=>{
       if(err) { return console.log(err);}
-      console.log(body);
+      //console.log(body);
       resolve(body[0].price_usd);
     })
   })
@@ -693,6 +693,16 @@ app.get('/resent_verfication_page',function(req,res){
 
 	});
 
+  //new user route for user settings on new dashboard
+  app.get('/user',function(req,res){
+    if(req.session.user == null) res.redirect('/');
+    else {
+      res.render('user',{
+        userDetails : req.session.user
+      });
+    }
+  })
+
   //enable twoFA route for exchange portal =====================================
   app.get('/enable2FA',function(req,res){
     if(req.session.user == null) res.redirect('/');
@@ -739,6 +749,7 @@ app.get('/resent_verfication_page',function(req,res){
 
 		var btc;
 		var sip;
+    var eth;
 
 		if (req.session.user == null){
 	// if user is not logged-in redirect back to login page //
@@ -747,29 +758,40 @@ app.get('/resent_verfication_page',function(req,res){
 
 			getTokenValue().then((value)=>{
 				sip = value;
-				console.log(sip);
+        console.log("## SIP : "+sip);
 			})
 
 			btcCheck().then((value)=>{
 				btc = value;
-				console.log(btc);
+        console.log("## BTC : "+btc);
+        ethCheck().then((value)=>{
+          eth = value;
+          console.log("## ETH : "+eth);
+          res.render('home',{
+            userDetails : req.session.user,
+            BTC : btc,
+            SIP : sip,
+            ETH : eth
+          })
+        })
 			})
 
-      getAccountDetails(req.session.user.user,req.session.user.email).then((userDetails)=>{
-					console.log(btc);
-					res.render('home', {
-						title : 'Control Panel',
-						countries : CT,
-						udata : req.session.user,
-						accountDetails : userDetails,
-						btcValue : btc,
-						sipValue : sip
-					});
-				})
-			.catch((err)=>{
-				console.log("Error while fetching dashboard for user : "+req.session.user.user + " :: Error : "+err);
-				res.redirect('/dashboard');
-			})
+
+      // getAccountDetails(req.session.user.user,req.session.user.email).then((userDetails)=>{
+			// 		console.log(btc);
+			// 		res.render('home', {
+			// 			udata : req.session.user,
+			// 			accountDetails : userDetails,
+			// 			btcValue : btc,
+			// 			sipValue : sip
+			// 		});
+			// 	})
+			// .catch((err)=>{
+			// 	console.log("Error while fetching dashboard for user : "+req.session.user.user + " :: Error : "+err);
+			// 	res.redirect('/dashboard');
+			// })
+
+
 		}
 	});
 

@@ -148,7 +148,7 @@ html(lang='en')
                       .row
                         center
                           .col-sm-12.text_class(style='margin:10px;padding:0;')
-                            b Exchange Rate : 1 SIP = $ 1.5
+                            b Exchange Rate : 1 SIP = $#{SIP}
                           .col-sm-12.text_class(style='margin:10px;padding:0;')
                             b Your Dollar Wallet Balance is $ 100.5
                           br
@@ -228,7 +228,7 @@ html(lang='en')
             li
               a(href='/table')
                 i.material-icons content_paste
-                p  Transaction History
+                p Transaction History
             li
               a(href='/user')
                 i.material-icons person
@@ -241,7 +241,7 @@ html(lang='en')
               </a>
               </li>
             li
-              a(href='http://support.sipcoin.io/support/')
+              a(href='http://support.sipcoin.io/support/', target='blank')
                 i.material-icons bubble_chart
                 p Support
             //
@@ -271,9 +271,9 @@ html(lang='en')
               a.navbar-brand  Dashboard 
               a.navbar-brand
                 button.btn.btn-primary.make_it_left(type='submit', data-toggle='modal', data-target='#myModal')  Transfer 
-              a.navbar-brand.valuesDoll(style='margin-left:200px;')  BTC/USD $10000 
-              a.navbar-brand.valuesDoll  ETH/USD $5000 
-              a.navbar-brand.valuesDoll  SIP/USD $10 
+              a.navbar-brand.valuesDoll(style='margin-left:200px;')  BTC/USD $#{BTC} 
+              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
+              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -477,7 +477,7 @@ html(lang='en')
                           div
                             input#sip_value_total(type='number', placeholder='Amount in SIPcoin', readonly='')
                     .col-sm-3
-                      button#shift_it.btn.btn-primary(type='button', style='cursor:none;margin-top:20px;') Exchange rate : 1 SIP = $ 1.5
+                      button#shift_it.btn.btn-primary(type='button', style='cursor:none;margin-top:20px;') Exchange rate : 1 SIP = $ #{SIP}
                     .col-sm-12
                       br
                   .card-content.table-responsive

@@ -118,7 +118,7 @@ html(lang='en')
                     li
                       br
                       center
-                        | rajatrawataku@gmail.com
+                        | #{userDetails.email}
                       br
                     li(style='text-align:center;')
                       a(href='/logout') Logout
@@ -267,7 +267,7 @@ html(lang='en')
                                       td
                                         button.btn.btn-success(type='button', style='padding:5px;') Active
                                       td
-                                        button.btn.btn-danger(type='button', style='padding:5px;') REvoke Access
+                                        button.btn.btn-danger(type='button', style='padding:5px;') Revoke Access
                       #changePassTab.tab-pane
                         .row
                           .col-sm-10.col-lg-offset-1
@@ -315,16 +315,16 @@ html(lang='en')
                           tbody
                             tr
                               td User Name	
-                              td#userName rajatrawataku1
+                              td#userName #{userDetails.user}
                             tr
                               td Full Name	
-                              td#userFullName Rajat Rawat	
+                              td#userFullName #{userDetails.name}	
                             tr
                               td Email ID	
-                              td#userEmail rajatrawataku1@gmail.com	
+                              td#userEmail #{userDetails.email}	
                             tr
                               td Phone No.	
-                              td#phoneInput +9168263282
+                              td#phoneInput #{userDetails.mobile}
                     //
                       <h6 class="category text-gray">CEO / Co-Founder</h6>
                       <h4 class="card-title">Alec Thompson</h4>
