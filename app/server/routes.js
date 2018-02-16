@@ -220,8 +220,13 @@ module.exports = function(app) {
 
 	//main page render
 	app.get('/',function(req,res){
-		if(req.session.user != null) res.redirect('/dashboard');
-		else {
+      console.log("HERE");
+      res.redirect('/dashboard');
+  		if(req.session.user != null) {
+        console.log("HERE 2");
+        //res.redirect('/dashboard');
+
+		}else {
 			var usd;
 			var sip;
 
