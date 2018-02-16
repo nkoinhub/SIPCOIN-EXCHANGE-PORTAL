@@ -696,9 +696,25 @@ app.get('/resent_verfication_page',function(req,res){
   app.get('/user',function(req,res){
     if(req.session.user == null) res.redirect('/');
     else {
-      res.render('user',{
-        userDetails : req.session.user
-      });
+      var btc;
+  		var sip;
+      var eth;
+      getTokenValue().then((value)=>{
+  				sip = value;
+  			})
+
+			btcCheck().then((value)=>{
+				btc = value;
+        ethCheck().then((value)=>{
+          eth = value;
+          res.render('user',{
+            userDetails : req.session.user,
+            BTC : btc,
+            SIP : sip,
+            ETH : eth
+          })
+        })
+			})
     }
   })
 
@@ -985,11 +1001,11 @@ app.get('/resent_verfication_page',function(req,res){
 		}
 	});
 
-
-	app.post('/logout', function(req, res){
+//logout, change into post
+	app.get('/logout', function(req, res){
 		res.clearCookie('user');
 		res.clearCookie('pass');
-		req.session.destroy(function(e){ res.status(200).send('ok'); });
+		req.session.destroy(function(e){ res.redirect('/') });
 	})
 
 
