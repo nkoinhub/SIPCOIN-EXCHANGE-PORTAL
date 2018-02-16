@@ -219,8 +219,7 @@ module.exports = function(app) {
   });
 
 	//main page render
-	app.get('/',function(req,res){
-		if(req.session.user != null) res.redirect('/dashboard');
+	app.get('/',function(req,res){ if(req.session.user != null) res.redirect('/dashboard');
 		else {
 			var usd;
 			var sip;
