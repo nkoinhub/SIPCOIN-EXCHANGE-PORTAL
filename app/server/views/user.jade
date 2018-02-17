@@ -68,9 +68,9 @@ html(lang='en')
                 i.material-icons group
                 p My Referrals
             li
-              a(href='/table')
+              a(href='/transactionHistory')
                 i.material-icons content_paste
-                p History
+                p Transaction History
             li.active
               a(href='/user')
                 i.material-icons person
@@ -111,9 +111,9 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
               a.navbar-brand(href='#',style='font-weight:400;')  Profile 
-              a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $10000 
-              a.navbar-brand.valuesDoll  ETH/USD $5000 
-              a.navbar-brand.valuesDoll  SIP/USD $10 
+              a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $#{BTC} 
+              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
+              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
