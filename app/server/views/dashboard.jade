@@ -19,6 +19,16 @@ html(lang='en')
       .text_class{
       font-size: 15px;
       }
+      
+      .cardHeightChange{
+      height:500px;
+      }
+      
+      transfer_class{
+      margin-left:20px;
+      margin-right:20px;
+      margin-top:20px;
+      }
       input[type=number]::-webkit-inner-spin-button,
       input[type=number]::-webkit-outer-spin-button {
       -webkit-appearance: none;
@@ -91,6 +101,15 @@ html(lang='en')
       text-align: right;
       }
       @media (max-width:767px){
+      transfer_class{
+      margin-left:0px;
+      margin-right:0px;
+      margin-top:0px;
+      }
+      
+      .cardHeightChange{
+      height:550px;
+      }
       .form-control{
       margin-left: 10%;
       }
@@ -105,7 +124,7 @@ html(lang='en')
       padding-right: 10px;
       }
       .text_class{
-      font-size: 10px;
+      font-size: 12px;
       }
       .valuesDoll{
       display: none;
@@ -125,86 +144,80 @@ html(lang='en')
         .modal-content
           .modal-header
             button.close(type='button', data-dismiss='modal') ×
-            h4.modal-title Transfer Balance
+            h4.modal-title(style='font-weight:400;') Transfer Balance
           .modal-body
             .col-lg-12.col-md-12
               .card.card-nav-tabs
-                .card-header(data-background-color='purple')
+                .card-header(style="background-color:#f9b707;")
                   .nav-tabs-navigation
                     .nav-tabs-wrapper
                       ul.nav.nav-tabs(data-tabs='tabs')
                         li.active
                           a(href='#dollToSipTrans', data-toggle='tab')
-                            | Dollar to SIPcoin Wallet
+                            | Dollar to SIP Wallet
                             .ripple-container
                         li
                           a(href='#sipToEtherTrans', data-toggle='tab')
-                            | SIPcoin to Etherium Wallet
+                            | SIPcoin to ETH Wallet
                             // <i class="material-icons">code</i> Etherium
                             .ripple-container
-                .card-content(style='margin-left:25px;margin-right:25px;')
+                .card-content
                   .tab-content
                     #dollToSipTrans.tab-pane.active
                       .row
                         center
-                          .col-sm-12.text_class(style='margin:10px;padding:0;')
-                            b Exchange Rate : 1 SIP = $ 1.5
-                          .col-sm-12.text_class(style='margin:10px;padding:0;')
-                            b Your Dollar Wallet Balance is $ 100.5
-                          br
-                          br
-                          br
-                          br
-                        form(action='/tranferDollarToSip', method='post')
-                          .row(style='border:2px dashed rgb(217,217,217);margin:20px;')
-                            .col-sm-6(style='margin-top:20px;')
-                              .row
-                                .col-sm-12.inputContainer
-                                  label
-                                    i.fa.fa-dollar(style='color:black;')
-                                  div
-                                    input(type='number', placeholder='Enter Amount in Dollar', name='dollarInputTransfer')
-                            .col-sm-6(style='margin-top:20px;')
-                              .row
-                                .col-sm-12.inputContainer
-                                  label(style='color:black;font-weight:bold;') SIP
-                                  div
-                                    input#sip_value_total_trans(type='number', placeholder='Equivalent  SIPcoins', name='equiInputSipTransfer', readonly='')
-                            .col-sm-12
-                              center
-                                button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
-                            .col-sm-12
-                              br
+                          .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;')
+                            | Exchange Rate : 1 SIP = $ 1.5
+                          .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;')
+                            | Your Dollar Wallet Balance is $ 100.5
+                          .col-sm-12                          
+                            form(action='/tranferDollarToSip', method='post')
+                              .row.transfer_class(style='border:2px dashed rgb(217,217,217);')
+                                .col-sm-6(style='margin-top:20px;')
+                                  .row
+                                    .col-sm-12.inputContainer
+                                      label
+                                        i.fa.fa-dollar(style='color:black;')
+                                      div
+                                        input(type='number', placeholder='Enter Amount in Dollar', name='dollarInputTransfer')
+                                .col-sm-6(style='margin-top:20px;')
+                                  .row
+                                    .col-sm-12.inputContainer
+                                      label(style='color:black;font-weight:bold;') SIP
+                                      div
+                                        input#sip_value_total_trans(type='number', placeholder='Equivalent  SIPcoins', name='equiInputSipTransfer', readonly='')
+                                .col-sm-12
+                                  center
+                                    button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
+                                .col-sm-12
+                                  br
                     #sipToEtherTrans.tab-pane
                       .row
                         center
-                          .col-sm-12.text_class(style='margin:10px;padding:0;')
-                            b Exchange Rate : 1 SIP = 0.56 ETH
-                          .col-sm-12.text_class(style='margin:10px;padding:0;')
-                            b Your SIP Wallet Balance is  100.5 SIP
-                          br
-                          br
-                          br
-                          br
-                        form(action='/tranferSipToEth', method='post')
-                          .row(style='border:2px dashed rgb(217,217,217);margin:20px;')
-                            .col-sm-6(style='margin-top:20px;')
-                              .row
-                                .col-sm-12.inputContainer
-                                  label(style='color:black;font-weight:bold;') SIP
-                                  div
-                                    input(type='number', placeholder='Enter Amount in SIP', name='sipInputTransfer')
-                            .col-sm-6(style='margin-top:20px;')
-                              .row
-                                .col-sm-12.inputContainer
-                                  label(style='color:black;font-weight:bold;') ETH
-                                  div
-                                    input#eth_value_total(type='number', placeholder='Equivalent  ETH', name='equiInputETHTransfer', readonly='')
-                            .col-sm-12
-                              center
-                                button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
-                            .col-sm-12
-                              br
+                          .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;')
+                            | Exchange Rate : 1 SIP = 0.56 ETH
+                          .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;')
+                            | Your SIP Wallet Balance is  100.5 SIP
+                          .col-sm-12
+                            form(action='/tranferSipToEth', method='post')
+                              .row.transfer_class(style='border:2px dashed rgb(217,217,217);')
+                                .col-sm-6(style='margin-top:20px;')
+                                  .row
+                                    .col-sm-12.inputContainer
+                                      label(style='color:black;font-weight:bold;') SIP
+                                      div
+                                        input(type='number', placeholder='Enter Amount in SIP', name='sipInputTransfer')
+                                .col-sm-6(style='margin-top:20px;')
+                                  .row
+                                    .col-sm-12.inputContainer
+                                      label(style='color:black;font-weight:bold;') ETH
+                                      div
+                                        input#eth_value_total(type='number', placeholder='Equivalent  ETH', name='equiInputETHTransfer', readonly='')
+                                .col-sm-12
+                                  center
+                                    button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
+                                .col-sm-12
+                                  br
           .modal-footer
             // <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     .wrapper
@@ -268,7 +281,7 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-              a.navbar-brand  Dashboard 
+              a.navbar-brand(style='font-weight:400;')  Dashboard 
               a.navbar-brand
                 button.btn.btn-primary.make_it_left(type='submit', data-toggle='modal', data-target='#myModal')  Transfer 
               a.navbar-brand.valuesDoll(style='margin-left:200px;')  BTC/USD $10000 
@@ -460,7 +473,7 @@ html(lang='en')
                 </div>
               .col-lg-12.col-md-12
                 .card
-                  .card-header(data-background-color='orange')
+                  .card-header(style="background-color:#f9b707;")
                     h4.title Team SIPcoin/Reinvest
                   .row(style='border:2px dashed rgb(217,217,217);margin:20px;')
                     .col-lg-offset-1.col-sm-3(style='margin-top:20px;')
@@ -562,10 +575,10 @@ html(lang='en')
             .row
               .col-lg-6.col-md-12
                 .card.card-nav-tabs
-                  .card-header(data-background-color='purple')
+                  .card-header(style="background-color:#f9b707;")
                     .nav-tabs-navigation
                       .nav-tabs-wrapper
-                        span.nav-tabs-title Receive:
+                        span.nav-tabs-title(style='font-size:15px;') RECEIVE :
                         ul.nav.nav-tabs(data-tabs='tabs')
                           li.active
                             a(href='#sipcoinTab', data-toggle='tab')
@@ -581,7 +594,7 @@ html(lang='en')
                               | Bitcoin
                               // <i class="material-icons">cloud</i> Bitcoin
                               .ripple-container
-                  .card-content(style='height:500px;')
+                  .card-content.cardHeightChange
                     .tab-content
                       #sipcoinTab.tab-pane.active
                         center
@@ -633,10 +646,10 @@ html(lang='en')
                                 b.text_class DD92nSFDwJwfMr2zFHV1pRjRUkvuiUSn7w
               .col-lg-6.col-md-12
                 .card.card-nav-tabs
-                  .card-header(data-background-color='purple')
+                  .card-header(style="background-color:#f9b707;")
                     .nav-tabs-navigation
                       .nav-tabs-wrapper
-                        span.nav-tabs-title SEND:
+                        span.nav-tabs-title(style='font-size:15px;') SEND :
                         ul.nav.nav-tabs(data-tabs='tabs')
                           li.active
                             a(href='#sipcoinTabSend', data-toggle='tab')
@@ -652,7 +665,7 @@ html(lang='en')
                               | Bitcoin
                               // <i class="material-icons">cloud</i> Bitcoin
                               .ripple-container
-                  .card-content(style='margin-left:25px;margin-right:25px;height:500px;')
+                  .card-content.cardHeightChange(style='margin-left:25px;margin-right:25px;')
                     .tab-content
                       #sipcoinTabSend.tab-pane.active
                         .row
@@ -695,7 +708,7 @@ html(lang='en')
                                   .col-sm-9.col-lg-offset-2
                                     button.btn.btn-primary.sendButtons(type='submit')
                                       img(src='/images/eth.PNG', style='height:30px;width:30px;')
-                                      |                                                          | Withdraw from SIP  Wallet
+                                      | Withdraw from SIP  Wallet
                       #etheriumTabSend.tab-pane
                         .row
                           center
