@@ -90,6 +90,25 @@ var getChildrenNew = function(referral, link)
 	})
 }
 
+//place transaction request containing the type code of the transaction=========
+exports.placeTransactionRequest = function(transactionReq, callback)
+{
+	transactions.insert(transactionReq, callback("Request Placed"));
+}
+
+//get transaction request placed================================================
+exports.getTransactionRequest = function(TID, callback)
+{
+	transactions.findOne({TID:TID},function(e,o){
+		if(!e){
+			callback(o);
+		}
+		else {
+			callback(null);
+		}
+	})
+}
+
 exports.findParentForNewNode = function(root, link, callback)
 {
 	console.log("Find Parent For New Node Called");

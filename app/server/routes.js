@@ -758,8 +758,50 @@ app.get('/resent_verfication_page',function(req,res){
     }
   })
 
-// logged-in user homepage //
+//placing a transaction request of any type ====================================
+app.post('/placeTransaction',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
 
+    var transactionRequest = {
+      TID : (req.session.user.user).substr(0,3) + moment().format('x'),
+      username : req.session.user.user,
+      email : req.session.user.email,
+      amount : req.body['amount'],
+      typeCode : req.body['type'],
+      CNAV : "",
+      dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
+      dateOfCompletion : "STILL IN PROCESS",
+      destinationAddress : "NOT REQUIRED",
+      transactionComplete : false
+    }
+
+    if(req.body['type'] == 4){
+      transactionRequest.destinationAddress = req.body['destination'];
+    }
+
+    AM.placeTransactionRequest(transactionRequest, function(result){
+      console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+      //res.status(200).send('ok');
+      res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+    })
+  }
+})
+
+//successfully placing the transaction==========================================
+app.get('/transactionRequest',function(req,res){
+  in(req.session.user == null || req.query.TID == undefined) res.redirect('/');
+  else {
+    var TID = req.query.TID;
+    AM.getTransactionRequest(TID, function(result){
+      if(result){
+        res.send(result);
+      }
+    })
+  }
+})
+
+// logged-in user homepage //
 	app.get('/dashboard', function(req, res) {
 
 		var btc;
@@ -782,7 +824,7 @@ app.get('/resent_verfication_page',function(req,res){
         ethCheck().then((value)=>{
           eth = value;
           console.log("## ETH : "+eth);
-          res.render('home',{
+          res.render('dashboard',{
             userDetails : req.session.user,
             BTC : btc,
             SIP : sip,
