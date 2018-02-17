@@ -734,6 +734,30 @@ app.get('/resent_verfication_page',function(req,res){
     }
   })
 
+  //start two FA once the two FA is verified for the first time=================
+  app.get('/start2FA',function(req,res){
+    if(req.session.user == null) res.redirect('/');
+    else {
+      var twoFAcode = req.body['twoFAcode'];
+      var verified = speakeasy.totp.verify({
+        secret: req.session.user.twoFAsecret.base32,
+        encoding: 'base32',
+        token: twoFAcode
+      });
+
+      if(verified){
+        AM.start2FA(req.session.user.user, function(result){
+          req.session.user = result;
+          res.send(200);
+        })
+      }
+      else {
+        //wrong two fa entered
+        res.redirect('/user')
+      }
+    }
+  })
+
   //disable twoFA route for exchange portal ====================================
   app.get('/disable2FA',function(req,res){
     if(req.session.user == null) res.redirect('/');
