@@ -109,6 +109,30 @@ exports.getTransactionRequest = function(TID, callback)
 	})
 }
 
+//set the browser verification back to false====================================
+exports.resetBrowserVerification = function(username, callback)
+{
+	accounts.update({user:username},{$set:{browserVerified:false}},callback("Browser Verification False"));
+}
+
+//set the browser verification key while sending browser verification mail======
+exports.setBrowserVerificationKey = function(username, key, callback)
+{
+	accounts.update({user:username},{$set:{browserKey:key}},callback("Browser Verification Key Set"));
+}
+
+//set the browser as verified after clicking on the verification mail===========
+exports.setBrowserVerification = function(key, callback)
+{
+	accounts.findOne({browserKey:key},function(e,o){
+		if(!e){
+			o.browserVerified = true;
+			o.lastVerified = new Date();
+			accounts.save(o,{safe:true},callback("Browser Verified"));
+		}
+	})
+}
+
 exports.findParentForNewNode = function(root, link, callback)
 {
 	console.log("Find Parent For New Node Called");

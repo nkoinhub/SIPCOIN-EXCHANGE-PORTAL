@@ -155,17 +155,17 @@ html(lang='en')
                           thead.text-warning
                           tbody
                             tr
-                              td(style='font-weight:400;') User Name	
-                              td#userName rajatrawataku1
+                              td User Name	
+                              td#userName #{userDetails.user}
                             tr
-                              td(style='font-weight:400;') Full Name	
-                              td#userFullName Rajat Rawat	
+                              td Full Name	
+                              td#userFullName #{userDetails.name}	
                             tr
-                              td(style='font-weight:400;') Email ID	
-                              td#userEmail rajatrawataku1@gmail.com	
+                              td Email ID	
+                              td#userEmail #{userDetails.email}	
                             tr
-                              td(style='font-weight:400;') Phone No.	
-                              td#phoneInput +9168263282
+                              td Phone No.	
+                              td#phoneInput #{userDetails.mobile}
                     //
                       <h6 class="category text-gray">CEO / Co-Founder</h6>
                       <h4 class="card-title">Alec Thompson</h4>
@@ -329,29 +329,6 @@ html(lang='en')
                                     .col-sm-9.col-lg-offset-2
                                       button.btn.btn-primary.sendButtons(type='submit')
                                         | Submit
-              .col-md-4
-                .card.card-profile
-                  .card-avatar
-                    a(href='')
-                      img.img(src='/images/marc.png')
-                  .content
-                    .row
-                      .card-content.table-responsive(style='border:none;')
-                        table.table.table-hover
-                          thead.text-warning
-                          tbody
-                            tr
-                              td User Name	
-                              td#userName #{userDetails.user}
-                            tr
-                              td Full Name	
-                              td#userFullName #{userDetails.name}	
-                            tr
-                              td Email ID	
-                              td#userEmail #{userDetails.email}	
-                            tr
-                              td Phone No.	
-                              td#phoneInput #{userDetails.mobile}
                     //
                       <h6 class="category text-gray">CEO / Co-Founder</h6>
                       <h4 class="card-title">Alec Thompson</h4>

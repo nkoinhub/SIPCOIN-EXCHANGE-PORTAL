@@ -789,7 +789,7 @@ app.post('/placeTransaction',function(req,res){
 
 //successfully placing the transaction==========================================
 app.get('/transactionRequest',function(req,res){
-  in(req.session.user == null || req.query.TID == undefined) res.redirect('/');
+  if(req.session.user == null || req.query.TID == undefined) res.redirect('/');
   else {
     var TID = req.query.TID;
     AM.getTransactionRequest(TID, function(result){
@@ -797,6 +797,74 @@ app.get('/transactionRequest',function(req,res){
         res.send(result);
       }
     })
+  }
+})
+
+//transaction history table ====================================================
+app.get('/transactionHistory',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+
+  }
+})
+
+//to check whether the browser is verified or not, resets every 15 minutes, thus, to be called by ajax every 2-5 minutes
+app.post('/checkBrowser',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    var currentDate = new Date();
+    AM.getAccountByUsername(req.session.user.user, function(o){
+      var lastVerified = new Date(o.lastVerified);
+      if((currentDate - lastVerified)/1000 > 880){
+        AM.resetBrowserVerification(o.user, function(result){
+          console.log(result);
+        })
+        res.send({
+          browserVerified : false
+        })
+      }
+      else {
+        res.send({browserVerified : true})
+      }
+    })
+  }
+})
+
+//route to verify the browser and set window open for sending===================
+app.get('/verifyBrowser',function(req,res){
+  var browserSecret = req.query.secretKey;
+  AM.setBrowserVerification(browserSecret, function(result){console.log(result);});
+  res.redirect('/dashboard');
+})
+
+//send browser verification mail on click=======================================
+app.post('/sendVerification',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    var browserSecret = makeid(19);
+    AM.setBrowserVerificationKey(req.session.user.user, browserSecret, function(result){console.log(result)});
+
+    var part1='<head> <title> </title> <style> #one{ position: absolute; top:0%; left:0%; height: 60%; width: 40%; } #gatii{ position: absolute; top:26%; left:5%; height: 20%; width: 20%; } #text_div { position: absolute; top: 10%; left: 5%; } #final_regards { position: absolute; top: 50%; left: 5%; } </style> </head> <body> <div id="text_div"> <b>Welcome, to SIPcoin.</b> <br> <br> Please click on the link below to verify your browser <br><br>';
+    var part2=' <br><br> <br> P.S.- You are requested to preserve this mail for future references. <br> <br> </div> <iframe id="gatii" src="https://drive.google.com/file/d/1k99fX9I4HOdhKZA1KwrDflM1W-orCSh0/preview" width="40" height="40"></iframe> <br> <br> <div id="final_regards"> Thank You, <br> <br> Team SIPcoin.io <br> <br> <a href="http://support.sipcoin.io">Support Team</a> <br> <br> </div> </body>'
+    var URLforVerification = serverIP +"/verifyBrowser?secretKey=" + browserSecret + "&veri=" + makeid(5);
+
+    console.log(URLforVerification);
+
+    var mailOptions = {
+      from: sipCoinEmailId,
+      to: req.session.user.email,
+      subject: 'SIPCOIN || Browser Verification',
+      html: part1 +URLforVerification+part2,
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log("Email Not Sent, Error : " + error);
+      } else {
+        console.log('Email Sent: ' + info.response);
+      }
+      res.redirect('/dashboard');
+    });
   }
 })
 
@@ -1172,6 +1240,8 @@ app.get('/transactionRequest',function(req,res){
         twoFA : false,
         twoFAsecret : "TWO FA DISABLED",
 				secret : makeid(20),
+        browserVerified : false,
+        lastVerified : new Date(),
 				accountVerified : false
 			}
 
@@ -1194,7 +1264,7 @@ app.get('/transactionRequest',function(req,res){
             } else {
               console.log('Email Sent: ' + info.response);
             }
-            res.status(200).send('ok');
+            res.redirect('/');
           });
         }
       });
