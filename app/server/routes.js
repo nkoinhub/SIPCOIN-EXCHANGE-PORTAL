@@ -232,7 +232,7 @@ module.exports = function(app) {
 				sip = SIP;
 				AM.getProgress(function(coins, stage){
 					console.log(coins)
-					res.render('dashboard',{
+					res.render('index',{
 						USD : usd,
 						SIP : sip,
 						coins : coins,
