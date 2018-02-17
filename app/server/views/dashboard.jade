@@ -166,6 +166,7 @@ html(lang='en')
                     #dollToSipTrans.tab-pane.active
                       .row
                         center
+<<<<<<< HEAD
                           .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;')
                             | Exchange Rate : 1 SIP = $ 1.5
                           .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;')
@@ -191,6 +192,36 @@ html(lang='en')
                                     button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
                                 .col-sm-12
                                   br
+=======
+                          .col-sm-12.text_class(style='margin:10px;padding:0;')
+                            b Exchange Rate : 1 SIP = $#{SIP}
+                          .col-sm-12.text_class(style='margin:10px;padding:0;')
+                            b Your Dollar Wallet Balance is $ 100.5
+                          br
+                          br
+                          br
+                          br
+                        form(action='/tranferDollarToSip', method='post')
+                          .row(style='border:2px dashed rgb(217,217,217);margin:20px;')
+                            .col-sm-6(style='margin-top:20px;')
+                              .row
+                                .col-sm-12.inputContainer
+                                  label
+                                    i.fa.fa-dollar(style='color:black;')
+                                  div
+                                    input(type='number', placeholder='Enter Amount in Dollar', name='dollarInputTransfer')
+                            .col-sm-6(style='margin-top:20px;')
+                              .row
+                                .col-sm-12.inputContainer
+                                  label(style='color:black;font-weight:bold;') SIP
+                                  div
+                                    input#sip_value_total_trans(type='number', placeholder='Equivalent  SIPcoins', name='equiInputSipTransfer', readonly='')
+                            .col-sm-12
+                              center
+                                button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
+                            .col-sm-12
+                              br
+>>>>>>> fd5ec37a11bffe1bbef0ef246efda2078e77e934
                     #sipToEtherTrans.tab-pane
                       .row
                         center
@@ -241,7 +272,7 @@ html(lang='en')
             li
               a(href='/table')
                 i.material-icons content_paste
-                p  Transaction History
+                p Transaction History
             li
               a(href='/user')
                 i.material-icons person
@@ -254,7 +285,7 @@ html(lang='en')
               </a>
               </li>
             li
-              a(href='http://support.sipcoin.io/support/')
+              a(href='http://support.sipcoin.io/support/', target='blank')
                 i.material-icons bubble_chart
                 p Support
             //
@@ -284,9 +315,9 @@ html(lang='en')
               a.navbar-brand(style='font-weight:400;')  Dashboard 
               a.navbar-brand
                 button.btn.btn-primary.make_it_left(type='submit', data-toggle='modal', data-target='#myModal')  Transfer 
-              a.navbar-brand.valuesDoll(style='margin-left:200px;')  BTC/USD $10000 
-              a.navbar-brand.valuesDoll  ETH/USD $5000 
-              a.navbar-brand.valuesDoll  SIP/USD $10 
+              a.navbar-brand.valuesDoll(style='margin-left:200px;')  BTC/USD $#{BTC} 
+              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
+              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -296,12 +327,12 @@ html(lang='en')
                     li
                       br
                       center
-                        | rajatrawataku@gmail.com
+                        | #{userDetails.email}
                       br
                     li(style='text-align:center;')
                       a(href='/logout') Logout
                     li(style='text-align:center;')
-                      a(href='/logout') My Profile
+                      a(href='/user') My Profile
               //
                 <form class="navbar-form navbar-right" role="search">
                 <div class="form-group  is-empty">
@@ -490,7 +521,7 @@ html(lang='en')
                           div
                             input#sip_value_total(type='number', placeholder='Amount in SIPcoin', readonly='')
                     .col-sm-3
-                      button#shift_it.btn.btn-primary(type='button', style='cursor:none;margin-top:20px;') Exchange rate : 1 SIP = $ 1.5
+                      button#shift_it.btn.btn-primary(type='button', style='cursor:none;margin-top:20px;') Exchange rate : 1 SIP = $ #{SIP}
                     .col-sm-12
                       br
                   .card-content.table-responsive

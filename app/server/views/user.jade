@@ -110,10 +110,17 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
+<<<<<<< HEAD
               a.navbar-brand(href='#',style='font-weight:400;')  Profile 
               a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $10000 
               a.navbar-brand.valuesDoll  ETH/USD $5000 
               a.navbar-brand.valuesDoll  SIP/USD $10 
+=======
+              a.navbar-brand(href='#')  Profile 
+              a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $#{BTC} 
+              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
+              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
+>>>>>>> fd5ec37a11bffe1bbef0ef246efda2078e77e934
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -122,12 +129,17 @@ html(lang='en')
                   ul.dropdown-menu(style='padding:20px;')
                     li
                       br
+<<<<<<< HEAD
                       center rajatrawataku@gmail.com
+=======
+                      center
+                        | #{userDetails.email}
+>>>>>>> fd5ec37a11bffe1bbef0ef246efda2078e77e934
                       br
                     li(style='text-align:center;')
                       a(href='/logout') Logout
                     li(style='text-align:center;')
-                      a(href='/logout') My Profile
+                      a(href='/user') My Profile
               //
                 <form class="navbar-form navbar-right" role="search">
                 <div class="form-group  is-empty">
@@ -297,7 +309,7 @@ html(lang='en')
                                       td
                                         button.btn.btn-success(type='button', style='padding:5px;') Active
                                       td
-                                        button.btn.btn-danger(type='button', style='padding:5px;') REvoke Access
+                                        button.btn.btn-danger(type='button', style='padding:5px;') Revoke Access
                       #changePassTab.tab-pane
                         .row
                           .col-sm-10.col-lg-offset-1
@@ -326,7 +338,42 @@ html(lang='en')
                                 .row
                                   center
                                     .col-sm-9.col-lg-offset-2
+<<<<<<< HEAD
                                       button.btn.btn-primary.sendButtons(type='submit') Submit
+=======
+                                      button.btn.btn-primary.sendButtons(type='submit')
+                                        | Submit
+              .col-md-4
+                .card.card-profile
+                  .card-avatar
+                    a(href='')
+                      img.img(src='/images/marc.png')
+                  .content
+                    .row
+                      .card-content.table-responsive(style='border:none;')
+                        table.table.table-hover
+                          thead.text-warning
+                          tbody
+                            tr
+                              td User Name	
+                              td#userName #{userDetails.user}
+                            tr
+                              td Full Name	
+                              td#userFullName #{userDetails.name}	
+                            tr
+                              td Email ID	
+                              td#userEmail #{userDetails.email}	
+                            tr
+                              td Phone No.	
+                              td#phoneInput #{userDetails.mobile}
+                    //
+                      <h6 class="category text-gray">CEO / Co-Founder</h6>
+                      <h4 class="card-title">Alec Thompson</h4>
+                      <p class="card-content">
+                      Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                      </p>
+                    // <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
+>>>>>>> fd5ec37a11bffe1bbef0ef246efda2078e77e934
         footer.footer
           .container-fluid
             nav.pull-left
