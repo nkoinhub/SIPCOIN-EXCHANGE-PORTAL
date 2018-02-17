@@ -230,7 +230,6 @@ module.exports = function(app) {
 			})
 			.then((SIP)=>{
 				sip = SIP;
-
 				AM.getProgress(function(coins, stage){
 					console.log(coins)
 					res.render('index',{

@@ -14,6 +14,7 @@ html(lang='en')
     link(href='/font-awesome/css/font-awesome.min.css', rel='stylesheet')
     link(href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons', rel='stylesheet', type='text/css')
     style.
+    
       input{
       @include transition(all 0.30s ease-in-out);
       outline: none;
@@ -42,6 +43,11 @@ html(lang='en')
       .valuesDoll{
       display: none;
       }
+      
+      .move_to_the_left{
+      margin-left:60px;
+      }
+
       }
   body
     .wrapper
@@ -50,8 +56,7 @@ html(lang='en')
           Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
           Tip 2: you can also add an image using data-image tag
         .logo
-          a.simple-text(href='http://www.sipcoin.io')
-            | SIPCOIN
+          a.simple-text(href='http://www.sipcoin.io') SIPCOIN
         .sidebar-wrapper
           ul.nav
             li
@@ -105,10 +110,10 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-              a.navbar-brand(href='#')  Profile 
-              a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $#{BTC} 
-              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
-              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
+              a.navbar-brand(href='#',style='font-weight:400;')  Profile 
+              a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $10000 
+              a.navbar-brand.valuesDoll  ETH/USD $5000 
+              a.navbar-brand.valuesDoll  SIP/USD $10 
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -138,9 +143,39 @@ html(lang='en')
         .content
           .container-fluid
             .row
+              .col-md-4
+                .card.card-profile
+                  .card-avatar
+                    a(href='')
+                      img.img(src='/images/marc.png')
+                  .content
+                    .row
+                      .card-content.table-responsive(style='border:none;')
+                        table.table.table-hover
+                          thead.text-warning
+                          tbody
+                            tr
+                              td(style='font-weight:400;') User Name	
+                              td#userName rajatrawataku1
+                            tr
+                              td(style='font-weight:400;') Full Name	
+                              td#userFullName Rajat Rawat	
+                            tr
+                              td(style='font-weight:400;') Email ID	
+                              td#userEmail rajatrawataku1@gmail.com	
+                            tr
+                              td(style='font-weight:400;') Phone No.	
+                              td#phoneInput +9168263282
+                    //
+                      <h6 class="category text-gray">CEO / Co-Founder</h6>
+                      <h4 class="card-title">Alec Thompson</h4>
+                      <p class="card-content">
+                      Don't be scared of the truth because we need to restart the human foundation in truth And I love you like Kanye loves Kanye I love Rick Owens’ bed design but the back is...
+                      </p>
+                    // <a href="#pablo" class="btn btn-primary btn-round">Follow</a>
               .col-lg-8.col-md-12
                 .card.card-nav-tabs
-                  .card-header(data-background-color='purple')
+                  .card-header(style='background-color:#f9b707;')
                     .nav-tabs-navigation
                       .nav-tabs-wrapper
                         span.nav-tabs-title Security:
@@ -154,12 +189,12 @@ html(lang='en')
                               | Activate SMS
                               // <i class="material-icons">code</i> Etherium
                               .ripple-container
-                          li
+                          li.move_to_the_left
                             a(href='#loginHistoryTab', data-toggle='tab')
                               | Login History
                               // <i class="material-icons">cloud</i> Bitcoin
                               .ripple-container
-                          li
+                          li.move_to_the_left
                             a(href='#changePassTab', data-toggle='tab')
                               | Change Password
                               // <i class="material-icons">cloud</i> Bitcoin
@@ -183,20 +218,17 @@ html(lang='en')
                                   .row
                                     .col-sm-12
                                       center
-                                        button.btn.btn-primary.sendButtons(type='submit')
-                                          | Disable 2FA
+                                        button.btn.btn-primary.sendButtons(type='submit') Disable 2FA
                           .row.generateSecret(style='display:none;')
                             .col-sm-12
                               br
                               form(action='/sipAddressGenerate', method='post')
-                                button.btn.btn-primary(type='submit')
-                                  | Generate Secret
+                                button.btn.btn-primary(type='submit') Generate Secret
                               br
                           .row.afterGeneration
                             .col-sm-12
                               br
-                              .col-sm-12
-                                | Scan the QR code in Google Authenticator APP
+                              .col-sm-12 Scan the QR code in Google Authenticator APP
                               img(src='/images/qr.PNG', style='height:200px;width:200px;')
                             .col-sm-12
                               form(action='/enableTwoFa', method='POST')
@@ -209,8 +241,7 @@ html(lang='en')
                                   .row
                                     .col-sm-12
                                       center
-                                        button.btn.btn-primary.sendButtons(type='submit')
-                                          | Enable 2FA
+                                        button.btn.btn-primary.sendButtons(type='submit') Enable 2FA
                             .col-sm-12(style='text-align:left;font-size:16px;line-height:150%;')
                               | Dear User, 
                               br
@@ -274,26 +305,22 @@ html(lang='en')
                             form(action='/changePassword', method='POST')
                               .form-group(style='margin:0px;')
                                 .row
-                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                    | Current Password
+                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Current Password
                                   .col-sm-7
                                     input#currPass.form_inputs(type='password', placeholder='Current Password', name='currPassChange', required='')
                               .form-group(style='margin:0px;')
                                 .row
-                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                    | New Password
+                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') New Password
                                   .col-sm-7
                                     input#newPass.form_inputs(type='password', placeholder='New Password', name='newPassChange', required='')
                               .form-group(style='margin:0px;')
                                 .row
-                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                    | Confirm Password
+                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Confirm Password
                                   .col-sm-7
                                     input#confPass.form_inputs(type='password', placeholder='Confirm Password', name='confPassChange', required='')
                               .form-group(style='margin:0px;')
                                 .row
-                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                    | Secret PIN
+                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Secret PIN
                                   .col-sm-7
                                     input#pinSecret.form_inputs(type='password', placeholder='Enter Pin', name='pinPassChange', required='')
                               .form-group(style='margin:0px;')
@@ -363,7 +390,7 @@ html(lang='en')
               script.
                 document.write(new Date().getFullYear())
               a(href='http://www.sipcoin.io') SIPcoin
-              |  Crypto Platform #forThePeople
+              |  - Crypto Currency
   // Core JS Files
   script(src='/js/views/jquery-3.2.1.min.js', type='text/javascript')
   script(src='/js/views/bootstrap.min.js', type='text/javascript')
