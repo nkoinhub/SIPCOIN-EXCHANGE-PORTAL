@@ -192,36 +192,6 @@ html(lang='en')
                                     button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
                                 .col-sm-12
                                   br
-=======
-                          .col-sm-12.text_class(style='margin:10px;padding:0;')
-                            b Exchange Rate : 1 SIP = $#{SIP}
-                          .col-sm-12.text_class(style='margin:10px;padding:0;')
-                            b Your Dollar Wallet Balance is $ 100.5
-                          br
-                          br
-                          br
-                          br
-                        form(action='/tranferDollarToSip', method='post')
-                          .row(style='border:2px dashed rgb(217,217,217);margin:20px;')
-                            .col-sm-6(style='margin-top:20px;')
-                              .row
-                                .col-sm-12.inputContainer
-                                  label
-                                    i.fa.fa-dollar(style='color:black;')
-                                  div
-                                    input(type='number', placeholder='Enter Amount in Dollar', name='dollarInputTransfer')
-                            .col-sm-6(style='margin-top:20px;')
-                              .row
-                                .col-sm-12.inputContainer
-                                  label(style='color:black;font-weight:bold;') SIP
-                                  div
-                                    input#sip_value_total_trans(type='number', placeholder='Equivalent  SIPcoins', name='equiInputSipTransfer', readonly='')
-                            .col-sm-12
-                              center
-                                button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
-                            .col-sm-12
-                              br
->>>>>>> fd5ec37a11bffe1bbef0ef246efda2078e77e934
                     #sipToEtherTrans.tab-pane
                       .row
                         center
