@@ -906,7 +906,7 @@ app.post('/sendVerification',function(req,res){
 })
 
 //insert investment details, for admin purpose==================================
-app.post('/addInvestment',function(req,res){
+app.get('/addInvestment',function(req,res){
 
   var investmentRecord = {
     IID : "I"+(req.session.user.user).substr(0,3) + moment().format('x'),
@@ -920,7 +920,6 @@ app.post('/addInvestment',function(req,res){
     daysLeft : ""
   }
 
-  AM.getAccountByUsername(req.body['username'], function(o){investmentRecord.email=o.email;});
   AM.setInvestmentRecord(req.body['username'], investmentRecord.IID, function(result){console.log(result);});
 
   if(parseFloat(req.body['amount']) >= 100 && parseFloat(req.body['amount']) <= 1000){
@@ -929,7 +928,11 @@ app.post('/addInvestment',function(req,res){
 
     investmentRecord.fixedPercent = 0;
     investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
-    AM.setInvestment(investmentRecord, function(result){console.log(result);});
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.setInvestment(investmentRecord, function(result){console.log(result);});
+    });
+
   }
   else if(parseFloat(req.body['amount']) > 1000 && parseFloat(req.body['amount']) <= 10000){
     var endOfInvestment = new Date();
@@ -937,7 +940,10 @@ app.post('/addInvestment',function(req,res){
 
     investmentRecord.fixedPercent = 0.1;
     investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
-    AM.setInvestment(investmentRecord, function(result){console.log(result);});
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.setInvestment(investmentRecord, function(result){console.log(result);});
+    });
   }
   else if(parseFloat(req.body['amount']) > 10000 && parseFloat(req.body['amount']) <= 500000){
     var endOfInvestment = new Date();
@@ -945,7 +951,10 @@ app.post('/addInvestment',function(req,res){
 
     investmentRecord.fixedPercent = 0.15;
     investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
-    AM.setInvestment(investmentRecord, function(result){console.log(result);});
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.setInvestment(investmentRecord, function(result){console.log(result);});
+    });
   }
   else if(parseFloat(req.body['amount']) > 50000 && parseFloat(req.body['amount']) <= 100000){
     var endOfInvestment = new Date();
@@ -953,8 +962,13 @@ app.post('/addInvestment',function(req,res){
 
     investmentRecord.fixedPercent = 0;
     investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
-    AM.setInvestment(investmentRecord, function(result){console.log(result);});
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.setInvestment(investmentRecord, function(result){console.log(result);});
+    });
   }
+
+  res.redirect('/dashboard');
 
 })
 

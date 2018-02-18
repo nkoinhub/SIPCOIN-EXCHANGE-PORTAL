@@ -58,6 +58,7 @@ var referrals = db.collection('referrals');
 var sipStage = db.collection('SIPStage');
 var Res = db.collection('RES');
 var withdrawalCol=db.collection('withdrawals');
+var investments = db.collection('investments');
 
 
 // function to return the child node of the parent referral node
@@ -688,6 +689,12 @@ exports.setInvestmentRecord = function(username, IID, callback)
 			accounts.save(o,{safe:true},callback("Investment ID : "+IID+" || username : "+username));
 		}
 	})
+}
+
+//set investment record in the investment collection for the daily scheduled return algorithm
+exports.setInvestment = function(record, callback)
+{
+	investments.insert(record,callback("Investment Record Added in the Collection"));
 }
 
 exports.currentTokenValue = function(callback)
