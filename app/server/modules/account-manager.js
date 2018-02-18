@@ -5,6 +5,7 @@ var Server 		= require('mongodb').Server;
 var moment 		= require('moment');
 var Promise = require("bluebird");
 var request = require('request');
+var schedule = require('node-schedule');
 
 var tokenValues = {
 	stageOne : 1.5,
@@ -59,7 +60,37 @@ var sipStage = db.collection('SIPStage');
 var Res = db.collection('RES');
 var withdrawalCol=db.collection('withdrawals');
 var investments = db.collection('investments');
+var currentScenario = db.collection('currentScenario');
 
+//daily scheduled job for the calculation of returns on the basis of investment and updating the investment collection and accounts of each user
+var k = schedule.scheduleJob({hour: 18, minute: 59, dayOfWeek: [0,1,2,3,4,5,6]}, function(){
+	var dailyPercent;
+	currentScenario.findOne({about:"currentScenario"},function(e,res){
+		dailyPercent = res.dailyPercent;
+	})
+
+  investments.find().toArray(function(e,res){
+		if(res.length != 0){
+			var denominator = 1000*60*60*24;
+
+			var dailyReturns = function(i, res)
+			{
+				var totalReturnForTheDay = parseFloat(((res[i].fixedPercent + dailyPercent)/100) * res[i].amount);
+				res[i].daysLeft = (res[i].dateOfInvestmentEnds - new Date())/denominator;
+				accounts.update({user:res[i].username},{$inc:{dollarWallet:totalReturnForTheDay}});
+				res[i].dailyReturnsDoneTillDate = new Date();
+				investments.save(res[i],{safe:true});
+
+				if(i != res.length-1){
+					i = i + 1;
+					dailyReturns(i, res);
+				}
+			}
+			dailyReturns(0, res);
+		}
+	})
+});
+//==============================================================================================================================================
 
 // function to return the child node of the parent referral node
 //documents are searched where the parentReferralCode is given as the referral.
@@ -131,6 +162,32 @@ exports.setBrowserVerification = function(key, callback)
 			o.lastVerified = new Date();
 			accounts.save(o,{safe:true},callback("Browser Verified"));
 		}
+	})
+}
+
+//set the CNAV value, i.e. dollar equivalent of SIPcoin=========================
+exports.setCNAV = function(CNAV, callback)
+{
+	currentScenario.update({about:"currentScenario"},{$set:{CNAV:CNAV}},callback("CNAV SET"));
+}
+
+//set current scenario collection for the initial time =========================
+exports.setCurrentScenario = function(dollarPool, sipPool, CNAV, dailyPercent, callback)
+{
+	currentScenario.insert({about:"currentScenario",CNAV:CNAV, dailyPercent: dailyPercent, dollarPool:dollarPool, sipPool:sipPool},callback("currentScenario Collection Inserted"));
+}
+
+//set the daily percent for the returns=========================================
+exports.setDailyPercent = function(dailyPercent, callback)
+{
+	currentScenario.update({about:"currentScenario"},{$set:{dailyPercent:dailyPercent}},callback("Daily Percent Set"));
+}
+
+//get CNAV =====================================================================
+exports.getCNAV = function(callback)
+{
+	currentScenario.findOne({about:"currentScenario"},function(e,res){
+		callback(res.CNAV);
 	})
 }
 
