@@ -63,7 +63,7 @@ var investments = db.collection('investments');
 var currentScenario = db.collection('currentScenario');
 
 //daily scheduled job for the calculation of returns on the basis of investment and updating the investment collection and accounts of each user
-var k = schedule.scheduleJob({hour: 18, minute: 59, dayOfWeek: [0,1,2,3,4,5,6]}, function(){
+var k = schedule.scheduleJob({hour: 1, minute: 54, dayOfWeek: [0,1,2,3,4,5,6]}, function(){
 	var dailyPercent;
 	currentScenario.findOne({about:"currentScenario"},function(e,res){
 		dailyPercent = res.dailyPercent;
@@ -76,6 +76,7 @@ var k = schedule.scheduleJob({hour: 18, minute: 59, dayOfWeek: [0,1,2,3,4,5,6]},
 			var dailyReturns = function(i, res)
 			{
 				var totalReturnForTheDay = parseFloat(((res[i].fixedPercent + dailyPercent)/100) * res[i].amount);
+				currentScenario.update({about:"currentScenario"},{$inc:{dollarPool:-totalReturnForTheDay}});
 				res[i].daysLeft = (res[i].dateOfInvestmentEnds - new Date())/denominator;
 				accounts.update({user:res[i].username},{$inc:{dollarWallet:totalReturnForTheDay}});
 				res[i].dailyReturnsDoneTillDate = new Date();
@@ -188,6 +189,18 @@ exports.getCNAV = function(callback)
 {
 	currentScenario.findOne({about:"currentScenario"},function(e,res){
 		callback(res.CNAV);
+	})
+}
+
+//add investment dollar in dollarPool and subtract the equivalent sipcoins from the sipPool
+exports.addInvestmentInCurrentScenario = function(amount, callback)
+{
+	currentScenario.findOne({about:"currentScenario"},function(e,res){
+		if(!e){
+			res.dollarPool = res.dollarPool + amount;
+			res.sipPool = res.sipPool - amount/res.CNAV;
+			currentScenario.save(res,{safe:true},callback("Investment Updated in Current Scenario"));
+		}
 	})
 }
 

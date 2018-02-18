@@ -915,9 +915,10 @@ app.get('/addInvestment',function(req,res){
 
   var investmentRecord = {
     IID : "I"+(req.session.user.user).substr(0,3) + moment().format('x'),
-    username : "rchougule",//req.body['username'],
+    username : req.body['username'],
     email : "",
-    amount : 16500,//parseFloat(req.body['amount']),
+    amount : parseFloat(req.body['amount']),
+    equivalentSipCoins : "",
     dailyPercent : "",
     fixedPercent : "",
     dateOfInvestmentMade : new Date(),
@@ -927,51 +928,64 @@ app.get('/addInvestment',function(req,res){
   }
 
 
-  AM.setInvestmentRecord("rchougule", investmentRecord.IID, function(result){console.log(result);});
+  AM.setInvestmentRecord(req.body['username'], investmentRecord.IID, function(result){console.log(result);});
+  AM.addInvestmentInCurrentScenario(req.body['amount'], function(result){console.log(result);});
 
-  if(parseFloat(investmentRecord.amount) >= 100 && parseFloat(investmentRecord.amount) <= 1000){
+  if(parseFloat(req.body['amount']) >= 100 && parseFloat(req.body['amount']) <= 1000){
     var endOfInvestment = new Date();
     endOfInvestment.setDate(endOfInvestment.getDate() + 243);
 
     investmentRecord.fixedPercent = 0;
     investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
-    AM.getAccountByUsername("rchougule", function(o){
+    AM.getAccountByUsername(req.body['username'], function(o){
       investmentRecord.email=o.email;
-      AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
     });
 
   }
-  else if(parseFloat(investmentRecord.amount) > 1000 && parseFloat(investmentRecord.amount) <= 10000){
+  else if(parseFloat(req.body['amount']) > 1000 && parseFloat(req.body['amount']) <= 10000){
     var endOfInvestment = new Date();
     endOfInvestment.setDate(endOfInvestment.getDate() + 213);
 
     investmentRecord.fixedPercent = 0.1;
     investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
-    AM.getAccountByUsername("rchougule", function(o){
+    AM.getAccountByUsername(req.body['username'], function(o){
       investmentRecord.email=o.email;
-      AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
     });
   }
-  else if(parseFloat(investmentRecord.amount) > 10000 && parseFloat(investmentRecord.amount) <= 500000){
+  else if(parseFloat(req.body['amount']) > 10000 && parseFloat(req.body['amount']) <= 50000){
     var endOfInvestment = new Date();
     endOfInvestment.setDate(endOfInvestment.getDate() + 152);
 
     investmentRecord.fixedPercent = 0.15;
     investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
-    AM.getAccountByUsername("rchougule", function(o){
+    AM.getAccountByUsername(req.body['username'], function(o){
       investmentRecord.email=o.email;
-      AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
     });
   }
-  else if(parseFloat(investmentRecord.amount) > 50000 && parseFloat(investmentRecord.amount) <= 100000){
+  else if(parseFloat(req.body['amount']) > 50000 && parseFloat(req.body['amount']) <= 100000){
     var endOfInvestment = new Date();
     endOfInvestment.setDate(endOfInvestment.getDate() + 122);
 
-    investmentRecord.fixedPercent = 0;
+    investmentRecord.fixedPercent = 0.2;
     investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
-    AM.getAccountByUsername("rchougule", function(o){
+    AM.getAccountByUsername(req.body['username'], function(o){
       investmentRecord.email=o.email;
-      AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
     });
   }
 
@@ -987,10 +1001,10 @@ app.get('/currentCNAV',function(req,res){
 
 //set initial current scenario collection data==================================
 app.get('/currentScenario',function(req,res){
-  var CNAV = req.body['CNAV'];
-  var dollarPool = req.body['dollar'];
-  var sipPool = req.body['sipPool'];
-  var dailyPercent = req.body['dailyPercent'];
+  var CNAV = 4//req.body['CNAV'];
+  var dollarPool = 1000000//req.body['dollar'];
+  var sipPool = 5000000//req.body['sipPool'];
+  var dailyPercent = 0.05//req.body['dailyPercent'];
   AM.setCurrentScenario(dollarPool, sipPool, CNAV, dailyPercent, function(result){console.log(result)});
 })
 
