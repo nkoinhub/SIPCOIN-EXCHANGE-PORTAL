@@ -679,6 +679,17 @@ exports.disable2FA = function(username, callback)
 	})
 }
 
+//set Investement record in account, array update, multiple Investements possible
+exports.setInvestmentRecord = function(username, IID, callback)
+{
+	accounts.findOne({user:username},function(e,o){
+		if(!e){
+			o.investmentIDs.push(IID);
+			accounts.save(o,{safe:true},callback("Investment ID : "+IID+" || username : "+username));
+		}
+	})
+}
+
 exports.currentTokenValue = function(callback)
 {
 	console.log("inside teh exports");
