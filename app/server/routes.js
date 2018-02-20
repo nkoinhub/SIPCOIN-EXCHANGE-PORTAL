@@ -750,6 +750,30 @@ app.get('/resent_verfication_page',function(req,res){
     }
   })
 
+  //start two FA once the two FA is verified for the first time=================
+  app.get('/start2FA',function(req,res){
+    if(req.session.user == null) res.redirect('/');
+    else {
+      var twoFAcode = req.body['twoFAcode'];
+      var verified = speakeasy.totp.verify({
+        secret: req.session.user.twoFAsecret.base32,
+        encoding: 'base32',
+        token: twoFAcode
+      });
+
+      if(verified){
+        AM.start2FA(req.session.user.user, function(result){
+          req.session.user = result;
+          res.send(200);
+        })
+      }
+      else {
+        //wrong two fa entered
+        res.redirect('/user')
+      }
+    }
+  })
+
   //disable twoFA route for exchange portal ====================================
   app.get('/disable2FA',function(req,res){
     if(req.session.user == null) res.redirect('/');
@@ -773,8 +797,240 @@ app.get('/resent_verfication_page',function(req,res){
     }
   })
 
-// logged-in user homepage //
+//placing a transaction request of any type ====================================
+app.post('/placeTransaction',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
 
+    var transactionRequest = {
+      TID : (req.session.user.user).substr(0,3) + moment().format('x'),
+      username : req.session.user.user,
+      email : req.session.user.email,
+      amount : req.body['amount'],
+      typeCode : req.body['type'],
+      CNAV : "",
+      dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
+      dateOfCompletion : "STILL IN PROCESS",
+      destinationAddress : "NOT REQUIRED",
+      transactionComplete : false
+    }
+
+    AM.getCNAV(function(CNAV){
+      transactionRequest.CNAV = CNAV;
+    })
+
+    if(req.body['type'] == 4){
+      transactionRequest.destinationAddress = req.body['destination'];
+    }
+
+
+    AM.placeTransactionRequest(transactionRequest, function(result){
+      console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+      //res.status(200).send('ok');
+      res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+    })
+  }
+})
+
+//successfully placing the transaction==========================================
+app.get('/transactionRequest',function(req,res){
+  if(req.session.user == null || req.query.TID == undefined) res.redirect('/');
+  else {
+    var TID = req.query.TID;
+    AM.getTransactionRequest(TID, function(result){
+      if(result){
+        res.send(result);
+      }
+    })
+  }
+})
+
+//transaction history table ====================================================
+app.get('/transactionHistory',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    var btc,eth,sip;
+    btcCheck().then((value)=>{btc=value});
+    ethCheck().then((value)=>{eth=value});
+    getTokenValue().then((value)=>{sip=value});
+
+    AM.getTransactions(req.session.user.user, req.session.user.email, function(result){
+      res.render('table',{
+        userDetails : req.session.user,
+        SIP : sip,
+        BTC : btc,
+        ETH : eth,
+        transactions : JSON.stringify(result)
+      })
+    })
+  }
+})
+
+//to check whether the browser is verified or not, resets every 15 minutes, thus, to be called by ajax every 2-5 minutes
+app.post('/checkBrowser',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    var currentDate = new Date();
+    AM.getAccountByUsername(req.session.user.user, function(o){
+      var lastVerified = new Date(o.lastVerified);
+      if((currentDate - lastVerified)/1000 > 880){
+        AM.resetBrowserVerification(o.user, function(result){
+          console.log(result);
+        })
+        res.send({
+          browserVerified : false
+        })
+      }
+      else {
+        res.send({browserVerified : true})
+      }
+    })
+  }
+})
+
+//route to verify the browser and set window open for sending===================
+app.get('/verifyBrowser',function(req,res){
+  var browserSecret = req.query.secretKey;
+  AM.setBrowserVerification(browserSecret, function(result){console.log(result);});
+  res.redirect('/dashboard');
+})
+
+//send browser verification mail on click=======================================
+app.post('/sendVerification',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    var browserSecret = makeid(19);
+    AM.setBrowserVerificationKey(req.session.user.user, browserSecret, function(result){console.log(result)});
+
+    var part1='<head> <title> </title> <style> #one{ position: absolute; top:0%; left:0%; height: 60%; width: 40%; } #gatii{ position: absolute; top:26%; left:5%; height: 20%; width: 20%; } #text_div { position: absolute; top: 10%; left: 5%; } #final_regards { position: absolute; top: 50%; left: 5%; } </style> </head> <body> <div id="text_div"> <b>Welcome, to SIPcoin.</b> <br> <br> Please click on the link below to verify your browser <br><br>';
+    var part2=' <br><br> <br> P.S.- You are requested to preserve this mail for future references. <br> <br> </div> <iframe id="gatii" src="https://drive.google.com/file/d/1k99fX9I4HOdhKZA1KwrDflM1W-orCSh0/preview" width="40" height="40"></iframe> <br> <br> <div id="final_regards"> Thank You, <br> <br> Team SIPcoin.io <br> <br> <a href="http://support.sipcoin.io">Support Team</a> <br> <br> </div> </body>'
+    var URLforVerification = serverIP +"/verifyBrowser?secretKey=" + browserSecret + "&veri=" + makeid(5);
+
+    console.log(URLforVerification);
+
+    var mailOptions = {
+      from: sipCoinEmailId,
+      to: req.session.user.email,
+      subject: 'SIPCOIN || Browser Verification',
+      html: part1 +URLforVerification+part2,
+    };
+
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+        console.log("Email Not Sent, Error : " + error);
+      } else {
+        console.log('Email Sent: ' + info.response);
+      }
+      res.redirect('/dashboard');
+    });
+  }
+})
+
+//insert investment details, for admin purpose==================================
+app.get('/addInvestment',function(req,res){
+
+  var investmentRecord = {
+    IID : "I"+(req.session.user.user).substr(0,3) + moment().format('x'),
+    username : req.body['username'],
+    email : "",
+    amount : parseFloat(req.body['amount']),
+    equivalentSipCoins : "",
+    dailyPercent : "",
+    fixedPercent : "",
+    dateOfInvestmentMade : new Date(),
+    dateOfInvestmentEnds : "",
+    daysLeft : "",
+    dailyReturnsDoneTillDate : ""
+  }
+
+
+  AM.setInvestmentRecord(req.body['username'], investmentRecord.IID, function(result){console.log(result);});
+  AM.addInvestmentInCurrentScenario(req.body['amount'], function(result){console.log(result);});
+
+  if(parseFloat(req.body['amount']) >= 100 && parseFloat(req.body['amount']) <= 1000){
+    var endOfInvestment = new Date();
+    endOfInvestment.setDate(endOfInvestment.getDate() + 243);
+
+    investmentRecord.fixedPercent = 0;
+    investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
+    });
+
+  }
+  else if(parseFloat(req.body['amount']) > 1000 && parseFloat(req.body['amount']) <= 10000){
+    var endOfInvestment = new Date();
+    endOfInvestment.setDate(endOfInvestment.getDate() + 213);
+
+    investmentRecord.fixedPercent = 0.1;
+    investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
+    });
+  }
+  else if(parseFloat(req.body['amount']) > 10000 && parseFloat(req.body['amount']) <= 50000){
+    var endOfInvestment = new Date();
+    endOfInvestment.setDate(endOfInvestment.getDate() + 152);
+
+    investmentRecord.fixedPercent = 0.15;
+    investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
+    });
+  }
+  else if(parseFloat(req.body['amount']) > 50000 && parseFloat(req.body['amount']) <= 100000){
+    var endOfInvestment = new Date();
+    endOfInvestment.setDate(endOfInvestment.getDate() + 122);
+
+    investmentRecord.fixedPercent = 0.2;
+    investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
+    });
+  }
+
+  res.redirect('/dashboard');
+
+})
+
+//set CNAV in current scenario collection updation==============================
+app.get('/currentCNAV',function(req,res){
+  var CNAV = req.body['CNAV'];
+  AM.setCNAV(CNAV, function(result){console.log(result)});
+})
+
+//set initial current scenario collection data==================================
+app.get('/currentScenario',function(req,res){
+  var CNAV = 4//req.body['CNAV'];
+  var dollarPool = 1000000//req.body['dollar'];
+  var sipPool = 5000000//req.body['sipPool'];
+  var dailyPercent = 0.05//req.body['dailyPercent'];
+  AM.setCurrentScenario(dollarPool, sipPool, CNAV, dailyPercent, function(result){console.log(result)});
+})
+
+//set daily percent return in currentScenario collection =======================
+app.get('/setDailyPercent',function(req,res){
+  var dailyPercent = req.body['dailyPercent'];
+  AM.setDailyPercent(dailyPercent, function(result){console.log(result)});
+})
+
+// logged-in user homepage //
 	app.get('/dashboard', function(req, res) {
 
 		var btc;
@@ -797,7 +1053,7 @@ app.get('/resent_verfication_page',function(req,res){
         ethCheck().then((value)=>{
           eth = value;
           console.log("## ETH : "+eth);
-          res.render('home',{
+          res.render('dashboard',{
             userDetails : req.session.user,
             BTC : btc,
             SIP : sip,
@@ -1146,7 +1402,10 @@ app.get('/resent_verfication_page',function(req,res){
         twoFA : false,
         twoFAsecret : "TWO FA DISABLED",
 				secret : makeid(20),
-				accountVerified : false
+        browserVerified : false,
+        lastVerified : new Date(),
+				accountVerified : false,
+        investmentIDs : []
 			}
 
       AM.addNewAccount(newAccount, function(e){
@@ -1168,7 +1427,7 @@ app.get('/resent_verfication_page',function(req,res){
             } else {
               console.log('Email Sent: ' + info.response);
             }
-            res.status(200).send('ok');
+            res.redirect('/');
           });
         }
       });

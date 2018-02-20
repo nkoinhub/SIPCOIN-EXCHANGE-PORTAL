@@ -68,9 +68,9 @@ html(lang='en')
                 i.material-icons group
                 p My Referrals
             li
-              a(href='/table')
+              a(href='/transactionHistory')
                 i.material-icons content_paste
-                p History
+                p Transaction History
             li.active
               a(href='/user')
                 i.material-icons person
@@ -111,9 +111,9 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
               a.navbar-brand(href='#',style='font-weight:400;')  Profile 
-              a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $10000 
-              a.navbar-brand.valuesDoll  ETH/USD $5000 
-              a.navbar-brand.valuesDoll  SIP/USD $10 
+              a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $#{BTC} 
+              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
+              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -155,17 +155,17 @@ html(lang='en')
                           thead.text-warning
                           tbody
                             tr
-                              td(style='font-weight:400;') User Name	
-                              td#userName rajatrawataku1
+                              td User Name	
+                              td#userName #{userDetails.user}
                             tr
-                              td(style='font-weight:400;') Full Name	
-                              td#userFullName Rajat Rawat	
+                              td Full Name	
+                              td#userFullName #{userDetails.name}	
                             tr
-                              td(style='font-weight:400;') Email ID	
-                              td#userEmail rajatrawataku1@gmail.com	
+                              td Email ID	
+                              td#userEmail #{userDetails.email}	
                             tr
-                              td(style='font-weight:400;') Phone No.	
-                              td#phoneInput +9168263282
+                              td Phone No.	
+                              td#phoneInput #{userDetails.mobile}
                     //
                       <h6 class="category text-gray">CEO / Co-Founder</h6>
                       <h4 class="card-title">Alec Thompson</h4>
@@ -329,29 +329,6 @@ html(lang='en')
                                     .col-sm-9.col-lg-offset-2
                                       button.btn.btn-primary.sendButtons(type='submit')
                                         | Submit
-              .col-md-4
-                .card.card-profile
-                  .card-avatar
-                    a(href='')
-                      img.img(src='/images/marc.png')
-                  .content
-                    .row
-                      .card-content.table-responsive(style='border:none;')
-                        table.table.table-hover
-                          thead.text-warning
-                          tbody
-                            tr
-                              td User Name	
-                              td#userName #{userDetails.user}
-                            tr
-                              td Full Name	
-                              td#userFullName #{userDetails.name}	
-                            tr
-                              td Email ID	
-                              td#userEmail #{userDetails.email}	
-                            tr
-                              td Phone No.	
-                              td#phoneInput #{userDetails.mobile}
                     //
                       <h6 class="category text-gray">CEO / Co-Founder</h6>
                       <h4 class="card-title">Alec Thompson</h4>

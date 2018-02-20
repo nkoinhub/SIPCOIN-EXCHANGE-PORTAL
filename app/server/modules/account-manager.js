@@ -5,6 +5,7 @@ var Server 		= require('mongodb').Server;
 var moment 		= require('moment');
 var Promise = require("bluebird");
 var request = require('request');
+var schedule = require('node-schedule');
 
 var tokenValues = {
 	stageOne : 1.5,
@@ -58,7 +59,39 @@ var referrals = db.collection('referrals');
 var sipStage = db.collection('SIPStage');
 var Res = db.collection('RES');
 var withdrawalCol=db.collection('withdrawals');
+var investments = db.collection('investments');
+var currentScenario = db.collection('currentScenario');
 
+//daily scheduled job for the calculation of returns on the basis of investment and updating the investment collection and accounts of each user
+var k = schedule.scheduleJob({hour: 1, minute: 54, dayOfWeek: [0,1,2,3,4,5,6]}, function(){
+	var dailyPercent;
+	currentScenario.findOne({about:"currentScenario"},function(e,res){
+		dailyPercent = res.dailyPercent;
+	})
+
+  investments.find().toArray(function(e,res){
+		if(res.length != 0){
+			var denominator = 1000*60*60*24;
+
+			var dailyReturns = function(i, res)
+			{
+				var totalReturnForTheDay = parseFloat(((res[i].fixedPercent + dailyPercent)/100) * res[i].amount);
+				currentScenario.update({about:"currentScenario"},{$inc:{dollarPool:-totalReturnForTheDay}});
+				res[i].daysLeft = (res[i].dateOfInvestmentEnds - new Date())/denominator;
+				accounts.update({user:res[i].username},{$inc:{dollarWallet:totalReturnForTheDay}});
+				res[i].dailyReturnsDoneTillDate = new Date();
+				investments.save(res[i],{safe:true});
+
+				if(i != res.length-1){
+					i = i + 1;
+					dailyReturns(i, res);
+				}
+			}
+			dailyReturns(0, res);
+		}
+	})
+});
+//==============================================================================================================================================
 
 // function to return the child node of the parent referral node
 //documents are searched where the parentReferralCode is given as the referral.
@@ -86,6 +119,87 @@ var getChildrenNew = function(referral, link)
 			referrals.findOne({selfReferralCode:referral},{_id:0,rightLink:1,leftCount:1,rightCount:1,planAmt:1},function(e,res){
 				resolve(res);
 			})
+		}
+	})
+}
+
+//place transaction request containing the type code of the transaction=========
+exports.placeTransactionRequest = function(transactionReq, callback)
+{
+	transactions.insert(transactionReq, callback("Request Placed"));
+}
+
+//get transaction request placed================================================
+exports.getTransactionRequest = function(TID, callback)
+{
+	transactions.findOne({TID:TID},function(e,o){
+		if(!e){
+			callback(o);
+		}
+		else {
+			callback(null);
+		}
+	})
+}
+
+//set the browser verification back to false====================================
+exports.resetBrowserVerification = function(username, callback)
+{
+	accounts.update({user:username},{$set:{browserVerified:false}},callback("Browser Verification False"));
+}
+
+//set the browser verification key while sending browser verification mail======
+exports.setBrowserVerificationKey = function(username, key, callback)
+{
+	accounts.update({user:username},{$set:{browserKey:key}},callback("Browser Verification Key Set"));
+}
+
+//set the browser as verified after clicking on the verification mail===========
+exports.setBrowserVerification = function(key, callback)
+{
+	accounts.findOne({browserKey:key},function(e,o){
+		if(!e){
+			o.browserVerified = true;
+			o.lastVerified = new Date();
+			accounts.save(o,{safe:true},callback("Browser Verified"));
+		}
+	})
+}
+
+//set the CNAV value, i.e. dollar equivalent of SIPcoin=========================
+exports.setCNAV = function(CNAV, callback)
+{
+	currentScenario.update({about:"currentScenario"},{$set:{CNAV:CNAV}},callback("CNAV SET"));
+}
+
+//set current scenario collection for the initial time =========================
+exports.setCurrentScenario = function(dollarPool, sipPool, CNAV, dailyPercent, callback)
+{
+	currentScenario.insert({about:"currentScenario",CNAV:CNAV, dailyPercent: dailyPercent, dollarPool:dollarPool, sipPool:sipPool},callback("currentScenario Collection Inserted"));
+}
+
+//set the daily percent for the returns=========================================
+exports.setDailyPercent = function(dailyPercent, callback)
+{
+	currentScenario.update({about:"currentScenario"},{$set:{dailyPercent:dailyPercent}},callback("Daily Percent Set"));
+}
+
+//get CNAV =====================================================================
+exports.getCNAV = function(callback)
+{
+	currentScenario.findOne({about:"currentScenario"},function(e,res){
+		callback(res.CNAV);
+	})
+}
+
+//add investment dollar in dollarPool and subtract the equivalent sipcoins from the sipPool
+exports.addInvestmentInCurrentScenario = function(amount, callback)
+{
+	currentScenario.findOne({about:"currentScenario"},function(e,res){
+		if(!e){
+			res.dollarPool = res.dollarPool + amount;
+			res.sipPool = res.sipPool - amount/res.CNAV;
+			currentScenario.save(res,{safe:true},callback("Investment Updated in Current Scenario"));
 		}
 	})
 }
@@ -611,8 +725,17 @@ exports.enable2FA = function(username, secret, callback)
 {
 	//accounts.update({user:username},{$set:{twoFA:true,secret:secret}},callback("updated"));
 	accounts.findOne({user:username},function(e,o){
-		o.twoFA = true;
+		o.twoFA = false;
 		o.twoFAsecret = secret;
+		accounts.save(o,{safe:true},callback(o));
+	})
+}
+
+//star the two FA and put to live when it's verified for the first time=========
+exports.start2FA = function(username, callback)
+{
+	accounts.findOne({user:username},function(e,o){
+		o.twoFA = true;
 		accounts.save(o,{safe:true},callback(o));
 	})
 }
@@ -625,6 +748,23 @@ exports.disable2FA = function(username, callback)
 		o.twoFAsecret = "TWO FA DISABLED";
 		accounts.save(o,{safe:true},callback(o));
 	})
+}
+
+//set Investement record in account, array update, multiple Investements possible
+exports.setInvestmentRecord = function(username, IID, callback)
+{
+	accounts.findOne({user:username},function(e,o){
+		if(!e){
+			o.investmentIDs.push(IID);
+			accounts.save(o,{safe:true},callback("Investment ID : "+IID+" || username : "+username));
+		}
+	})
+}
+
+//set investment record in the investment collection for the daily scheduled return algorithm
+exports.setInvestment = function(record, callback)
+{
+	investments.insert(record,callback("Investment Record Added in the Collection"));
 }
 
 exports.currentTokenValue = function(callback)

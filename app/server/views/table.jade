@@ -53,7 +53,7 @@ html(lang='en')
                 i.material-icons group
                 p My Referrals
             li.active
-              a(href='/table')
+              a(href='/transactionHistory')
                 i.material-icons content_paste
                 p  Transaction History
             li
@@ -96,9 +96,9 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
               a.navbar-brand  Transaction History 
-              a.navbar-brand.valuesDoll(style='margin-left:283px;')  BTC/USD $10000 
-              a.navbar-brand.valuesDoll  ETH/USD $5000 
-              a.navbar-brand.valuesDoll  SIP/USD $10 
+              a.navbar-brand.valuesDoll(style='margin-left:283px;')  BTC/USD $#{BTC} 
+              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
+              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -108,12 +108,12 @@ html(lang='en')
                     li
                       br
                       center
-                        | rajatrawataku@gmail.com
+                        | #{userDetails.email}
                       br
                     li(style='text-align:center;')
                       a(href='/logout') Logout
                     li(style='text-align:center;')
-                      a(href='/logout') My Profile
+                      a(href='/user') My Profile
         .content
           .container-fluid
             .row
