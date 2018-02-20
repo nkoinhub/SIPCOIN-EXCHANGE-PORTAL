@@ -210,6 +210,26 @@ exports.createAccountOnBlockchain = function(username, accountDetails, callback)
 	accounts.update({user:username},{$set:{accountOnBlockchain:true,blockchainAccount:accountDetails}},callback("Blockchain Account Created for User : "+username));
 }
 
+//check whether blockchain account already present or not=======================
+exports.checkAccountCreation = function(username, callback)
+{
+	accounts.findOne({user:username},function(e,res){
+		if(!e){
+			callback(res.blockchainAccount);
+		}
+	})
+}
+
+//return the blockchain address of the user=====================================
+exports.getBlockchainAddress = function(username, callback)
+{
+	accounts.findOne({user:username},function(e,res){
+		if(!e){
+			callback(res.blockchainAccount.address);
+		}
+	})
+}
+
 exports.findParentForNewNode = function(root, link, callback)
 {
 	console.log("Find Parent For New Node Called");

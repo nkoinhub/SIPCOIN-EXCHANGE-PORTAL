@@ -1014,36 +1014,55 @@ app.get('/setDailyPercent',function(req,res){
   AM.setDailyPercent(dailyPercent, function(result){console.log(result)});
 })
 
+
 //create account on blockchain for the user ====================================
 app.get('/createAccount',function(req,res){
   if(req.session.user == null) res.redirect('/');
   else {
-    if(req.session.user.accountOnBlockchain == false){
-      createAccount(req.session.user.user).then((account)=>{
-        account = JSON.parse(account);
+    AM.checkAccountCreation(req.session.user.user, function(result){
+      if(result == false){
+        createAccount(req.session.user.user).then((account)=>{
+          account = JSON.parse(account);
 
-        var accountDetails = {
-          address : account.address,
-          privateKey : account.privateKey
-        }
+          var accountDetails = {
+            address : account.address,
+            privateKey : account.privateKey
+          }
 
-        AM.createAccountOnBlockchain(req.session.user.user, accountDetails, function(result){
-          console.log(result);
-          res.status(200).send("Account Created");
-        });
-      })
-      .catch((result)=>{
-        console.log("## Blockchain Account Creation Failed : "+result);
-        res.status(200).send("Failed");
-      })
-    }
-    else {
-      res.status(200).send("Account Already Present");
-    }
+          AM.createAccountOnBlockchain(req.session.user.user, accountDetails, function(result){
+            console.log(result);
+            res.status(200).send("Account Created");
+          });
+
+        })
+        .catch((result)=>{
+          console.log("## Blockchain Account Creation Failed : "+result);
+          res.status(200).send("Failed");
+        })
+      }
+      else {
+        res.status(200).send("Account Already Present");
+      }
+    })
   }
 })
 
-//get the sip balance and ether balance from the blockchain route
+//get the sip balance and ether balance from the blockchain=====================
+app.get('/getBalance',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    AM.getBlockchainAddress(req.session.user.user, function(address){
+      acntBalance(address).then((balances)=>{
+        balances = JSON.parse(balances);
+        var balanceDetails = {
+          sipBalance : balances.tokenBalance,
+          etherBalance : balances.etherBalance
+        }
+        res.status(200).send(balanceDetails);
+      })
+    })
+  }
+})
 
 // logged-in user homepage //
 	app.get('/dashboard', function(req, res) {
