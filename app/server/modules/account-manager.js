@@ -204,6 +204,12 @@ exports.addInvestmentInCurrentScenario = function(amount, callback)
 	})
 }
 
+//create account on blockchain and set the address, privateKey==================
+exports.createAccountOnBlockchain = function(username, accountDetails, callback)
+{
+	accounts.update({user:username},{$set:{accountOnBlockchain:true,blockchainAccount:accountDetails}},callback("Blockchain Account Created for User : "+username));
+}
+
 exports.findParentForNewNode = function(root, link, callback)
 {
 	console.log("Find Parent For New Node Called");

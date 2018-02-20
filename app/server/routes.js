@@ -126,7 +126,7 @@ var createAccount = function(username){
         'username' : "rohan"
       }
     },(err,res,body)=>{
-      console.log(body)
+      //console.log(body)
       resolve(body) //body.address , body.privateKey
     })
   })
@@ -1014,6 +1014,37 @@ app.get('/setDailyPercent',function(req,res){
   AM.setDailyPercent(dailyPercent, function(result){console.log(result)});
 })
 
+//create account on blockchain for the user ====================================
+app.get('/createAccount',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    if(req.session.user.accountOnBlockchain == false){
+      createAccount(req.session.user.user).then((account)=>{
+        account = JSON.parse(account);
+
+        var accountDetails = {
+          address : account.address,
+          privateKey : account.privateKey
+        }
+
+        AM.createAccountOnBlockchain(req.session.user.user, accountDetails, function(result){
+          console.log(result);
+          res.status(200).send("Account Created");
+        });
+      })
+      .catch((result)=>{
+        console.log("## Blockchain Account Creation Failed : "+result);
+        res.status(200).send("Failed");
+      })
+    }
+    else {
+      res.status(200).send("Account Already Present");
+    }
+  }
+})
+
+//get the sip balance and ether balance from the blockchain route
+
 // logged-in user homepage //
 	app.get('/dashboard', function(req, res) {
 
@@ -1389,7 +1420,8 @@ app.get('/setDailyPercent',function(req,res){
         browserVerified : false,
         lastVerified : new Date(),
 				accountVerified : false,
-        investmentIDs : []
+        investmentIDs : [],
+        accountOnBlockchain : false
 			}
 
       AM.addNewAccount(newAccount, function(e){
