@@ -6,6 +6,14 @@ Version: 1.0
 Design and Developed by: iqonicthemes.in
 
 NOTE: This is main stylesheet of template, This file contains the styling for the actual Template. Please do not change anything here! write in a custom.css file if required!
+
+NOTE 2:
+CHANGES DONE HERE BY HARSH!
+/*=========================CHANGES HERE=====================================
+ Changes Done Here ==> price-value [original value]{font-size:40px} --> [updated value]{font-size:25px} 
+==========================CHANGES HERE=====================================*/
+
+Scroll below to see changes!
 */
 
 /*================================================
@@ -478,6 +486,19 @@ hr { margin: 0; padding: 0px; border-bottom: 1px solid #e0e0e0; border-top: 0px;
 .iq-ml-130 { margin-left: 130px; }
 .iq-ml-140 { margin-left: 140px; }
 .iq-ml-150 { margin-left: 150px; }
+.iq-ml-200 { margin-left: 200px; }
+.iq-ml-210 { margin-left: 210px; }
+.iq-ml-220 { margin-left: 220px; }
+.iq-ml-230 { margin-left: 230px; }
+.iq-ml-240 { margin-left: 240px; }
+.iq-ml-250 { margin-left: 250px; }
+.iq-ml-260 { margin-left: 260px; }
+.iq-ml-270 { margin-left: 270px; }
+.iq-ml-280 { margin-left: 280px; }
+.iq-ml-290 { margin-left: 290px; }
+.iq-ml-300 { margin-left: 300px; }
+.iq-ml-400 { margin-left: 400px; }
+.iq-ml-500 { margin-left: 500px; }
 
 /***************************
       Margin Right
@@ -1153,7 +1174,10 @@ header.fancy.menu-sticky .iq-header .row { background: transparent; margin-top: 
 .iq-pricing .icon { width: 80px; height: 80px; line-height: 80px; border-radius: 50%; background: #fff; box-shadow: 0 0 1px 1px rgba(0, 0, 0, 0.1); margin: 0 auto; font-size: 36px; color: #f9b707; position: absolute; top: -40px; left: 0; right: 0; }
 .iq-pricing .pricing-header { margin-bottom: 30px; }
 .iq-pricing .title { display: block; font-size: 18px; font-weight: 600; text-transform: uppercase; margin: 0 0 10px 0; }
-.iq-pricing .price-value { display: inline-block; font-size: 40px; font-weight: 600; transition: all 0.3s ease-in-out 0s; }
+/*=========================CHANGES HERE=====================================
+ Changes Done Here ==> price-value [original value]{font-size:40px} --> [updated value]{font-size:25px} 
+==========================CHANGES HERE=====================================*/
+.iq-pricing .price-value { display: inline-block; font-size: 25px; font-weight: 600; transition: all 0.3s ease-in-out 0s; }
 .iq-pricing:hover .price-value { border-bottom-color: #fff; }
 .iq-pricing .pricing-content { list-style: none; padding: 0; margin: 0 0 20px 0; }
 .iq-pricing .pricing-content li { line-height: 40px; }

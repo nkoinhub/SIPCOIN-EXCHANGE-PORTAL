@@ -232,7 +232,7 @@ module.exports = function(app) {
 				sip = SIP;
 				AM.getProgress(function(coins, stage){
 					console.log(coins)
-					res.render('index',{
+					res.render('main',{
 						USD : usd,
 						SIP : sip,
 						coins : coins,
@@ -245,6 +245,22 @@ module.exports = function(app) {
 			})
 		}
 	})
+
+  // about us page get request
+  app.get('/about',function(req,res){
+    res.render('about_us');
+  });
+
+  //  plans get request
+  app.get('/plans',function(req,res){
+    res.render('plans');
+  });
+
+  // contact page get request
+  app.get('/contact',function(req,res){
+    res.render('contact');
+  });
+
 
 // route for front page, stage depiction, total coins bought by users
 	app.get('/getProgress',function(req,res){

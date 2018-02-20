@@ -3,8 +3,8 @@ function AccountValidator()
 {
 // build array maps of the form inputs & control groups //
 
-	this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf')];
-	this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg')];
+	this.formFields = [$('#recipient-Full-name'), $('#recipient-email'), $('#recipient-username'), $('#passwordConf')];
+	this.controlGroups = [$('#recipient-Full-name-cg'), $('#recipient-email-cg'), $('#recipient-username-cg'), $('#passwordConf-cg')];
 
 // bind the form-error modal window to this controller to display any errors //
 
@@ -67,7 +67,7 @@ AccountValidator.prototype.validateForm = function()
 	for (var i=0; i < this.controlGroups.length; i++) this.controlGroups[i].removeClass('error');
 	if (this.validateName(this.formFields[0].val()) == false) {
 		this.controlGroups[0].addClass('error'); e.push('Please Enter Your Name');
-	}
+	}false
 	if (this.validateEmail(this.formFields[1].val()) == false) {
 		this.controlGroups[1].addClass('error'); e.push('Please Enter A Valid Email');
 	}
