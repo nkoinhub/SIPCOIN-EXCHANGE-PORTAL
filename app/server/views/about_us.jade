@@ -1,468 +1,391 @@
 doctype html
 html(lang='en')
   head
-    title Bootstrap Example
+    title SIPCOIN - Crypto Currency 
+    // Required meta tags
     meta(charset='utf-8')
-    meta(name='viewport', content='width=device-width, initial-scale=1')
-    link(rel='stylesheet', href='/css/bootstrap.min.css')
-    link(rel='stylesheet', href='/css/index.css')
-    link(rel='stylesheet', href='/css/style.css')
-    script(src='js/views/jquery.min.js')
-    script(src='js/views/bootstrap.min.js')
-    link(rel='stylesheet prefetch', href='/css/Raleway.css')
-    link(rel='stylesheet prefetch', href='/css/animate.min.css')
-    <link rel="apple-touch-icon" sizes="180x180" href="/images/favicons/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicons/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicons/favicon-16x16.png">
-    <link rel="manifest" href="/images/favicons/manifest.json">
-    <link rel="mask-icon" href="favicons/safari-pinned-tab.svg" color="#5bbad5">
-    <meta name="theme-color" content="#ffffff">
-
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    // Favicon
+    link(rel='shortcut icon', href='/images/favicon.ico')
+    // Google Fonts
+    link(href='https://fonts.googleapis.com/css?family=PT+Sans&Ubuntu:400,500,700', rel='stylesheet')
+    // Bootstrap CSS
+    link(rel='stylesheet', type='text/css', href='/css/bootstrap.min.css')
+    // Magnific Popup CSS
+    link(rel='stylesheet', type='text/css', href='/css/magnific-popup/magnific-popup.css')
+    // owl-carousel CSS
+    link(rel='stylesheet', type='text/css', href='/css/owl-carousel/owl.carousel.css')
+    // Animate CSS
+    link(rel='stylesheet', type='text/css', href='/css/animate.css')
+    // Font Awesome
+    link(rel='stylesheet', type='text/css', href='/css/font-awesome.css')
+    // Ionicons CSS
+    link(rel='stylesheet', type='text/css', href='/css/ionicons.min.css')
+    // Flaticon CSS
+    link(rel='stylesheet', type='text/css', href='/css/flaticon.css')
+    // Flaticon CSS
+    link(rel='stylesheet', type='text/css', href='/css/shop.css')
+    // REVOLUTION STYLE SHEETS
+    link(rel='stylesheet', type='text/css', href='/revslider//css/settings.css')
+    // style CSS
+    link(rel='stylesheet', type='text/css', href='/css/style.css')
+    // Responsive CSS
+    link(rel='stylesheet', type='text/css', href='/css/responsive.css')
+    // Custom CSS
+    link(rel='stylesheet', type='text/css', href='/css/custom.css')
     style.
-      body {
-      position: relative;
-      color: black;
+      #captcha_input{
+      margin-top:10%;
+      margin-left:6%;
       }
-      ul.nav-pills {
-      top: 20%;
-      position: fixed;
-      z-index:5;
+      
+      .remember_class{
+      margin-left:25px;
       }
-      div.col-sm-9 div {
-      height: 670px;
-      font-size: 28px;
-      margin-bottom:50px;
-      margin-top:50px;
+      
+      .forgot_class{
+      margin-left:65px;
+      }  
+      
+      
+      @media(max-width:767px) {
+      .remember_class{
+      margin-left:15px;
       }
-      th{
-      font-size: 15px;
-      border-bottom: 1px solid #ccc;
-      padding: 2px;
-      }
-      td{
-      font-size: 15px;
-      border-left:1px solid #ccc;
-      padding: 8px;
-      border-right:1px solid #ccc;
-      border-bottom: 1px solid #ccc;
-      }
+      
+      .forgot_class{
+      margin-left:25px;
+      }  
 
-      #text_data{
-      position:absolute;
-      top:1%;
-      left:40%;
-      height:5%;
-      width:60%;
+      
+      .text_class{
+      font-size:13px;
       }
-      #section1 {color: black; background-color: white;}
-      #section2 {color: black; background-color: black;}
-      #section3 {color: black; background-color: white;}
-      #section41 {color: black; background-color: #00bcd4;}
-      #section42 {color: black; background-color: #009688;}
-
-      .text_here{
-      margin-top:100px;
+      
+      #captcha_input{
+        margin-left:-4%;
       }
-
-      .remove_me{
-      display:block;
-      }
-
-      #my_text_about_us{
-      display:none;
-      }
-
-      #myCarousel{
-      display:block;
-      }
-
-      #footer{
-      margin-bottom:0px;
-      width:117%;
-      margin-left:-10%;
-      }
-
-
-
-      @media screen and (max-width: 480px) {
-      #myScrollspy{
-      display:none;
-      }
-      #image_data{
-      display:none;
-      }
-      #text_data{
-      position:absolute;
-      top:0%;
-      left:0%;
-      width:100%;
-      margin:0px;
-      }
-      #section1{
-      margin:10px;
-      }
-
-      #section2{
-      margin:0px;
-      background-color:white;
-      height:1400px;
-      }
-
-      #my_text_about_us{
-      margin:0px;
-      display:block;
-      }
-
-      #myCarousel{
-      display:none;
-      }
-
-      #section3{
-        margin:0px;
-        height:1200px;
-      }
-
-      #section4{
-      margin:0px;
-      height:1200px;
-      }
-
-      #section5{
-      margin:0px;
-      height:300px;
-      }
-
-      #section6{
-      margin:0px;
-      height:900px;
-      }
-
-      #section7{
-      margin:0px;
-      height:1100px;
-      }
-
-      #section8{
-      margin:0px;
-      height:1100px;
-      }
-
-      #section9{
-      margin:0px;
-      }
-
-      #footer{
-      margin-left:-5%;
-      margin-top:300px;
-      }
-
-      .remove_me{
-      dispaly:none;
-      }
-
-      .text_here{
-      0px;
+      
+      #captcha_input1{
+        margin-left:-5%;
       }
 
       }
-  body(data-spy='scroll', data-target='#myScrollspy', data-offset='20')
 
-  #first_frame
-    .container
-      .row
-        br
-        br
-        br
-        nav.navbar.navbar-inverse.navbar-fixed-top
-          .container-fluid
-            .navbar-header
-              button.navbar-toggle(style='margin-top:15px;', type='button', data-toggle='collapse', data-target='#myNavbar')
-                span.icon-bar
-                span.icon-bar
-                span.icon-bar
-              button.btn(type='button', style="margin-top:10px;margin-bottom:5px;")
-                a(href='/', style='border:none;color:white;margin-right:0px;')
-                  img(src='/images/sipcoin_logo2d.png', alt='Person', style='height:40px;width:40px;')
-              button.btn(type='button', style="margin-top:10px;margin-bottom:5px;")
-                a(href='/', style='text-decoration:none;color:white;font-size:30px;') SIPcoin
-            #myNavbar.collapse.navbar-collapse
-              ul.nav.navbar-nav.navbar-right
-                button.btn(type='button')
-                  .chip(style='font-size:18px;')
-                    img(src='/images/coin.png', alt='Person', style='height:40px;width:40px;')
-                    |    $ #{USD}
-                button.btn(type='button',style="margin-top:10px;margin-bottom:5px;")
-                  .chip(style='font-size:18px;')
-                    img(src='/images/sipcoin_logo2d.png', alt='Person', style='height:40px;width:40px;')
-                    |  $ #{SIP}
-                a(href='/about_us',style='text-decoration:none;color:white;margin-right:15px;margin-left:10px;')
-                  img(src='/images/about.png', alt='Person', style='height:40px;width:40px;margin-right:10px;')
-                  |  About Us
-                a(href='/login',style='text-decoration:none;color:white;margin-right:15px;margin-left:10px;')
-                  img(src='/images/avatar.png', alt='Person', style='height:40px;width:40px;margin-right:10px;')
-                  |  Login / Register
-    .container
-      .row
-        nav#myScrollspy.col-sm-3
-          ul.nav.nav-pills.nav-stacked
-            li.active
-              a(href='#section1') Introduction
-            li
-              a(href='#section2') About Us
-            li
-              a(href='#section3') How it works
-            li
-              a(href='#section4') The SIP Mission
-            li
-              a(href='#section5') SIP Vision
-            li
-              a(href='#section6') SIP Services
-            li
-              a(href='#section7') How to stake SIP
-            li
-              a(href='#section8') How to Lend SIP
-            li
-              a(href='#section9') Trade & Mining
-        .col-sm-9
-          #section1
-            #image_data(style='position:absolute;top:2%;left:0%;')
-              img(src='/images/sip.png', height='300px', width='300px')
-            #text_data
-              .row(style='margin:0;padding:20px;')
-                .col-sm-12(style='margin:0;font-size:20px;line-height:200%;')
-                  h1(style='margin:0;padding:0;') SIPcoin
-                  |               SIPcoin is here to help you with the crypto currency revolution with its AI based smart Investment Platform (SIP).  Our open source decentralized system is design to make the process of trading, staking, mining and investing much easier.  It’s transparent to all users from everywhere and educates its community allowing you to possibility of the stable income and financial freedom.
-          #section2
-            #my_text_about_us
+  body
+    // loading
+    #loading
+      #loading-center
+        img(src='/images/loader.gif', alt='loder')
+    // loading End
+    // Header
+    header
+      .topbar
+        .container
+          .row
+            .col-lg-6.col-md-6.col-sm-6
+              .topbar-left
+            .col-lg-6.col-md-6.col-sm-6
+              .topbar-right.text-right
+                ul.list-inline
+                  li.list-inline-item
+                    ul.list-inline.iq-left
+                      li.list-inline-item
+                        a(data-toggle='modal', data-target='.iq-login', target='_blank',style='cursor:pointer;')
+                          i.fa.fa-lock
+                          | Login
+                      li.list-inline-item
+                        a(data-toggle='modal', data-target='.iq-register', target='_blank',style='cursor:pointer;')
+                          i.fa.fa-user
+                          | Register
+                  li.list-inline-item
+                    a(href='#')
+                      i.fa.fa-comments-o
+                      | Free Consulting
+      .iq-header
+        .container
+          .row
+            .col-md-12
+              .logo
+                a(href='/')
+                  img.img-fluid(src='/images/logo/sipcoin_black.png', alt='logo')
+              nav
+                a#resp-menu.responsive-menu(href='javascript:void(0);')
+                  i.fa.fa-reorder
+                  |  Menu
+                ul.menu.text-right
+                  li
+                    a(href='/') HOME
+                  li
+                    a.active(href='/about') About Us
+                  li
+                    a(href='/plans') Plans
+                  li
+                    // <a href="faq.html">FAQ's</a>
+                    a(href='javascript:void(0);') FAQ's
+                  li
+                    // <a href="blog.html">Blog</a>
+                    a(href='javascript:void(0);') Blog
+                  li
+                    // <a href="coming-soon.html">Live Trading</a>
+                    a(href='javascript:void(0);') Live Trading
+                  li
+                    a(href='/contact') Contact
+                  li
+                    .iq-search
+                      a.search-btn.not_click(href='javascript:void(0);')
+                        span Search Button
+                      .search-box.not-click
+                        input#search.form-control.not-click(type='text', placeholder='Search')
+                        i.ti-search
+    // Header End
+    .clearfix
+    // ======= Breadcrumb Inner Page =======
+    section.iq-bg.iq-bg-fixed.iq-over-black-80.jarallax.iq-breadcrumb.text-center.iq-font-white(style="background-image: url('/revslider/assets/team.jpg'); background-position: center center;")
+      .container
+        .row
+          .col-lg-8.offset-lg-2
+            .heading-title
+              h3.title.text-uppercase.iq-font-white.iq-tw-6 About Us
+            p
+              | Our team has been monitoring the Blockchain & Cryptocurrency space since 2016. We have been mining, trading and investing in coins & various platforms. During this journey we have accumulated a good repository of knowledge and made a extensive international network of professionals & enthusiasts. Read through to know more about us.
+      nav(aria-label='breadcrumb')
+        ol.breadcrumb
+          li.breadcrumb-item
+            a(href='index.html') Home
+          li.breadcrumb-item.active(aria-current='page') About Us
+    // ======= Breadcrumb Inner Page =======
+    // Main Content
+    .main-content
+      // About Us
+      section.overview-block-ptb.device-blog.grey-bg
+        .container
+          .row
+            .col-sm-12(align='justify')
+              h3.iq-font-black.iq-tw-5
+                | OUR STORY:
+                span.iq-font-yellow  Why We Do What We Do?
+              p.iq-mt-10
+                | Our team of professionals has been monitoring the Blockchain, Cryptocurrency and Regulatory space since early 2016. We have been mining, trading and investing in coins & various platforms. During this journey we have accumulated a good repository of knowledge and made a extensive international network of professionals & enthusiasts.
+              p.iq-mt-10
+                | Blockchain Technology was built to eliminate TRUST issues. The fundamental objective is to make transactions trustless. It's unfortunate that in the name of Blockchain, in the name of Crypto Trading and in the name of ICO's many people have been deceived in the last 2 years. Every week there is a platform which promises guaranteed returns and majority of times huge returns of upto 50% in a month. Few weeks or months later the project is either in trouble, or hacked or just vanishes. This is the TRUTH.
+              p.iq-mt-10
+                | The stories of people who have lost their hard earned money have begged us to build a platform which is not only open source, secure but also extremely transparent. Our model is to deliver consistent profits for our users through our experience, knowledge and trading discipline. We combine the volatility factor, market dynamics and information of Geo-political shifts; overlay this with trading strategies to benefit from the 24X7 functioning crypto currency markets. Our research group is constantly looking for the best coins to invest for short, medium and long term.
+              p.iq-mt-10
+                | Underneath our strategy is the core foundation which is to protect our user digital capital at all times. Our data driven approach helps us keep GREED at bay which in our experience is the key destroyer of crypto capital. We treat the inherent volatility as a feature to trade and gather profit for our users, our diversification strategy helps us accumulate liquid capital to fulfill our commitments for upto 12 months in case of bear market trends.
+              p.iq-mt-10   
+              p.iq-mt-10   
+              p.iq-mt-10   
+            .col-lg-6.col-md-12
+              img.img-fluid.mx-auto.d-block.iq-mt-10(src='/images/device/01.png', alt='icon1')
+            .col-lg-6.col-md-12.about-box.align-self-center
+              blockquote.iq-mt-20.white-bg.iq-pall-30.font-italic
+                | On community education, we understand that to track 300+ exchanges and 1500 coins is a highly confusing task for even the brightest individuals. The user community registered with us receive real time and daily information on whats happening in the crypto currency and ICO markets.
+              p.iq-mt-10.font-weight-bold
+                | For transparency, we publish our top 10 percentage holdings of coins in the platform portfolio. This is available in the live trading section of your dashboard. This helps our users to copy the same trades on various exchanges so they can learn and add more profits to their existing returns from our platform.
+              p
+                | Our upcoming feature model portfolio (end 2018) will also use various gamification techniques to provide user to trade and learn on demonstration portal. This will increase confidence of users to research, trade and invest  in the real exchanges.
+      // About Us
+      // services
+      // services
+      // Counter
+      // Team
+      // Clients
+      .iq-our-clients.particles-bg.yellow-bg.iq-ptb-40
+        canvas#canvas
+        .container
+          .row
+            .col-lg-12.col-md-12
+              .owl-carousel(data-nav-dots='false', data-nav-arrow='false', data-items='5', data-sm-items='3', data-lg-items='5', data-md-items='4', data-autoplay='true')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/01.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/02.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/03.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/04.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/05.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/06.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/01.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/02.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/03.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/04.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/05.png', alt='#')
+                .item
+                  img.img-fluid.center-block(src='/images/clients/white/06.png', alt='#')
+      // Clients
+    // Main Content End
+    //
+      =================================
+      Footer
+    footer.iq-footer-3.dark-bg
+      .footer-top.overview-block-pt.iq-pb-0
+        .container
+          .row
+            .col-lg-4.col-md-3.col-sm-12.iq-contact.iq-r4-mt-40
+              .heading-left
+                h5.title.iq-tw-5.iq-font-white Contact Sipcoin
+              .iq-mb-20
+                .blog
+                  i.ion-ios-telephone-outline
+                  .content
+                    .iq-tw-6.title
+                      a(href='http://support.sipcoin.io/support/')  Support Center
+            .logo.col-lg-4.text-center
+              img(src='/images/revolution/sipcoin.png', alt='logo')
+            .col-lg-4.col-md-6.col-sm-6
+              .logo
+                img.img-fluid.iq-ml-60(src='/images/logo/sipcoin_white.png ', alt='#')
+                .iq-font-white.iq-mt-15(align='justify')
+                  | SIPcoin is based on Ethereum smart contracts. Ethereum is the number two Blockchain of the world. It is opensource, decentralized and transparent & cannot be manipulated.
+                br
+      .footer-bottom.iq-ptb-20
+        .container
+          .row
+            .col-sm-12.text-center
+              ul.iq-media-blog.iq-mt-20.text-center
+                li
+                  a(href=' https://twitter.com/sipcoin_io ')
+                    i.fa.fa-twitter
+                li
+                  a(href=' https://www.facebook.com/sipcoin/ ')
+                    i.fa.fa-facebook
+                li
+                  a(href=' https://www.instagram.com/sipcoin.io/?hl=en ')
+                    i.fa.fa-instagram
+                li
+                  a(href=' https://goo.gl/e37G3Z ')
+                    i.fa.fa-slack
+            .col-sm-12.text-center
+              .iq-copyright.iq-mt-10.iq-font-white
+                | Copyright 
+                span#copyright
+                  script.
+                    document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+                a(href='index.html') Sipoin
+                |  All Rights Reserved
+    //
+      =================================
+      Footer
+    //
+      =================================
+      Login
+    .modal.fade.iq-login(tabindex='-1', role='dialog', aria-hidden='true')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header.text-center
+            h4.modal-title.iq-tw-5 Login
+            a.close(data-dismiss='modal', aria-label='Close',style='cursor:pointer;')
+              span(aria-hidden='true') ×
+          .modal-body
+            form#login_form(method='post', action='/login')
+              .form-group
+                input#recipient-name.form-control(type='text', name='username', placeholder='Enter Name',required='')
+              .form-group
+                input#recipient-password.form-control(type='password', name='password', placeholder='Password',required='')
+              .form-buttons#captcha_input
+                center
+                  .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
+                  //production - 6LfXbzsUAAAAALCk_NicLha3d-KG_0GRNRxAJUMs
+                  //development - 6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P
+                  br
+              hr
+              a.button.iq-mtb-10(href="javascript:document.getElementById('login_form').submit();") Sign In
               .row
-                .col-sm-12.text_here
-                  p(style='margin:0;font-size:20px;line-height:200%;')
-                    | SIP has been created by crypto currency enthusiasts from various verticals like banking, trading and technology spread across the word. We understand that due to the lack of proper platform not every person can be part of crypto revolution. SIP will provide platform of opportunities created in the crypto currency ecosystem. Our aim is to bring the crypto investment and education for the people.
-                  p(style='margin-bottom:20px;font-size:20px;line-height:200%;')
-                    | Unique and visionary, the Smart Investment Platform (SIPcoin) is a decentralized digital public currency that offers everything investors look for in a crypto currency. SIP’s artificial intelligence (AI) based trading bots analyzes massive volumes of financial data to predict financial markets.
-                  p(style='margin:0;font-size:20px;line-height:200%;')
-                    | Created through complicated mathematical calculations and verified by millions of computer users, SIP is backed by genuine blockchain applications. It is an open source investment platform facilitating P2P transactions with four distinct investment channels viz. lending, stacking, mining, and trading.And because we do not operate on fractional reserves the way banks across the world do, there is no scope for excessive creation of SIP coins. This eliminates the pitfall of devaluation of SIP coins. If anything, they will appreciate with time.
-            #myCarousel.carousel.slide(data-ride='carousel')
-              ol.carousel-indicators
-                li.active(data-target='#myCarousel', data-slide-to='0')
-                li(data-target='#myCarousel', data-slide-to='1')
-                li(data-target='#myCarousel', data-slide-to='2')
-                li(data-target='#myCarousel', data-slide-to='3')
-              .carousel-inner
-                .item.active
-                  img(src='/images/1.jpg', alt='Chicago', style='width:100%;height:100%;')
-                  .carousel-caption
-                .item
-                  img(src='/images/2.jpg', alt='Chicago', style='width:100%;')
-                  .carousel-caption
-                .item
-                  img(src='/images/3.jpg', alt='New York', style='width:100%;')
-                  .carousel-caption
-                .item
-                  img(src='/images/4.jpg', alt='New York', style='width:100%;')
-                  .carousel-caption
-              // Left and right controls
-              a.left.carousel-control(href='#myCarousel', data-slide='prev')
-                span.glyphicon.glyphicon-chevron-left
-                span.sr-only Previous
-              a.right.carousel-control(href='#myCarousel', data-slide='next')
-                span.glyphicon.glyphicon-chevron-right
-                span.sr-only Next
-          #section3
-            .row
-              .col-sm-12
-                p.remove_me
-                  br
-                  br
-                p(style='text-align:left;font-size:25px;line-height:200%;')
-                  | How it Works
-                p(style='text-align:left;font-size:20px;line-height:200%;')
-                  | Sipcoin draws its value from the combine average value of the top ten coins currently trending and it gives you holistic approach to the digital currency market but protects you from volatility and inheriting individual coins
-                br
-                p(style='text-align:left;font-size:20px;line-height:200%;')
-                  | The funds generated through ICO would be pooled to invest in the top ten highly traded coins as the value of holdings grows or falls so will the value of sip coin in equal proportion however if the value of any one or two of the currency’s fall disproportionately  the pooled value of the other coins will still sustain  the value of the Sipcoin a globally unique mechanism this not only help mitigate investor risk but also make investment itself more affordable since the Sipcoin are priced much more reasonably as compare to other coins
-          #section4
-            br
-            br
-            p(style='text-align:left;font-size:25px;line-height:200%;')
-            | SIP Mission
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              | Nimble and innovative, SIP is perpetually on the hunt for fresh technologies that will help serve people better. Apart from security, we offer flexibility in the investment channels, that makes us attractive to a great number of potential investors.
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              | At SIP, we are a young and innovative company and hold the intrinsic standards of crypto currencies in high regard - the principles of anonymity and decentralization. We aim to minimize bureaucracy and build an easy-to-use, full-proof platform for the people.
-            p
-            p(style='text-align:left;font-size:30px;line-height:100%;')  The SIP Objective
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              | Sipcoin aims to be the best alternative to Bitcoin and Ethereum, the popular crypto currencies of the present day. You can buy, sell, and trade Sipcoins on the SIP exchange.
-              | Democracy is woven into the very fabric of our thinking.
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              | Having a solid and strong technical foundation drives our strategy. In the final analysis, we Sip want SIPcoin to be Easy-to-use, secure cryptocurrency for the people.
-          #section5
-            br
-            br
-            br
-            p(style='text-align:left;font-size:30px;line-height:200%;') SIP Vision
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              | Our ultimate vision is to create an exchange for the people owned by the people which also provides profit to the people; because we believe our profit is our investors profit too.
-          #section6
-            br
-            br
-            br
-            p(style='text-align:left;font-size:25px;line-height:200%;')
-              | Stacking
-            p
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              | Receive fix 15% monthly on staking of SIP for one year and fix 20% monthly on staking Sipcoins for eighteen months
-            p(style='text-align:left;font-size:25px;line-height:200%;') Lending
-            p(style='text-align:left;font-size:20px;line-height:200%;') Lend your Sipcoins and earn daily profits through our AI based trading BOTs
-            p(style='text-align:left;font-size:25px;line-height:200%;') Mining
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              | Earn mining (CPU / GPU) rewards for SIP mining by downloading the SIP mining software from the mining pool
-            p(style='text-align:left;font-size:25px;line-height:200%;') Trading
-            p(style='text-align:left;font-size:20px;line-height:200%;') Trade your SIP coins on the SIP exchange to earn margin points
-          #section7
-            br
-            p(style='text-align:left;font-size:25px;line-height:100%;margin-top:50px;') Stacking
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              | Two plans of diverse durations available.
-              | All ICO participants will be able to select a staking plan on March 2, 2018 when the customer portal will go live.
-              | A 15% flat interest will be paid on a prorate basis for holding coins till March 2, 2018
-            p(style='text-align:left;font-size:25px;line-height:100%;') Stacking SIP
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              ul
-                li(style='text-align:left;font-size:20px;line-height:200%;') Deposit BTC to your unique wallet in SIP
-                li(style='text-align:left;font-size:20px;line-height:200%;') Use your BTC balance to buy SIP coins
-                li(style='text-align:left;font-size:20px;line-height:200%;') Stake your SIP coins within the SIP customer portal and select staking plan
-                li(style='text-align:left;font-size:20px;line-height:200%;') Your staking interests will be credited to the USD wallet once every month
-                li(style='text-align:left;font-size:20px;line-height:100%;') You can convert the USD to SIP coins and start trading
-            p
-              center
-                table
-                  col(width='300')
-                  col(width='300')
-                  thead
-                    tr
-                      th(colspan='2')
-                        center(style='font-size:20px;') Staking Plans
-                  tbody
-                    tr
-                      td 12 Month Plan
-                      td 18 Month Plan
-                    tr
-                      td Coins free for trading after 12 months
-                      td Coins free for trading after 18 months
-                    tr
-                      td Monthly payout
-                      td Monthly payout
-                    tr
-                      td 15% fixed
-                      td 20% fixed
-          #section8
-            br
-            p(style='text-align:left;font-size:25px;line-height:100%;margin-top:70px;') Lending
-            p(style='text-align:left;font-size:20px;line-height:200%;') Four lending plans are available
-            p(style='text-align:left;font-size:20px;line-height:200%;') Minimum $10 is necessary for reinvestment
-            p
-              table
-                col(width='300')
-                col(width='300')
-                col(width='300')
-                col(width='300')
-                thead
-                  tr
-                    th(colspan='4')
-                      center(style='font-size:20px;') Lending Plans
-                  tr
-                    th Lend $100 to $1,000
-                    th Lend $1,010 to $10,000
-                    th Lend $10,010 to $50,000
-                    th Lend $50,100 to $100,000
-                tbody
-                  tr
-                    td Up to 42% monthly
-                    td Up to 42% monthly + 0.1% fixed daily
-                    td Up to 42% monthly + 0.15% fixed daily
-                    td Up to 42% monthly + 0.2% fixed daily
-                  tr
-                    td Capital release after 8 months
-                    td Capital release after 7 months
-                    td Capital release after 5 months
-                    td Capital release after 4 months
-            p(style='text-align:left;font-size:25px;line-height:100%;') How to lend Sipcoin
-            p(style='text-align:left;font-size:20px;line-height:200%;')
-              ul
-                li(style='text-align:left;font-size:20px;line-height:200%;') Deposit BTC to your unique wallet in SIP
-                li(style='text-align:left;font-size:20px;line-height:200%;') Use your BTC balance to buy SIP coins
-                li(style='text-align:left;font-size:20px;line-height:200%;') Lend your SIP coins on our lending platform and start earning daily interests
-                li(style='text-align:left;font-size:20px;line-height:200%;')
-                  | Your lending amount in USD will start earning interest from the same day with a daily AI based trading output and fixed return
-          #section9
-            br
-            br
-            br
-            p(style='text-align:left;font-size:25px;line-height:200%;') Trading Sipcoins includes:
-            p
-              ul
-                li(style='text-align:left;font-size:20px;line-height:200%;') Deposit BTC to your unique wallet in SIP.
-                li(style='text-align:left;font-size:20px;line-height:200%;') Use your BTC balance to buy SIP coins.
-                li(style='text-align:left;font-size:20px;line-height:200%;') Trade SIP coins in the SIP exchange.
-            p(style='text-align:left;font-size:25px;line-height:200%;') Mining Sipcoins includes:
-            p
-              ul
-                li(style='text-align:left;font-size:20px;line-height:200%;') SIP coins will be available for mining via CPU and GPU at a later date
-                li(style='text-align:left;font-size:20px;line-height:200%;')
-                  | Download the SIP miner from the mining pool and configure the miner for pool mining.
-                li(style='text-align:left;font-size:20px;line-height:200%;') Use your CPU / GPU computation power to contribute to validate transactions.
-                li(style='text-align:left;font-size:20px;line-height:200%;') Earn mining rewards in the form of SIP coins.
-
-      #footer.my_footer_class
-          .container
-            .row
-              br
-              .col-sm-4
+                .col-xs-6.remember_class
+                  .form-check
+                    label.form-check-label
+                      input.form-check-input(type='checkbox')
+                      | Remember Me
+                .col-xs-6.forgot_class
+                  a(href='#') Forgot Password
+          .modal-footer.text-center
+            div.text_class
+              | Don't Have an Account? 
+              a.iq-font-yellow(href='javascript:void(0)',onclick='open_register()') Register Now
+            div.text_class
+              | Didn't receive Activation Link? 
+              a.iq-font-yellow(href='javascript:void(0)') Send Mail
+    //
+      =================================
+      Login
+    //
+      =================================
+      Register
+    .modal.fade.iq-register(tabindex='-1', role='dialog', aria-hidden='true')
+      .modal-dialog(role='document')
+        .modal-content
+          .modal-header.text-center
+            h4.modal-title.iq-tw-5 Register
+            a.close(data-dismiss='modal', aria-label='Close',style='cursor:pointer;')
+              span(aria-hidden='true') ×
+          .modal-body
+            form#register_form(method='post', action='/signup')
+              .form-group
+                input#recipient-username.form-control(type='text', placeholder='Username',required='',name='username')
+              .form-group
+                input#recipient-email.form-control(type='text', placeholder='Email',required='',name='emailUser')
+              .form-group
+                input#recipient-Full-name.form-control(type='text', placeholder='Full Name',required='',name='name')
+              .form-group
+                input#mobile-number.form-control(type='number', placeholder='Mobile Number',required='',name='mobileUser')
+              .form-group
+                input#password.form-control(type='password', placeholder='Password',required='',name='passUser')
+              .form-group
+                input#passwordConf.form-control(type='password', placeholder='Confirm Password',required='')
+              .form-group
+                | * Enter 4 digit PIN (Remember it for future)
+                input#sensPin.form-control(type='password', placeholder='Pin',required='',name='pinUser')
+              .form-buttons#captcha_input1
                 center
-              .col-sm-3
-                .row
-                  .col-sm-12
-                    h3 Contact
-                  .col-sm-12
-                    h4
-                      i.fa.fa-ticket.fa-1x(aria-hidden='true', style='margin-right:10px;')
-                      a(href='http://support.sipcoin.io', style='border:none;color:white;margin-right:0px;' target='_blank') Support Center
-                  .col-sm-12
-              .col-sm-5
-                .row
-                  .col-sm-12
-                    h3 Follow Us
-                  .col-sm-12
-                    a(href='https://www.facebook.com/sipcoin/', target='_blank')
-                      img(src='/images/facebook.png', height='50px;', width='50px;', style='margin-right:15px;')
-                    a(href='https://www.instagram.com/sipcoin.io/?hl=en', target='_blank')
-                      img(src='/images/insta_1.png', height='50px;', width='50px;', style='margin-right:15px;')
-                    a(href='https://twitter.com/sipcoin_io', target='_blank')
-                      img(src='/images/twitter.png', height='50px;', width='50px;', style='margin-right:15px;')
-                    a(href='https://goo.gl/e37G3Z', target='_blank')
-                      img(src='/images/Slack.png', height='50px;', width='50px;', style='margin-right:15px;')
-                    a(href='/about_us',style='text-decoration:none;color:white;margin-right:15px;margin-left:10px;')
-                      img(src='/images/about.png', alt='Person', style='height:40px;width:40px;margin-right:10px;')
-                      |  About Us
-              .col-sm-12
-                hr
-              .col-sm-12
-                center
-                  h4 © Copyright SIPcoin.io 2017
-              .col-sm-12
-                br
-
+                  .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
+                  //production - 6LfXbzsUAAAAALCk_NicLha3d-KG_0GRNRxAJUMs
+                  //development - 6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P
+                  br
+              a.button.iq-mtb-10(href="javascript:document.getElementById('register_form').submit();") Sign Up
+          .modal-footer.text-center
+            div
+              | Already Have an Account? 
+              a.iq-font-yellow(href='javascript:void(0)',onclick='open_login()')
+                | Login
+    //
+      =================================
+      Register
+    // back-to-top
+    #back-to-top
+      a#top.top(href='#top')
+        i.ion-ios-upload-outline
+    // back-to-top End
+    // jquery-min JavaScript
+    script(src='/js/views/js1/jquery-min.js ')
+    // popper JavaScript
+    script(src='/js/views/js1/popper.min.js ')
+    // Bootstrap JavaScript
+    script(src='/js/views/js1/bootstrap.min.js ')
+    // Bitcoin widget JavaScript
+    script(src='/js/views/js1/widget.js ')
+    // All-plugins JavaScript
+    script(src='/js/views/js1/all-plugins.js ')
+    // particles JavaScript
+    script(src='/js/views/js1/particles.js ')
+    // Custom JavaScript
+    script(src='/js/views/js1/custom.js ')
+    script(src='https://www.google.com/recaptcha/api.js')
     script.
-      $("a").on('click', function(event) {
-      if (this.hash !== "") {
-      event.preventDefault();
-      var hash = this.hash;
-      $('html, body').animate({
-      scrollTop: $(hash).offset().top
-      }, 500, function(){
-      window.location.hash = hash;
-      });
+      function open_login(){
+        $('.iq-register').modal('hide');
+        $('.iq-login').modal('show');
       }
-      });
+      
+      function open_register(){
+        $('.iq-login').modal('hide');
+        $('.iq-register').modal('show');
+      }

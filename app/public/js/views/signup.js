@@ -2,21 +2,19 @@
 $(document).ready(function(){
 
 	var av = new AccountValidator();
-	var sc = new SignupController();
-
-	$('#account-form').ajaxForm({
+	$('#register_form').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
 			//console.log(formData);
 
-			$('#account-form-btn2').addClass("disabled");
-			$('#account-form-btn2').css("pointer-events","none");
+			$('#register-form-btn').addClass("disabled");
+			$('#register-form-btn').css("pointer-events","none");
 
 			return av.validateForm();
 		},
 		success	: function(responseText, status, xhr, $form){
 
-			$('#account-form-btn2').removeClass("disabled");
-			$('#account-form-btn2').css("pointer-events","auto");
+			$('#register-form-btn').removeClass("disabled");
+			$('#register-form-btn').css("pointer-events","auto");
 
 			if(responseText=='Captcha_not_selected')
 			{
@@ -126,13 +124,13 @@ $(document).ready(function(){
 
 // customize the account signup form //
 
-	$('#account-form h2').text('Signup');
-	$('#account-form #sub1').text('Please tell us a little about yourself');
-	$('#account-form #sub2').text('Choose your username & password');
-	$('#account-form-btn1').html('Cancel');
-	$('#account-form-btn2').html('Submit');
-	$('#account-form-btn2').addClass('btn-primary');
-	$("#backButton").remove();
+	// $('#account-form h2').text('Signup');
+	// $('#account-form #sub1').text('Please tell us a little about yourself');
+	// $('#account-form #sub2').text('Choose your username & password');
+	// $('#account-form-btn1').html('Cancel');
+	// $('#account-form-btn2').html('Submit');
+	// $('#account-form-btn2').addClass('btn-primary');
+	// $("#backButton").remove();
 // setup the alert that displays when an account is successfully created //
 
 	$('.modal-alert').modal({ show:false, keyboard : false, backdrop : 'static' });
