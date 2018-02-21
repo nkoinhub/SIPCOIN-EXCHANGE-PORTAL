@@ -160,12 +160,12 @@ html(lang='en')
             hr
             col-xs-12#img_type
                 img(src='/images/2FA.png', height='100px', width='300px')
-          form(method='post', action='/login')
-            br
-            .form-group
-              input#2fa_code.form-control(type='number', placeholder='Enter 2FA Authentication code',required='',name='2faCode')
-            center
-              button.btn#button_style(type='submit') Submit
+            form(method='post', action='/twofa')
+              br
+              .form-group
+                input#2fa_code.form-control(type='number', placeholder='Enter 2FA Authentication code',required='',name='2faCode')
+              center
+                button.btn#button_style(type='submit') Submit
             
     //
       =================================

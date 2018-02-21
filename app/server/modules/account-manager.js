@@ -773,6 +773,7 @@ exports.enable2FA = function(username, secret, callback)
 //star the two FA and put to live when it's verified for the first time=========
 exports.start2FA = function(username, callback)
 {
+	console.log("start2FA called");
 	accounts.findOne({user:username},function(e,o){
 		o.twoFA = true;
 		accounts.save(o,{safe:true},callback(o));

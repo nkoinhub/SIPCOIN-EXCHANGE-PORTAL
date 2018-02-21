@@ -634,6 +634,7 @@ app.get('/resent_verfication_page',function(req,res){
     console.log("post login");
     var username = req.body['username'];
     var password = req.body['password'];
+    req.session.tempUser=username;
     // var twoFAcode = req.body['2faCode'];
     // var userFA = req.body['userFA'];
 
@@ -668,9 +669,6 @@ app.get('/resent_verfication_page',function(req,res){
                   if(o.accountVerified){
                     if(o.twoFA){
                       //render twofa
-
-                      localStorage.setItem("userFor2fa",username);
-
                       res.status(200).send('open_2fa');
                       // res.render('fa',{
                       //   username : username
@@ -721,7 +719,7 @@ app.get('/resent_verfication_page',function(req,res){
   // get for 2fa
   app.get('/twofa',function(req,res){
 
-      var userFA= localStorage.getItem("userFor2fa");
+      var userFA= req.session.tempUser;
       if(userFA!=undefined)
       {
         res.render('fa')
@@ -734,7 +732,7 @@ app.get('/resent_verfication_page',function(req,res){
   // post for 2fa
   app.post('/twofa',function(req,res){
     var twoFAcode = req.body['2faCode'];
-    var userFA= localStorage.getItem("userFor2fa");
+    var userFA= req.session.tempUser;
 
      if(twoFAcode != undefined && userFA != undefined) {
         //check if twoFA is correct or not, if correct
@@ -810,20 +808,25 @@ app.get('/resent_verfication_page',function(req,res){
   })
 
   //start two FA once the two FA is verified for the first time=================
-  app.get('/start2FA',function(req,res){
+  app.post('/start2FA',function(req,res){
     if(req.session.user == null) res.redirect('/');
     else {
+      console.log("#start 2fa route called")
       var twoFAcode = req.body['twoFAcode'];
+      console.log("#two fa code : "+twoFAcode);
       var verified = speakeasy.totp.verify({
         secret: req.session.user.twoFAsecret.base32,
         encoding: 'base32',
         token: twoFAcode
       });
+      console.log("#verfied : "+verified);
 
       if(verified){
+        console.log("#verified 2 : "+verified);
         AM.start2FA(req.session.user.user, function(result){
+          console.log(result);
           req.session.user = result;
-          res.send(200);
+          res.status(200).send("ok");
         })
       }
       else {
@@ -834,23 +837,28 @@ app.get('/resent_verfication_page',function(req,res){
   })
 
   //disable twoFA route for exchange portal ====================================
-  app.get('/disable2FA',function(req,res){
+  app.post('/disable2FA',function(req,res){
+
     if(req.session.user == null) res.redirect('/');
     else {
       var twoFAcode = req.body['twoFAcode'];
+      console.log('2fa input : '+twoFAcode);
+      console.log('base 32 : '+req.session.user.twoFAsecret.base32);
       var verified = speakeasy.totp.verify({
         secret: req.session.user.twoFAsecret.base32,
         encoding: 'base32',
         token: twoFAcode
       });
+      console.log('verfied satus : '+verified);
 
       if(verified){
         AM.disable2FA(req.session.user.user, function(result){
           req.session.user = result;
-          res.send(200);
+          res.status(200).send('disabled_2fa');
         })
       }
       else {
+        res.status(200).send('wrong_code');
         //wrong two fa entered
       }
     }

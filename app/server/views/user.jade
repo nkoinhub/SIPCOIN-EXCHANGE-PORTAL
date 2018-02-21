@@ -206,42 +206,35 @@ html(lang='en')
                           .row.twoFAEnabled(style='display:none;')
                             .col-sm-12
                               br
-                              |                                               Mobile APP(google authenticator) based two-factor authentication already enable.
+                              |                                               Mobile APP(google authenticator) based two-factor authentication enabled.
                             .col-sm-12
-                              form(action='/disableAuth', method='POST')
-                                .form-group(style='margin:0px;')
-                                  .row
-                                    br
-                                    .col-sm-12
-                                      input#authCodeDisable.form_inputs(type='number', placeholder='Auth Code', name='twoFachangeCode', required='')
-                                .form-group(style='margin:0px;')
-                                  .row
-                                    .col-sm-12
-                                      center
-                                        button.btn.btn-primary.sendButtons(type='submit') Disable 2FA
+                              br
+                              |                                               To disable 2FA, enter 2FA code from Google Authenticator APP
+                              
+                            .col-sm-12
+                              .row
+                                br
+                                .col-sm-12
+                                  input#authCodeDisable.form_inputs(type='number', placeholder='Auth Code', name='twoFachangeCode', required='')
+                                  center
+                                    button.btn.btn-primary.sendButtons(onclick='disable2fa_function()') Disable 2FA
                           .row.generateSecret(style='display:none;')
                             .col-sm-12
                               br
-                              form(action='/sipAddressGenerate', method='post')
-                                button.btn.btn-primary(type='submit') Generate Secret
+                              button.btn.btn-primary(type='submit',onclick='enable_twofa_function()') Generate Secret
                               br
-                          .row.afterGeneration
+                          .row.afterGeneration(style='display:none;')
                             .col-sm-12
                               br
                               .col-sm-12 Scan the QR code in Google Authenticator APP
-                              img(src='/images/qr.PNG', style='height:200px;width:200px;')
+                              img#qr_image(src='', style='height:200px;width:200px;')
                             .col-sm-12
-                              form(action='/enableTwoFa', method='POST')
-                                .form-group(style='margin:0px;')
-                                  .row
-                                    br
-                                    .col-sm-12
-                                      input#authCodeEnable.form_inputs(type='number', placeholder='Auth Code', name='twoFachangeCode', required='')
-                                .form-group(style='margin:0px;')
-                                  .row
-                                    .col-sm-12
-                                      center
-                                        button.btn.btn-primary.sendButtons(type='submit') Enable 2FA
+                            | Or Enter the secret in the Google Authenticator APP 
+                            .cols-sm-12.secret_class(style='font-weight:bold;margin-top:15px;')
+                            .col-sm-12(style='margin-top:20px;')
+                              input#authCodeEnable.form_inputs(type='number', placeholder='Auth Code', name='twoFachangeCode', required='')
+                              center
+                                button.btn.btn-primary.sendButtons(onclick='start_twofa_function()') Enable 2FA
                             .col-sm-12(style='text-align:left;font-size:16px;line-height:150%;')
                               | Dear User, 
                               br
@@ -376,3 +369,17 @@ html(lang='en')
   script(src='/js/views/perfect-scrollbar.jquery.min.js')
   // Material Dashboard javascript methods
   script(src='/js/views/material-dashboard.js?v=1.2.0')
+  script(src='/js/views/js1/user_ajax.js')
+  script.
+    if ('#{userDetails.twoFA}' == "false")
+    {
+      $('.generateSecret').css('display','block');
+    }
+    
+    if ('#{userDetails.twoFA}' == "true")
+    {
+      $('.twoFAEnabled').css('display','block');
+    }
+
+
+    console.log(typeof('#{userDetails.twoFA}'))
