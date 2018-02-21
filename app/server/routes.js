@@ -946,12 +946,10 @@ app.post('/checkBrowser',function(req,res){
         AM.resetBrowserVerification(o.user, function(result){
           console.log(result);
         })
-        res.send({
-          browserVerified : false
-        })
+        res.send({browserVerified : false});
       }
       else {
-        res.send({browserVerified : true})
+        res.send({browserVerified : true});
       }
     })
   }
@@ -1101,7 +1099,7 @@ app.get('/setDailyPercent',function(req,res){
 
 
 //create account on blockchain for the user ====================================
-app.get('/createAccount',function(req,res){
+app.post('/createAccount',function(req,res){
   if(req.session.user == null) res.redirect('/');
   else {
     AM.checkAccountCreation(req.session.user.user, function(result){
@@ -1116,7 +1114,8 @@ app.get('/createAccount',function(req,res){
 
           AM.createAccountOnBlockchain(req.session.user.user, accountDetails, function(result){
             console.log(result);
-            res.status(200).send("Account Created");
+            res.session.user.accountOnBlockchain = true;
+            res.status(200).send(accountDetails.address);
           });
 
         })
@@ -1128,6 +1127,21 @@ app.get('/createAccount',function(req,res){
       else {
         res.status(200).send("Account Already Present");
       }
+    })
+  }
+})
+
+//get address of blockchain account ============================================
+app.get('/getAddressBlockchain',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    AM.getBlockchainAddress(req.session.user.user, function(address){
+      qrcode.toDataURL(address, function(err, imageData){
+        res.send({
+          image : imageData,
+          address : address
+        })
+      })
     })
   }
 })

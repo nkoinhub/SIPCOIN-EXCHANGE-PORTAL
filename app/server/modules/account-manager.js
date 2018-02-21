@@ -215,7 +215,7 @@ exports.checkAccountCreation = function(username, callback)
 {
 	accounts.findOne({user:username},function(e,res){
 		if(!e){
-			callback(res.blockchainAccount);
+			callback(res.accountOnBlockchain);
 		}
 	})
 }

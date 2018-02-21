@@ -15,6 +15,7 @@ html.perfect-scrollbar-off(lang='en')
     script(src='/js/views/material.min.js', type='text/javascript')
     script(src='/js/views/perfect-scrollbar.jquery.min.js')
     script(src='/js/views/material-dashboard.js?v=1.2.0')
+    script(src='/js/views/js1/dashboard_ajax.js')
     style.
       .text_class{
       font-size: 15px;
@@ -582,12 +583,7 @@ html.perfect-scrollbar-off(lang='en')
                         ul.nav.nav-tabs(data-tabs='tabs')
                           li.active
                             a(href='#sipcoinTab', data-toggle='tab')
-                              | SIPcoin
-                              .ripple-container
-                          li
-                            a(href='#etheriumTab', data-toggle='tab')
-                              | Etherium
-                              // <i class="material-icons">code</i> Etherium
+                              | SIPcoin/Ethereum
                               .ripple-container
                           li
                             a(href='#bitcoinTab', data-toggle='tab')
@@ -602,32 +598,15 @@ html.perfect-scrollbar-off(lang='en')
                             .col-sm-12
                               br
                               br
-                              img(src='/images/qr.PNG', style='height:200px;width:200px;')
-                            .col-sm-12
+                              img#ethAddressImage(src='/images/qr.PNG', style='height:200px;width:200px;')
+                            .col-sm-12.generate_address_card
                               br
-                              form(action='/sipAddressGenerate', method='post')
+                              form(action='/createAccount', method='post')
                                 button.btn.btn-primary(type='submit')
                                   | Generate Address
-                              br
-                            .col-sm-12(style='border:2px dashed rgb(217,217,217);')
+                            .col-sm-12.eth_address_card(style='margin:20px; border:2px dashed rgb(217,217,217);')
                               h5
-                                b.text_class DD92nSFDwJwfMr2zFHV1pRjRUkvuiUSn7w
-                      #etheriumTab.tab-pane
-                        center
-                          .row
-                            .col-sm-12
-                              br
-                              br
-                              img(src='/images/qr.PNG', style='height:200px;width:200px;')
-                            .col-sm-12
-                              br
-                              form(action='/ethAddressGenerate', method='post')
-                                button.btn.btn-primary(type='submit')
-                                  | Generate Address
-                              br
-                            .col-sm-12(style='border:2px dashed rgb(217,217,217);')
-                              h5
-                                b.text_class DD92nSFDwJwfMr2zFHV1pRjRUkvuiUSn7w
+                                b.text_class.eth_address_text DD92nSFDwJwfMr2zFHV1pRjRUkvuiUSn7w
                       #bitcoinTab.tab-pane
                         center
                           .row
@@ -870,3 +849,11 @@ html.perfect-scrollbar-off(lang='en')
                 document.write(new Date().getFullYear())
               a(href='http://www.sipcoin.io') SIPcoin
               |  Crypto Platform #forThePeople
+        script.
+          if('#{userDetails.accountOnBlockchain}' == 'true'){
+            $('.generate_address_card').css('display','none');   
+            getAddr();
+          }
+          else {
+            $('.eth_address_card').css('display','none');            
+          }

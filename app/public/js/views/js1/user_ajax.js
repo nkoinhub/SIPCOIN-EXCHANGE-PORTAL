@@ -23,15 +23,10 @@ function start_twofa_function(){
 
     $.ajax({
     type: 'POST',
-
     crossOrigin:true,
-
     data: JSON.stringify(input_data),
-
     contentType: 'application/json',
-
     url: '/start2FA',
-
     success: function(result) {
         window.location.href = '/user';
     },error:function(err){
@@ -48,15 +43,10 @@ function disable2fa_function(){
 
   $.ajax({
   type: 'POST',
-
   crossOrigin:true,
-
   data: JSON.stringify(input_data),
-
   contentType: 'application/json',
-
   url: '/disable2FA',
-
   success: function(result) {
       console.log(result);
       window.location.href = '/user';
