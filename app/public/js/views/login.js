@@ -17,10 +17,59 @@ $(document).ready(function(){
 			}
 		},
 		success	: function(responseText, status, xhr, $form){
-			if (status == 'success') window.location.href = '/dashboard';
+			if(responseText=='Captcha_not_selected')
+			{
+				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
+				var ul = $('.modal-form-errors .modal-body ul');
+					ul.empty();
+					ul.append('<li> Captcha Not Selected </li>')
+				//
+				// for (var i=0; i < a.length; i++) ul.append('<li>'+a[i]+'</li>');
+				// this.alert.modal('show');
+				//
+				//
+				// $('.modal-form-errors .modal-body p').text('Captch Not Selected');
+				$('.modal-form-errors').modal('show');
+				console.log("Captha not selected");
+
+			}
+
+			if(responseText=='captcha_not_validated')
+			{
+				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
+				var ul = $('.modal-form-errors .modal-body ul');
+					ul.empty();
+					ul.append('<li> Captcha Not Validated <br> Please try again after some time </li>')
+
+				$('.modal-form-errors').modal('show');
+
+				// $('.modal-form-errors .modal-body p').text('Captch Not Validated.<br> Try Again After some time');
+				// $('.modal-form-errors').modal('show');
+				console.log('captcha not validated ');
+				grecaptcha.reset();
+			}
+
+			if(responseText=='open_2fa')
+			{
+				window.location.href = '/twofa';
+			}
+
+			if(responseText=='open_dasboard')
+			{
+				window.location.href = '/dashboard';
+			}
+
+			if(responseText=='open_active_mail_jade')
+			{
+				window.location.href = '/ActiveMail';
+			}
+
+			// if (status == 'success') window.location.href = '/dashboard';
 		},
 		error : function(e){
 			lv.showLoginError('Login Failure', 'Please check your username and/or password');
+			grecaptcha.reset();
+
 		}
 	});
 	$('#user-tf').focus();

@@ -634,61 +634,71 @@ app.get('/resent_verfication_page',function(req,res){
     console.log("post login");
     var username = req.body['username'];
     var password = req.body['password'];
-    var twoFAcode = req.body['2faCode'];
-    var userFA = req.body['userFA'];
+    // var twoFAcode = req.body['2faCode'];
+    // var userFA = req.body['userFA'];
 
     console.log("username : " + username);
-    console.log("two fa : " + twoFAcode);
-    console.log("user FA : " + userFA);
+    // console.log("two fa : " + twoFAcode);
+    // console.log("user FA : " + userFA);
 
-    if(username != undefined && twoFAcode == undefined){
-      AM.manualLogin(username, password, function(e,o){
-        if(!o){
-          res.status(400).send(e);
-        }
-        else {
-          if(o){
-            if(o.accountVerified){
-              if(o.twoFA){
-                //render twofa
-                res.render('fa',{
-                  username : username
-                });
+
+    if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null) {
+      res.status(200).send('Captcha_not_selected');
+      console.log("hey captcha not selected");
+      // res.json({"responseCode" : 1,"responseDesc" : "Please select captcha"});
+    }else {
+      // req.connection.remoteAddress will provide IP address of connected user.
+      var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + captchaSecret + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
+      // Hitting GET request to the URL, Google will respond with success or error scenario.
+      request(verificationUrl,function(error,response,body) {
+        body = JSON.parse(body);
+        // Success will be true or false depending upon captcha validation.
+        if(body.success !== undefined && !body.success) {
+          res.status(200).send('captcha_not_validated');
+          // res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
+        }else {
+
+          if(username != undefined){
+            AM.manualLogin(username, password, function(e,o){
+              if(!o){
+                res.status(400).send(e);
               }
               else {
-                //if twofa not enabled, create session and direct to dashboard
-                req.session.user = o;
-                res.redirect('/dashboard');
-              }
-            }
-            else {
-              //render activeMail.jade if account not yet verified
-              res.render('ActiveMail');
-            }
-          }
-        }
-      })
-    }
-    else if(twoFAcode != undefined && userFA != undefined) {
-      //check if twoFA is correct or not, if correct
-      console.log(twoFAcode);
-      AM.getAccountByUsername(userFA,function(o){
-        var verified = speakeasy.totp.verify({
-          secret: o.twoFAsecret.base32,
-          encoding: 'base32',
-          token: twoFAcode
-        });
+                if(o){
+                  if(o.accountVerified){
+                    if(o.twoFA){
+                      //render twofa
 
-        if(verified){
-          req.session.user = o;
-          res.redirect('/dashboard');
+                      localStorage.setItem("userFor2fa",username);
+
+                      res.status(200).send('open_2fa');
+                      // res.render('fa',{
+                      //   username : username
+                      // });
+                    }
+                    else {
+                      //if twofa not enabled, create session and direct to dashboard
+                      console.log('hey');
+                      req.session.user = o;
+                      res.status(200).send('open_dasboard');
+                      // res.redirect('/dashboard');
+                    }
+                  }
+                  else {
+                    //render activeMail.jade if account not yet verified
+                    console.log('hey there');
+                    res.status(200).send('open_active_mail_jade');
+                    // res.render('ActiveMail');
+                  }
+                }
+              }
+            })
+          }
+
         }
-        else {
-          res.render('fa',{
-            username : userFA
-          })
-        }
-      })
+
+      });
+
     }
 
     //
@@ -706,6 +716,55 @@ app.get('/resent_verfication_page',function(req,res){
 		// });
 
 	});
+
+
+  // get for 2fa
+  app.get('/twofa',function(req,res){
+
+      var userFA= localStorage.getItem("userFor2fa");
+      if(userFA!=undefined)
+      {
+        res.render('fa')
+      }else {
+        res.redirect('/');
+      }
+
+  });
+
+  // post for 2fa
+  app.post('/twofa',function(req,res){
+    var twoFAcode = req.body['2faCode'];
+    var userFA= localStorage.getItem("userFor2fa");
+
+     if(twoFAcode != undefined && userFA != undefined) {
+        //check if twoFA is correct or not, if correct
+        console.log(twoFAcode);
+        AM.getAccountByUsername(userFA,function(o){
+          var verified = speakeasy.totp.verify({
+            secret: o.twoFAsecret.base32,
+            encoding: 'base32',
+            token: twoFAcode
+          });
+
+          if(verified){
+            req.session.user = o;
+            res.redirect('/dashboard');
+          }
+          else {
+            res.render('fa');
+          }
+        });
+      }
+
+  });
+
+  // active mail route
+
+  app.get('/ActiveMail',function(req,res){
+    res.render('ActiveMail');
+  });
+
+
 
   //new user route for user settings on new dashboard
   app.get('/user',function(req,res){
@@ -1436,66 +1495,72 @@ app.get('/getBalance',function(req,res){
 //signup submission of registration form along with referral
 	app.post('/signup', function(req, res){
 
-		// if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null) {
-		// 	res.status(200).send('Captcha_not_selected');
-		// 	console.log("hey captcha not selected");
-		// 	// res.json({"responseCode" : 1,"responseDesc" : "Please select captcha"});
-		// }else {
+		if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null) {
+			res.status(200).send('Captcha_not_selected');
+			console.log("hey captcha not selected");
+			// res.json({"responseCode" : 1,"responseDesc" : "Please select captcha"});
+		}else {
 
-			var newAccount = {
-				name 	: req.body['name'],
-				email 	: req.body['emailUser'],
-				user 	: req.body['username'],
-        mobile : req.body['mobileUser'],
-				pass	: req.body['passUser'],
-        PIN : req.body['pinUser'],
-        twoFA : false,
-        twoFAsecret : "TWO FA DISABLED",
-				secret : makeid(20),
-        browserVerified : false,
-        lastVerified : new Date(),
-				accountVerified : false,
-        investmentIDs : [],
-        accountOnBlockchain : false
-			}
+	    // req.connection.remoteAddress will provide IP address of connected user.
+			var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + captchaSecret + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
+			// Hitting GET request to the URL, Google will respond with success or error scenario.
+			request(verificationUrl,function(error,response,body) {
+				body = JSON.parse(body);
+				// Success will be true or false depending upon captcha validation.
+				if(body.success !== undefined && !body.success) {
+					res.status(200).send('captcha_not_validated');
+					// res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
+				}else {
 
-      AM.addNewAccount(newAccount, function(e){
-        if (e){
-          res.status(400).send(e);
-        }	else{
-          var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
+          var newAccount = {
+          	name 	: req.body['name'],
+          	email 	: req.body['emailUser'],
+          	user 	: req.body['username'],
+            mobile : req.body['mobileUser'],
+          	pass	: req.body['passUser'],
+            PIN : req.body['pinUser'],
+            twoFA : false,
+            twoFAsecret : "TWO FA DISABLED",
+          	secret : makeid(20),
+            browserVerified : false,
+            lastVerified : new Date(),
+          	accountVerified : false,
+            investmentIDs : [],
+            accountOnBlockchain : false
+          }
 
-          var mailOptions = {
-            from: sipCoinEmailId,
-            to: newAccount.email,
-            subject: 'SIPCOIN || Successful Registration',
-            html: part1 +URLforVerification+part2,
-          };
+          AM.addNewAccount(newAccount, function(e){
+            if (e){
+              console.log('error in account creation');
+              res.status(400).send(e);
+            }	else{
 
-          transporter.sendMail(mailOptions, function(error, info){
-            if (error) {
-              console.log("Email Not Sent, Error : " + error);
-            } else {
-              console.log('Email Sent: ' + info.response);
+              console.log('account created successfully');
+
+              var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
+
+              var mailOptions = {
+                from: sipCoinEmailId,
+                to: newAccount.email,
+                subject: 'SIPCOIN || Successful Registration',
+                html: part1 +URLforVerification+part2,
+              };
+
+              transporter.sendMail(mailOptions,function(error, info){
+
+                if (error) {
+                  console.log("Email Not Sent, Error : " + error);
+                } else {
+                  console.log('Email Sent: ' + info.response);
+                }
+              });
+              res.status(200).send('ok');
             }
-            res.redirect('/');
           });
-        }
-      });
 
-	   //  // req.connection.remoteAddress will provide IP address of connected user.
-			// var verificationUrl = "https://www.google.com/recaptcha/api/siteverify?secret=" + captchaSecret + "&response=" + req.body['g-recaptcha-response'] + "&remoteip=" + req.connection.remoteAddress;
-			// // Hitting GET request to the URL, Google will respond with success or error scenario.
-			// request(verificationUrl,function(error,response,body) {
-			// 	body = JSON.parse(body);
-			// 	// Success will be true or false depending upon captcha validation.
-			// 	if(body.success !== undefined && !body.success) {
-			// 		res.status(200).send('captcha_not_validated');
-			// 		// res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
-			// 	}else {
-			// 	}
-		 // });
-	 //}
+				}
+		 });
+	 }
 	});
 
 
