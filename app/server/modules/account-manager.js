@@ -230,6 +230,19 @@ exports.getBlockchainAddress = function(username, callback)
 	})
 }
 
+//get the pin and email combination to check forgot-password====================
+exports.checkPin = function(email, pin, callback)
+{
+	accounts.findOne({email:email,PIN:pin},function(e,res){
+		if(res){
+			callback(true);
+		}
+		else if(res == null) {
+			callback(false);
+		}
+	})
+}
+
 exports.findParentForNewNode = function(root, link, callback)
 {
 	console.log("Find Parent For New Node Called");

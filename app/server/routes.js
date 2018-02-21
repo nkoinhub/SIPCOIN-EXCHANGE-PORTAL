@@ -1579,6 +1579,8 @@ app.get('/getBalance',function(req,res){
 
 				var link = serverIP + '/reset-password?e='+o.email+'&p='+o.pass;
 
+        console.log(link);
+
 				var mailOptions = {
 					from: sipCoinEmailId,
 					to: o.email,
@@ -1624,17 +1626,28 @@ app.get('/getBalance',function(req,res){
 
 	app.post('/reset-password', function(req, res) {
 		var nPass = req.body['pass'];
+    var nPin = req.body['PIN'];
 	// retrieve the user's email from the session to lookup their account and reset password //
 		var email = req.session.reset.email;
 	// destory the session immediately after retrieving the stored email //
 		req.session.destroy();
-		AM.updatePassword(email, nPass, function(e, o){
-			if (o){
-				res.status(200).send('ok');
-			}	else{
-				res.status(400).send('unable to update password');
-			}
-		})
+    AM.checkPin(email, nPin, function(result){
+      console.log("email : " +email);
+      console.log("PIN : "+nPin);
+      if(result){
+        console.log("result : "+result);
+        AM.updatePassword(email, nPass, function(e, o){
+          if (o){
+            res.status(200).send('ok');
+          }	else{
+            res.status(400).send('unable to update password');
+          }
+        })
+      }
+      else {
+        res.status(200).send("Invalid Pin");
+      }
+    })
 	});
 
 	// view & delete accounts //
