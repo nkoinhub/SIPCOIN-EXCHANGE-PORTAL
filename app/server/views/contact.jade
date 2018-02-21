@@ -1,7 +1,7 @@
 doctype html
 html(lang='en')
   head
-    title SIPCOIN - Crypto Currency 
+    title SIPCOIN - Crypto Currency
     // Required meta tags
     meta(charset='utf-8')
     meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
@@ -33,40 +33,40 @@ html(lang='en')
     link(rel='stylesheet', type='text/css', href='/css/responsive.css')
     // Custom CSS
     link(rel='stylesheet', type='text/css', href='/css/custom.css')
-    
+
     style.
       #captcha_input{
       margin-top:10%;
       margin-left:6%;
       }
-      
+
       .remember_class{
       margin-left:25px;
       }
-      
+
       .forgot_class{
       margin-left:65px;
-      }  
-      
-      
+      }
+
+
       @media(max-width:767px) {
       .remember_class{
       margin-left:15px;
       }
-      
+
       .forgot_class{
       margin-left:25px;
-      }  
+      }
 
-      
+
       .text_class{
       font-size:13px;
       }
-      
+
       #captcha_input{
         margin-left:-4%;
       }
-      
+
       #captcha_input1{
         margin-left:-5%;
       }
@@ -165,12 +165,12 @@ html(lang='en')
             .col-lg-12
               h3.iq-mtb-30 Contact Form
               #formmessage Success/Error Message Goes Here
-              form#contactform.form-vertical(method='post', action='../php/contact-form.php')
+              form#contactform.form-vertical(method='post', action='/contact-form')
                 .contact-form
                   .section-field.iq-mb-30
                     input#name(type='text', placeholder='Name*', name='name')
                   .section-field.iq-mb-30
-                    input#email(type='text', placeholder='Email*', name='email')
+                    input#email(type='email', placeholder='Email*', name='email')
                   .section-field.iq-mb-30
                     input#phone(type='text', placeholder='Phone*', name='phone')
                   .section-field.iq-mb-30
@@ -227,7 +227,7 @@ html(lang='en')
                     i.fa.fa-slack
             .col-sm-12.text-center
               .iq-copyright.iq-mt-10.iq-font-white
-                | Copyright 
+                | Copyright
                 span#copyright
                   script.
                     document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
@@ -270,10 +270,10 @@ html(lang='en')
                   a(href='#') Forgot Password
           .modal-footer.text-center
             div.text_class
-              | Don't Have an Account? 
+              | Don't Have an Account?
               a.iq-font-yellow(href='javascript:void(0)',onclick='open_register()') Register Now
             div.text_class
-              | Didn't receive Activation Link? 
+              | Didn't receive Activation Link?
               a.iq-font-yellow(href='javascript:void(0)') Send Mail
     //
       =================================
@@ -314,9 +314,12 @@ html(lang='en')
               a.button.iq-mtb-10(href="javascript:document.getElementById('register_form').submit();") Sign Up
           .modal-footer.text-center
             div
-              | Already Have an Account? 
+              | Already Have an Account?
               a.iq-font-yellow(href='javascript:void(0)',onclick='open_login()')
                 | Login
+
+
+
     //
       =================================
       Register
@@ -346,9 +349,8 @@ html(lang='en')
         $('.iq-register').modal('hide');
         $('.iq-login').modal('show');
       }
-      
+
       function open_register(){
         $('.iq-login').modal('hide');
         $('.iq-register').modal('show');
       }
-    

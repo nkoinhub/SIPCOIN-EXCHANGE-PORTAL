@@ -2111,6 +2111,44 @@ app.get('/withdrawals',function(req,res){
 })
 
 
+//Contact form Email sent without Validation.
+//Code by Harsh
+//Validate before you deploy.
+app.post('/contact-form',function(req,res){
+
+    console.log("Inside Contact Form");
+
+        var name = "<br><h3> User Name: " + req.body["name"];
+        var email = "<br><h3> Email: " + req.body["email"];
+        var phone = "<br><h3> Phone No: " + req.body["phone"];
+        var message = "<br><br><h3> Query: " + req.body["message"];
+        var finalMessage = name + email + phone + message;
+
+
+        console.log("Message : " + message);
+
+        var mailOptions = {
+          from: sipCoinEmailId,
+          to: sipCoinEmailId,
+          subject: 'User Query || SIPCOIN',
+          html: finalMessage,
+        };
+
+        transporter.sendMail(mailOptions, function(error, info){
+          if (error) {
+            console.log(error);
+            console.log("Email_NOT_Sent");
+            res.send("ERROR IN SENDING MAIL");
+          } else {
+            console.log('Email sent: ' + info.response);
+            res.redirect('/contact');
+          }
+        })
+
+});
+
+
+
 //redirect to main page if wrong routes tried
 app.get('*', function(req, res) { res.redirect('/') });
 
