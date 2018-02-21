@@ -3,13 +3,25 @@ function AccountValidator()
 {
 // build array maps of the form inputs & control groups //
 
-	this.formFields = [$('#recipient-Full-name'), $('#recipient-email'), $('#recipient-username'), $('#passwordConf')];
-	this.controlGroups = [$('#recipient-Full-name-cg'), $('#recipient-email-cg'), $('#recipient-username-cg'), $('#passwordConf-cg')];
+	this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf'),$('#passwordconf-tf'),$('#senspin-tf')];
+	this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg'),$('#passwordconf-cg'),$('#senspin-cg')];
 
 // bind the form-error modal window to this controller to display any errors //
 
 	this.alert = $('.modal-form-errors');
 	this.alert.modal({ show : false, keyboard : true, backdrop : true});
+
+// validate pin it has to be four digit
+
+	this.validatePin=function(s){
+		return s.length==4;
+	}
+
+// validate password matching or not
+
+	this.validatePassworEqual=function(pass1,pass2){
+		return pass1==pass2;
+	}
 
 	this.validateName = function(s)
 	{
@@ -39,6 +51,7 @@ function AccountValidator()
 			ul.empty();
 		for (var i=0; i < a.length; i++) ul.append('<li>'+a[i]+'</li>');
 		this.alert.modal('show');
+		grecaptcha.reset();
 	}
 
 }
@@ -67,17 +80,30 @@ AccountValidator.prototype.validateForm = function()
 	for (var i=0; i < this.controlGroups.length; i++) this.controlGroups[i].removeClass('error');
 	if (this.validateName(this.formFields[0].val()) == false) {
 		this.controlGroups[0].addClass('error'); e.push('Please Enter Your Name');
-	}false
+	}
+
 	if (this.validateEmail(this.formFields[1].val()) == false) {
 		this.controlGroups[1].addClass('error'); e.push('Please Enter A Valid Email');
 	}
+
 	if (this.validateName(this.formFields[2].val()) == false) {
 		this.controlGroups[2].addClass('error');
 		e.push('Please Choose A Username');
 	}
+
 	if (this.validatePassword(this.formFields[3].val()) == false) {
 		this.controlGroups[3].addClass('error');
 		e.push('Password Should Be At Least 6 Characters');
+	}
+
+	if(this.validatePin(this.formFields[5].val())==false){
+		this.controlGroups[5].addClass('error');
+		e.push('Pin has to be four digit');
+	}
+
+	if(this.validatePassworEqual(this.formFields[3].val(),this.formFields[4].val())==false){
+		this.controlGroups[4].addClass('error');
+		e.push('Password Not Matching');
 	}
 
 	if(e.length!=0)
