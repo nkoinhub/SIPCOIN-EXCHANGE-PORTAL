@@ -59,6 +59,7 @@ function disable2fa_function(){
 
   success: function(result) {
       console.log(result);
+      window.location.href = '/user';
   },error:function(err){
 
   }
