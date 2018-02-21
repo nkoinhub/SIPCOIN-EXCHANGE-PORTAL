@@ -850,19 +850,21 @@ app.get('/transactionHistory',function(req,res){
   if(req.session.user == null) res.redirect('/');
   else {
     var btc,eth,sip;
-    btcCheck().then((value)=>{btc=value});
-    ethCheck().then((value)=>{eth=value});
     getTokenValue().then((value)=>{sip=value});
-
-    AM.getTransactions(req.session.user.user, req.session.user.email, function(result){
-      res.render('table',{
-        userDetails : req.session.user,
-        SIP : sip,
-        BTC : btc,
-        ETH : eth,
-        transactions : JSON.stringify(result)
+    ethCheck().then((value)=>{eth=value});
+    btcCheck().then((value)=>{
+      btc=value
+      AM.getTransactions(req.session.user.user, req.session.user.email, function(result){
+        res.render('table',{
+          userDetails : req.session.user,
+          SIP : sip,
+          BTC : btc,
+          ETH : eth,
+          transactions : JSON.stringify(result)
+        })
       })
-    })
+    });
+
   }
 })
 
