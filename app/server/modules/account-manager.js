@@ -204,6 +204,29 @@ exports.addInvestmentInCurrentScenario = function(amount, callback)
 	})
 }
 
+//get investment details for the user dashboard=================================
+exports.getInvestmentDetails = function(username, callback)
+{
+	var details = {
+		amount : 0,
+		SIPcoins : 0
+	}
+
+	investments.find({username:username}).toArray(function(e,res){
+		if(res.length != 0){
+			for(var i = 0; i < res.length; i++)
+			{
+				details.amount = details.amount + res[i].amount;
+				details.SIPcoins = details.SIPcoins + res[i].equivalentSipCoins;
+			}
+		}
+	})
+
+	setTimeout(()=>{
+		callback(details);
+	},3000)
+}
+
 //create account on blockchain and set the address, privateKey==================
 exports.createAccountOnBlockchain = function(username, accountDetails, callback)
 {
@@ -227,6 +250,14 @@ exports.getBlockchainAddress = function(username, callback)
 		if(!e){
 			callback(res.blockchainAccount.address);
 		}
+	})
+}
+
+//get the dollar wallet balance for dashboard===================================
+exports.getDollarWalletBalance = function(username, callback)
+{
+	accounts.findOne({user:username},function(e,res){
+		callback(res.dollarWallet);
 	})
 }
 
@@ -828,6 +859,24 @@ exports.autoLogin = function(user, pass, callback)
 			callback(null);
 		}
 	});
+}
+
+//change password feature in user profile=======================================
+exports.changePassword = function(user, pass, newPass, callback)
+{
+	accounts.findOne({user:user},function(e,o){
+		validatePassword(pass, o.pass, function(err, res){
+			if(res){
+				saltAndHash(newPass, function(hash){
+					o.pass = hash;
+					accounts.save(o,{safe:true},callback("New Password Updated"))
+				})
+			}
+			else {
+				callback('Invalid Password')
+			}
+		})
+	})
 }
 
 exports.manualLogin = function(user, pass, callback)

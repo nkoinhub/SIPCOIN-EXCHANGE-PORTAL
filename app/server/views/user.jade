@@ -50,6 +50,18 @@ html(lang='en')
 
       }
   body
+  
+    #myModal.modal.fade(role='dialog')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal') ×
+            h4.modal-title(style='font-weight:400;') Whoops
+          .modal-body
+            .col-lg-12.responseText
+          .modal-footer
+          // <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
     .wrapper
       .sidebar(data-color='purple', data-image='/images/sidebar-3.jpg')
         //
@@ -111,7 +123,7 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
               a.navbar-brand(href='#',style='font-weight:400;')  Profile 
-              a.navbar-brand.valuesDoll(style='margin-left:387px;')  BTC/USD $#{BTC} 
+              a.navbar-brand.valuesDoll(style='margin-left:327px;')  BTC/USD $#{BTC} 
               a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
               a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
             .collapse.navbar-collapse
@@ -295,33 +307,32 @@ html(lang='en')
                       #changePassTab.tab-pane
                         .row
                           .col-sm-10.col-lg-offset-1
-                            form(action='/changePassword', method='POST')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Current Password
-                                  .col-sm-7
-                                    input#currPass.form_inputs(type='password', placeholder='Current Password', name='currPassChange', required='')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') New Password
-                                  .col-sm-7
-                                    input#newPass.form_inputs(type='password', placeholder='New Password', name='newPassChange', required='')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Confirm Password
-                                  .col-sm-7
-                                    input#confPass.form_inputs(type='password', placeholder='Confirm Password', name='confPassChange', required='')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Secret PIN
-                                  .col-sm-7
-                                    input#pinSecret.form_inputs(type='password', placeholder='Enter Pin', name='pinPassChange', required='')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  center
-                                    .col-sm-9.col-lg-offset-2
-                                      button.btn.btn-primary.sendButtons(type='submit')
-                                        | Submit
+                            .form-group(style='margin:0px;')
+                              .row
+                                .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Current Password
+                                .col-sm-7
+                                  input#currPass.form_inputs(type='password', placeholder='Current Password', name='currPassChange', required='')
+                            .form-group(style='margin:0px;')
+                              .row
+                                .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') New Password
+                                .col-sm-7
+                                  input#newPass.form_inputs(type='password', placeholder='New Password', name='newPassChange', required='')
+                            .form-group(style='margin:0px;')
+                              .row
+                                .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Confirm Password
+                                .col-sm-7
+                                  input#confPass.form_inputs(type='password', placeholder='Confirm Password', name='confPassChange', required='')
+                            .form-group(style='margin:0px;')
+                              .row
+                                .col-sm-4.col-lg-offset-1(style='margin-top:12px;float:left;') Secret PIN
+                                .col-sm-7
+                                  input#pinSecret.form_inputs(type='password', placeholder='Enter Pin', name='pinPassChange', required='')
+                            .form-group(style='margin:0px;')
+                              .row
+                                center
+                                  .col-sm-9.col-lg-offset-2
+                                    button.btn.btn-primary.sendButtons(onclick='change_password_function()')
+                                      | Submit
                     //
                       <h6 class="category text-gray">CEO / Co-Founder</h6>
                       <h4 class="card-title">Alec Thompson</h4>
@@ -380,6 +391,9 @@ html(lang='en')
     {
       $('.twoFAEnabled').css('display','block');
     }
-
+    
+    $('#myModal').on('hidden.bs.modal', function () {
+      $('.responseText').html('');
+    })
 
     console.log(typeof('#{userDetails.twoFA}'))

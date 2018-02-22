@@ -101,7 +101,7 @@ var acntBalance = function(address){
   return new Promise(function(resolve,reject){
     request({
       headers : {'content-type' : 'application/x-www-form-urlencoded'},
-      url : 'http://18.220.204.121:9326/acntBalance',
+      url : 'http://54.169.149.54:9326/acntBalance',
       method : 'POST',
       form : {
         'apikey' : "ironmandiesininfinityWars",
@@ -119,11 +119,11 @@ var createAccount = function(username){
   return new Promise(function(resolve,reject){
     request({
       headers : {'content-type' : 'application/x-www-form-urlencoded'},
-      url : 'http://18.220.204.121:9326/ethAcnt',
+      url : 'http://54.169.149.54:9326/ethAcnt',
       method : "POST",
       form : {
         'apikey' : "ironmandiesininfinityWars",
-        'username' : "rohan"
+        'username' : username
       }
     },(err,res,body)=>{
       //console.log(body)
@@ -771,9 +771,13 @@ app.get('/resent_verfication_page',function(req,res){
       var btc;
   		var sip;
       var eth;
-      getTokenValue().then((value)=>{
-  				sip = value;
-  			})
+      // getTokenValue().then((value)=>{
+  		// 		sip = value;
+  		// 	})
+
+      AM.getCNAV(function(CNAV){
+        sip = CNAV;
+      })
 
 			btcCheck().then((value)=>{
 				btc = value;
@@ -873,28 +877,147 @@ app.post('/placeTransaction',function(req,res){
       TID : (req.session.user.user).substr(0,3) + moment().format('x'),
       username : req.session.user.user,
       email : req.session.user.email,
-      amount : req.body['amount'],
+      amount : req.body['dollarInputTransfer'],
       typeCode : req.body['type'],
       CNAV : "",
       dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
       dateOfCompletion : "STILL IN PROCESS",
-      destinationAddress : "NOT REQUIRED",
+      destinationAddress : req.session.user.blockchainAccount.address,
+      destinationPrivateKey : req.session.user.blockchainAccount.privateKey,
       transactionComplete : false
     }
-
-    AM.getCNAV(function(CNAV){
-      transactionRequest.CNAV = CNAV;
-    })
 
     if(req.body['type'] == 4){
       transactionRequest.destinationAddress = req.body['destination'];
     }
 
 
-    AM.placeTransactionRequest(transactionRequest, function(result){
-      console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
-      //res.status(200).send('ok');
-      res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+    AM.getCNAV(function(CNAV){
+      transactionRequest.CNAV = CNAV;
+      AM.placeTransactionRequest(transactionRequest, function(result){
+        console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+        //res.status(200).send('ok');
+        res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+      })
+    })
+  }
+})
+
+//place ether to external ether transaction request=============================
+app.post('/placeEtherTransaction',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    var PIN = req.body['pinValue'];
+    console.log("### PIN : " + PIN)
+    AM.checkAccountCreation(req.session.user.user, function(result){
+      if(result){
+        AM.checkPin(req.session.user.email, PIN, function(result){
+          if(result){
+            if(req.session.user.twoFA == true){
+              var twoFAcode = req.body['twoFAcode'];
+
+              console.log('2fa input : '+twoFAcode);
+              console.log('base 32 : '+req.session.user.twoFAsecret.base32);
+
+              var verified = speakeasy.totp.verify({
+                secret: req.session.user.twoFAsecret.base32,
+                encoding: 'base32',
+                token: twoFAcode
+              });
+              console.log('verfied satus : '+verified);
+
+              if(verified){
+                var transactionRequest = {
+                  TID : (req.session.user.user).substr(0,3) + moment().format('x'),
+                  username : req.session.user.user,
+                  email : req.session.user.email,
+                  amount : req.body['dollarInputTransfer'],
+                  typeCode : req.body['type'],
+                  CNAV : "",
+                  dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
+                  dateOfCompletion : "STILL IN PROCESS",
+                  sourceAddress : req.sesssion.user.blockchainAccount.address,
+                  sourcePrivateKey : req.session.user.blockchainAccount.privateKey,
+                  destinationAddress : "NOT REQUIRED",
+                  transactionComplete : false
+                }
+
+                if(req.body['type'] == 4){
+                  transactionRequest.destinationAddress = req.body['destination'];
+                }
+
+
+                AM.getCNAV(function(CNAV){
+                  transactionRequest.CNAV = CNAV;
+                  AM.placeTransactionRequest(transactionRequest, function(result){
+                    console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+                    //res.status(200).send('ok');
+                    var response = {
+                      result : "TID",
+                      TID : transactionRequest.TID
+                    }
+                    res.status(200).send(response);
+                    // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+                  })
+                })
+              }
+              else {
+                var response = {
+                  result : "wrong_code"
+                }
+                res.status(200).send(response);
+                //wrong two fa entered
+              }
+            }
+            else {
+              var transactionRequest = {
+                TID : (req.session.user.user).substr(0,3) + moment().format('x'),
+                username : req.session.user.user,
+                email : req.session.user.email,
+                amount : req.body['dollarInputTransfer'],
+                typeCode : req.body['type'],
+                CNAV : "",
+                dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
+                dateOfCompletion : "STILL IN PROCESS",
+                sourceAddress : req.session.user.blockchainAccount.address,
+                sourcePrivateKey : req.session.user.blockchainAccount.privateKey,
+                destinationAddress : "NOT REQUIRED",
+                transactionComplete : false
+              }
+
+              if(req.body['type'] == 4){
+                transactionRequest.destinationAddress = req.body['destination'];
+              }
+
+
+              AM.getCNAV(function(CNAV){
+                transactionRequest.CNAV = CNAV;
+                AM.placeTransactionRequest(transactionRequest, function(result){
+                  console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+                  var response = {
+                    result : "TID",
+                    TID : transactionRequest.TID
+                  }
+                  res.status(200).send(response);
+                  // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+                })
+              })
+            }
+          }
+          else {
+            var response = {
+              result : "PIN Wrong"
+            }
+            res.status(200).send(response);
+          }
+        })
+      }
+      else {
+        var response = {
+          result : "BlockchainAccountDoesNotExist"
+        }
+        res.status(200).send(response);
+      }
     })
   }
 })
@@ -906,7 +1029,46 @@ app.get('/transactionRequest',function(req,res){
     var TID = req.query.TID;
     AM.getTransactionRequest(TID, function(result){
       if(result){
-        res.send(result);
+        //res.send(result);
+        var type;
+        var btc;
+        var eth;
+        var sip;
+
+        if(result.typeCode == 1){
+          type = "Dollar to SIPcoin"
+        }
+        else if(result.typeCode == 2){
+          type = "SIPcoin to Ether"
+        }
+        else if(result.typeCode == 3){
+          type = "Ether to SIPcoin"
+        }
+        else if(result.typeCode == 4){
+          type = "Ether to Another Ether Account"
+        }
+
+        btcCheck().then((value)=>{
+          btc = value;
+          ethCheck().then((value)=>{
+            eth = value;
+            AM.getCNAV(function(CNAV){
+              sip = CNAV;
+              res.render('transactionRequest',{
+                userDetails : req.session.user,
+                TID : result.TID,
+                amount : result.amount,
+                type : type,
+                CNAV : result.CNAV,
+                dateOfRequest : result.dateOfRequest,
+                destinationAddress : result.destinationAddress,
+                BTC : btc,
+                SIP : sip,
+                ETH : eth
+              })
+            })
+          })
+        })
       }
     })
   }
@@ -917,7 +1079,8 @@ app.get('/transactionHistory',function(req,res){
   if(req.session.user == null) res.redirect('/');
   else {
     var btc,eth,sip;
-    getTokenValue().then((value)=>{sip=value});
+    //getTokenValue().then((value)=>{sip=value});
+    AM.getCNAV(function(CNAV){sip=CNAV});
     ethCheck().then((value)=>{eth=value});
     btcCheck().then((value)=>{
       btc=value
@@ -931,7 +1094,6 @@ app.get('/transactionHistory',function(req,res){
         })
       })
     });
-
   }
 })
 
@@ -1076,6 +1238,16 @@ app.get('/addInvestment',function(req,res){
 
 })
 
+//get investment details of the user ===========================================
+app.get('/getInvestmentDetails',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    AM.getInvestmentDetails(req.session.user.user, function(result){
+      res.status(200).send(result);
+    })
+  }
+})
+
 //set CNAV in current scenario collection updation==============================
 app.get('/currentCNAV',function(req,res){
   var CNAV = req.body['CNAV'];
@@ -1114,14 +1286,14 @@ app.post('/createAccount',function(req,res){
 
           AM.createAccountOnBlockchain(req.session.user.user, accountDetails, function(result){
             console.log(result);
-            res.session.user.accountOnBlockchain = true;
-            res.status(200).send(accountDetails.address);
+            //res.session.user.accountOnBlockchain = true;
+            AM.getAccountByUsername(req.session.user.user, function(result){
+              req.session.user = result;
+            })
+            //res.status(200).send(accountDetails.address);
+            res.redirect('/dashboard');
           });
 
-        })
-        .catch((result)=>{
-          console.log("## Blockchain Account Creation Failed : "+result);
-          res.status(200).send("Failed");
         })
       }
       else {
@@ -1150,15 +1322,75 @@ app.get('/getAddressBlockchain',function(req,res){
 app.get('/getBalance',function(req,res){
   if(req.session.user == null) res.redirect('/');
   else {
-    AM.getBlockchainAddress(req.session.user.user, function(address){
-      acntBalance(address).then((balances)=>{
-        balances = JSON.parse(balances);
+    AM.checkAccountCreation(req.session.user.user, function(result){
+      if(result){
+        AM.getBlockchainAddress(req.session.user.user, function(address){
+          acntBalance(address).then((balances)=>{
+            balances = JSON.parse(balances);
+            var balanceDetails = {
+              sipBalance : balances.tokenBalance,
+              etherBalance : balances.etherBalance
+            }
+            res.status(200).send(balanceDetails);
+          })
+        })
+      }
+      else {
         var balanceDetails = {
-          sipBalance : balances.tokenBalance,
-          etherBalance : balances.etherBalance
+          sipBalance : 0,
+          etherBalance : 0
         }
         res.status(200).send(balanceDetails);
-      })
+      }
+    })
+  }
+})
+
+//get dollar wallet balance for dashboard ======================================
+app.get('/getDollarBalance',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    AM.getDollarWalletBalance(req.session.user.user, function(result){
+      var balance = {
+        result : result
+      }
+      res.status(200).send(balance);
+    })
+  }
+})
+
+//change password via user profile ============================================
+app.post('/changePassword',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    var oldPass = req.body['currPassChange'];
+    var newPass = req.body['newPassChange'];
+    var confirmNewPass = req.body['confPassChange'];
+    var PIN = req.body['pinPassChange'];
+
+    AM.checkPin(req.session.user.email, PIN, function(result){
+      if(result){
+        if(newPass == confirmNewPass){
+          AM.changePassword(req.session.user.user, oldPass, newPass, function(result){
+            var passwordChangeResult = {
+              result : result
+            }
+            res.status(200).send(passwordChangeResult);
+          })
+        }
+        else {
+          var passwordChangeResult = {
+            result : "Password Doesn't Match"
+          }
+          res.status(200).send(passwordChangeResult);
+        }
+      }
+      else {
+        var passwordChangeResult = {
+          result : "Check Your PIN and Try Again"
+        }
+        res.status(200).send(passwordChangeResult);
+      }
     })
   }
 })
@@ -1175,10 +1407,14 @@ app.get('/getBalance',function(req,res){
 			res.redirect('/');
 		}	else{
 
-			getTokenValue().then((value)=>{
-				sip = value;
-        console.log("## SIP : "+sip);
-			})
+			// getTokenValue().then((value)=>{
+			// 	sip = value;
+      //   console.log("## SIP : "+sip);
+			// })
+
+      AM.getCNAV(function(CNAV){
+        sip = CNAV;
+      })
 
 			btcCheck().then((value)=>{
 				btc = value;
@@ -1550,7 +1786,8 @@ app.get('/getBalance',function(req,res){
             lastVerified : new Date(),
           	accountVerified : false,
             investmentIDs : [],
-            accountOnBlockchain : false
+            accountOnBlockchain : false,
+            dollarWallet : 0
           }
 
           AM.addNewAccount(newAccount, function(e){
