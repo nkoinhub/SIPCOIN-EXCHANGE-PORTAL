@@ -116,9 +116,9 @@ function get_all_balance(){
       "max" : result.etherBalance,
       });
 
-      $('#amountETH').attr({
-        "max" : ((result.etherBalance*40)/100).toFixed(6),
-      });
+      // $('#amountETH').attr({
+      //   "max" : ((result.etherBalance*40)/100).toFixed(6),
+      // });
 
     },error : function(err){
       console.log('Error');

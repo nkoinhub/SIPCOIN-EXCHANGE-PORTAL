@@ -877,13 +877,13 @@ app.post('/placeTransaction',function(req,res){
       TID : (req.session.user.user).substr(0,3) + moment().format('x'),
       username : req.session.user.user,
       email : req.session.user.email,
-      amount : req.body['dollarInputTransfer'],
+      amount : parseFloat(req.body['dollarInputTransfer']),
       typeCode : req.body['type'],
       CNAV : "",
       dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
       dateOfCompletion : "STILL IN PROCESS",
-      destinationAddress : req.session.user.blockchainAccount.address,
-      destinationPrivateKey : req.session.user.blockchainAccount.privateKey,
+      destinationAddress : "",
+      destinationPrivateKey : "",
       transactionComplete : false
     }
 
@@ -894,10 +894,14 @@ app.post('/placeTransaction',function(req,res){
 
     AM.getCNAV(function(CNAV){
       transactionRequest.CNAV = CNAV;
-      AM.placeTransactionRequest(transactionRequest, function(result){
-        console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
-        //res.status(200).send('ok');
-        res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+      AM.getAccountByUsername(req.session.user.user, function(result){
+        transactionRequest.destinationAddress = result.blockchainAccount.address;
+        transactionRequest.destinationPrivateKey = result.blockchainAccount.privateKey;
+        AM.placeTransactionRequest(transactionRequest, function(result){
+          console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+          //res.status(200).send('ok');
+          res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+        })
       })
     })
   }
@@ -931,13 +935,13 @@ app.post('/placeEtherTransaction',function(req,res){
                   TID : (req.session.user.user).substr(0,3) + moment().format('x'),
                   username : req.session.user.user,
                   email : req.session.user.email,
-                  amount : req.body['dollarInputTransfer'],
+                  amount : parseFloat(req.body['dollarInputTransfer']),
                   typeCode : req.body['type'],
                   CNAV : "",
                   dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
                   dateOfCompletion : "STILL IN PROCESS",
-                  sourceAddress : req.sesssion.user.blockchainAccount.address,
-                  sourcePrivateKey : req.session.user.blockchainAccount.privateKey,
+                  sourceAddress : "",
+                  sourcePrivateKey : "",
                   destinationAddress : "NOT REQUIRED",
                   transactionComplete : false
                 }
@@ -949,15 +953,19 @@ app.post('/placeEtherTransaction',function(req,res){
 
                 AM.getCNAV(function(CNAV){
                   transactionRequest.CNAV = CNAV;
-                  AM.placeTransactionRequest(transactionRequest, function(result){
-                    console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
-                    //res.status(200).send('ok');
-                    var response = {
-                      result : "TID",
-                      TID : transactionRequest.TID
-                    }
-                    res.status(200).send(response);
-                    // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+                  AM.getAccountByUsername(req.session.user.user, function(result){
+                    transactionRequest.sourceAddress = result.blockchainAccount.address;
+                    transactionRequest.sourcePrivateKey = result.blockchainAccount.privateKey;
+                    AM.placeTransactionRequest(transactionRequest, function(result){
+                      console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+                      //res.status(200).send('ok');
+                      var response = {
+                        result : "TID",
+                        TID : transactionRequest.TID
+                      }
+                      res.status(200).send(response);
+                      // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+                    })
                   })
                 })
               }
@@ -974,13 +982,13 @@ app.post('/placeEtherTransaction',function(req,res){
                 TID : (req.session.user.user).substr(0,3) + moment().format('x'),
                 username : req.session.user.user,
                 email : req.session.user.email,
-                amount : req.body['dollarInputTransfer'],
+                amount : parseFloat(req.body['dollarInputTransfer']),
                 typeCode : req.body['type'],
                 CNAV : "",
                 dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
                 dateOfCompletion : "STILL IN PROCESS",
-                sourceAddress : req.session.user.blockchainAccount.address,
-                sourcePrivateKey : req.session.user.blockchainAccount.privateKey,
+                sourceAddress : "",
+                sourcePrivateKey : "",
                 destinationAddress : "NOT REQUIRED",
                 transactionComplete : false
               }
@@ -992,14 +1000,18 @@ app.post('/placeEtherTransaction',function(req,res){
 
               AM.getCNAV(function(CNAV){
                 transactionRequest.CNAV = CNAV;
-                AM.placeTransactionRequest(transactionRequest, function(result){
-                  console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
-                  var response = {
-                    result : "TID",
-                    TID : transactionRequest.TID
-                  }
-                  res.status(200).send(response);
-                  // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+                AM.getAccountByUsername(req.session.user.user, function(result){
+                  transactionRequest.sourceAddress = result.blockchainAccount.address;
+                  transactionRequest.sourcePrivateKey = result.blockchainAccount.privateKey;
+                  AM.placeTransactionRequest(transactionRequest, function(result){
+                    console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+                    var response = {
+                      result : "TID",
+                      TID : transactionRequest.TID
+                    }
+                    res.status(200).send(response);
+                    // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+                  })
                 })
               })
             }
@@ -1019,6 +1031,42 @@ app.post('/placeEtherTransaction',function(req,res){
         res.status(200).send(response);
       }
     })
+  }
+})
+
+//get total current value of investment=========================================
+app.get('/getTotalCurrent',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+
+    var sum = {
+      result : 0
+    }
+
+    AM.getInvestmentDetails(req.session.user.user, function(result){
+      sum.result = sum.result + result.amount;
+    })
+
+    AM.checkAccountCreation(req.session.user.user, function(result){
+      if(result){
+        AM.getBlockchainAddress(req.session.user.user, function(address){
+          acntBalance(address).then((balances)=>{
+            balances = JSON.parse(balances);
+            AM.getCNAV(function(CNAV){
+              sum.result = sum.result + balances.tokenBalance*parseFloat(CNAV) + balances.etherBalance;
+            })
+          })
+        })
+      }
+    })
+
+    AM.getDollarWalletBalance(req.session.user.user, function(result){
+      sum.result = sum.result + result;
+    })
+
+    setTimeout(()=>{
+      res.status(200).send(sum);
+    },3000);
   }
 })
 
@@ -1289,9 +1337,9 @@ app.post('/createAccount',function(req,res){
             //res.session.user.accountOnBlockchain = true;
             AM.getAccountByUsername(req.session.user.user, function(result){
               req.session.user = result;
+              res.redirect('/dashboard');
             })
             //res.status(200).send(accountDetails.address);
-            res.redirect('/dashboard');
           });
 
         })
@@ -1422,11 +1470,13 @@ app.post('/changePassword',function(req,res){
         ethCheck().then((value)=>{
           eth = value;
           console.log("## ETH : "+eth);
-          res.render('dashboard',{
-            userDetails : req.session.user,
-            BTC : btc,
-            SIP : sip,
-            ETH : eth
+          AM.getAccountByUsername(req.session.user.user, function(result){
+            res.render('dashboard',{
+              userDetails : result,
+              BTC : btc,
+              SIP : sip,
+              ETH : eth
+            })
           })
         })
 			})
