@@ -166,6 +166,7 @@ exports.setBrowserVerification = function(key, callback)
 	})
 }
 
+
 //set the CNAV value, i.e. dollar equivalent of SIPcoin=========================
 exports.setCNAV = function(CNAV, callback)
 {

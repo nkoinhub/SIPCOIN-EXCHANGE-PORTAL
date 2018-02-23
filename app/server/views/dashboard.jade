@@ -108,6 +108,10 @@ html.perfect-scrollbar-off(lang='en')
       margin-top:0px;
       }
       
+      .make_it_left_button{
+          padding:0px;
+      }
+      
       .cardHeightChange{
       height:550px;
       }
@@ -146,7 +150,7 @@ html.perfect-scrollbar-off(lang='en')
         .modal-content
           .modal-header
             button.close(type='button', data-dismiss='modal') ×
-            h4.modal-title(style='font-weight:400;') Whoops
+            h4.modal-title.textModalHeader(style='font-weight:400;') Whoops
           .modal-body
             .col-lg-12.responseText
           .modal-footer
@@ -369,7 +373,7 @@ html.perfect-scrollbar-off(lang='en')
                     img(src='/images/current_value_1.png', style='height:50px;width:50px;margin-top:2px;')
                   .card-content
                     p.category Current Value of Investment
-                    h3.title.currentValueInvestValue
+                    h4.title.currentValueInvestValue
                   //
                     <div class="card-footer">
                     <div class="stats">
@@ -382,7 +386,7 @@ html.perfect-scrollbar-off(lang='en')
                     img(src='/images/money-bag.png', style='height:50px;width:50px;margin-top:2px;')
                   .card-content
                     p.category ESCROW Balance
-                    h3.title $1234
+                    h4.title $ 1234
                   //
                     <div class="card-footer">
                     <div class="stats">
@@ -725,7 +729,8 @@ html.perfect-scrollbar-off(lang='en')
                       center
                         h5.title To enable Send Option, You need to verify Browser 
                     .col-sm-6.col-lg-offset-3
-                      button.btn.btn-primary(type='button', style='cursor:pointer;margin-top:20px;') Send Verification Link
+                      center
+                        button.btn.btn-primary(type='button', style='cursor:pointer;margin-top:20px;',onclick='get_verfication_link()') Send Verification Link
                     .col-sm-12
                       br
                     .col-sm-12
@@ -829,7 +834,7 @@ html.perfect-scrollbar-off(lang='en')
                           .form-group(style='margin:0px;')
                             .row
                               center
-                                .col-sm-9.col-lg-offset-2
+                                .col-sm-9.col-lg-offset-2.make_it_left_button
                                   button.btn.btn-primary.sendButtons(onclick='send_ether_to_eher()')
                                     img(src='/images/eth.PNG', style='height:30px;width:30px;')
                                     |                                                        | Withdraw from ETH Wallet
@@ -969,6 +974,21 @@ html.perfect-scrollbar-off(lang='en')
               $('.2fa_form_validation').remove();
           }
           
+          if('#{browserVerified}' =='true')
+          {
+              $('.sendVerficaionLinkCard').remove();
+          }else{
+              $('.sendTabCard').remove();
+          }
+          
+          $('#myModal1').on('hidden.bs.modal', function () {
+            $('.textModalHeader').html('Whoops');
+            $('.responseText').html('');
+          })
+
+          
+          
+        
           // getting the dollar balance
           get_dollar_Wallet();
           get_all_balance();

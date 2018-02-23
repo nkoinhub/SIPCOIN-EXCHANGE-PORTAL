@@ -493,11 +493,6 @@ app.get('/resent_verfication_page',function(req,res){
 	// 	}
 	// })
 
-  app.get('/referral',function(req,res){
-
-    
-
-  });
 
 
 	// to make the page handle the continuous refresh
@@ -902,6 +897,7 @@ app.post('/placeTransaction',function(req,res){
     AM.getCNAV(function(CNAV){
       transactionRequest.CNAV = CNAV;
       AM.getAccountByUsername(req.session.user.user, function(result){
+
         transactionRequest.destinationAddress = result.blockchainAccount.address;
         transactionRequest.destinationPrivateKey = result.blockchainAccount.privateKey;
         AM.placeTransactionRequest(transactionRequest, function(result){
@@ -957,22 +953,34 @@ app.post('/placeEtherTransaction',function(req,res){
                   transactionRequest.destinationAddress = req.body['destination'];
                 }
 
+                var currentDate = new Date();
 
                 AM.getCNAV(function(CNAV){
                   transactionRequest.CNAV = CNAV;
                   AM.getAccountByUsername(req.session.user.user, function(result){
-                    transactionRequest.sourceAddress = result.blockchainAccount.address;
-                    transactionRequest.sourcePrivateKey = result.blockchainAccount.privateKey;
-                    AM.placeTransactionRequest(transactionRequest, function(result){
-                      console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
-                      //res.status(200).send('ok');
-                      var response = {
-                        result : "TID",
-                        TID : transactionRequest.TID
-                      }
-                      res.status(200).send(response);
-                      // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
-                    })
+                    var lastVerified = new Date(result.lastVerified);
+                    if((currentDate - lastVerified)/1000 > 200){
+                      AM.resetBrowserVerification(result.user, function(result){
+                        console.log(result);
+                      })
+                      res.send({result : false});
+                    }
+                    else {
+                      transactionRequest.sourceAddress = result.blockchainAccount.address;
+                      transactionRequest.sourcePrivateKey = result.blockchainAccount.privateKey;
+                      AM.placeTransactionRequest(transactionRequest, function(result){
+                        console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+                        //res.status(200).send('ok');
+                        var response = {
+                          result : "TID",
+                          TID : transactionRequest.TID
+                        }
+                        res.status(200).send(response);
+                        // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+                      })
+                      //res.send({browserVerified : true});
+                    }
+
                   })
                 })
               }
@@ -1004,21 +1012,32 @@ app.post('/placeEtherTransaction',function(req,res){
                 transactionRequest.destinationAddress = req.body['destination'];
               }
 
+              var currentDate = new Date();
 
               AM.getCNAV(function(CNAV){
                 transactionRequest.CNAV = CNAV;
                 AM.getAccountByUsername(req.session.user.user, function(result){
-                  transactionRequest.sourceAddress = result.blockchainAccount.address;
-                  transactionRequest.sourcePrivateKey = result.blockchainAccount.privateKey;
-                  AM.placeTransactionRequest(transactionRequest, function(result){
-                    console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
-                    var response = {
-                      result : "TID",
-                      TID : transactionRequest.TID
-                    }
-                    res.status(200).send(response);
-                    // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
-                  })
+                  var lastVerified = new Date(result.lastVerified);
+                  if((currentDate - lastVerified)/1000 > 200){
+                    AM.resetBrowserVerification(result.user, function(result){
+                      console.log(result);
+                    })
+                    res.send({result : false});
+                  }
+                  else {
+                    transactionRequest.sourceAddress = result.blockchainAccount.address;
+                    transactionRequest.sourcePrivateKey = result.blockchainAccount.privateKey;
+                    AM.placeTransactionRequest(transactionRequest, function(result){
+                      console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+                      var response = {
+                        result : "TID",
+                        TID : transactionRequest.TID
+                      }
+                      res.status(200).send(response);
+                      // res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+                    })
+                    //res.send({browserVerified : true});
+                  }
                 })
               })
             }
@@ -1139,7 +1158,7 @@ app.get('/transactionHistory',function(req,res){
     ethCheck().then((value)=>{eth=value});
     btcCheck().then((value)=>{
       btc=value
-      AM.getTransactions(req.session.user.user, req.session.user.email, function(result){
+      AM.getTransactions(req.session.user.user, req.session.user.email, function(e,result){
         res.render('table',{
           userDetails : req.session.user,
           SIP : sip,
@@ -1153,7 +1172,7 @@ app.get('/transactionHistory',function(req,res){
 })
 
 //to check whether the browser is verified or not, resets every 15 minutes, thus, to be called by ajax every 2-5 minutes
-app.post('/checkBrowser',function(req,res){
+app.get('/checkBrowser',function(req,res){
   if(req.session.user == null) res.redirect('/');
   else {
     var currentDate = new Date();
@@ -1202,10 +1221,11 @@ app.post('/sendVerification',function(req,res){
     transporter.sendMail(mailOptions, function(error, info){
       if (error) {
         console.log("Email Not Sent, Error : " + error);
+        res.status(200).send({result : false})
       } else {
         console.log('Email Sent: ' + info.response);
+        res.status(200).send({result : true})
       }
-      res.redirect('/dashboard');
     });
   }
 })
@@ -1458,6 +1478,7 @@ app.post('/changePassword',function(req,res){
 		var btc;
 		var sip;
     var eth;
+    var browserVerified;
 
 		if (req.session.user == null){
 	// if user is not logged-in redirect back to login page //
@@ -1473,6 +1494,8 @@ app.post('/changePassword',function(req,res){
         sip = CNAV;
       })
 
+      var currentDate = new Date();
+
 			btcCheck().then((value)=>{
 				btc = value;
         console.log("## BTC : "+btc);
@@ -1480,12 +1503,30 @@ app.post('/changePassword',function(req,res){
           eth = value;
           console.log("## ETH : "+eth);
           AM.getAccountByUsername(req.session.user.user, function(result){
-            res.render('dashboard',{
-              userDetails : result,
-              BTC : btc,
-              SIP : sip,
-              ETH : eth
-            })
+            var lastVerified = new Date(result.lastVerified);
+            if((currentDate - lastVerified)/1000 > 880){
+              AM.resetBrowserVerification(result.user, function(result){
+                console.log(result);
+              })
+              res.render('dashboard',{
+                userDetails : result,
+                BTC : btc,
+                SIP : sip,
+                ETH : eth,
+                browserVerified : false
+              })
+              //res.send({browserVerified : false});
+            }
+            else {
+              res.render('dashboard',{
+                userDetails : result,
+                BTC : btc,
+                SIP : sip,
+                ETH : eth,
+                browserVerified : true
+              })
+              //res.send({browserVerified : true});
+            }
           })
         })
 			})
@@ -1873,8 +1914,8 @@ app.post('/changePassword',function(req,res){
                 } else {
                   console.log('Email Sent: ' + info.response);
                 }
+                res.status(200).send('ok');
               });
-              res.status(200).send('ok');
             }
           });
 

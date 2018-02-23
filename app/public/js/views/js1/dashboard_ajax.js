@@ -163,6 +163,7 @@ function send_ether_to_eher(){
     url : '/placeEtherTransaction',
     success : function(result){
 
+      console.log(result);
       if(result.result=='wrong_code')
       {
         $('.responseText').html('Two factor Authentication Failed');
@@ -178,10 +179,19 @@ function send_ether_to_eher(){
       }else
       if(result.result=='TID'){
         window.location.href = '/transactionRequest?TID='+result.TID;
+      }else
+      if(result.result==false) {
+        $('.responseText').html('Browser Verification Session Expired. Refreshing your page in 3 seconds ....');
+        $("#myModal1").modal("show");
+
+        setTimeout(function(){
+          window.location.href = '/dashboard';
+        },3000);
+
       }
 
     },error : function(err){
-
+      console.log('transaction error ether')
     }
   })
 }
@@ -209,9 +219,39 @@ function get_current_value_investement(){
     type : 'GET',
     crossOrigin : true,
     contentType : 'application/json',
-    url : '/getInvestmentDetails',
+    url : '/getTotalCurrent',
     success : function(result){
-      $('.currentValueInvestValue').html();
+      $('.currentValueInvestValue').html('$ '+result.result);
+    },error : function(err){
+      console.log('Error');
+    }
+  })
+
+}
+
+
+function get_verfication_link()
+{
+  $.ajax({
+    type : 'POST',
+    crossOrigin : true,
+    contentType : 'application/json',
+    url : '/sendVerification',
+    success : function(result){
+
+      if(result.result==true)
+      {
+        $('.responseText').html('Please check your email for the Browser Verfication Link');
+        $("#myModal1").modal("show");
+        $('.textModalHeader').html('Browser Verficaion Mail Sent Successfully');
+      }else {
+
+        $('.responseText').html('Sorry !!! Mail could not be sent. Try again after some time.');
+        $("#myModal1").modal("show");
+
+      }
+
+
     },error : function(err){
       console.log('Error');
     }
