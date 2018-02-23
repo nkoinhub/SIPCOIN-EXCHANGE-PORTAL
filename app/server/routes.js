@@ -884,6 +884,8 @@ app.post('/placeTransaction',function(req,res){
       CNAV : "",
       dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
       dateOfCompletion : "STILL IN PROCESS",
+      sourceAddress : "",
+      sourcePrivateKey : "",
       destinationAddress : "",
       destinationPrivateKey : "",
       transactionComplete : false
@@ -900,6 +902,8 @@ app.post('/placeTransaction',function(req,res){
         if(result.accountOnBlockchain){
           transactionRequest.destinationAddress = result.blockchainAccount.address;
           transactionRequest.destinationPrivateKey = result.blockchainAccount.privateKey;
+          transactionRequest.sourceAddress = result.blockchainAccount.address;
+          transactionRequest.sourcePrivateKey = result.blockchainAccount.privateKey;
           AM.placeTransactionRequest(transactionRequest, function(result){
             console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
             //res.status(200).send('ok');
@@ -950,6 +954,7 @@ app.post('/placeEtherTransaction',function(req,res){
                   sourceAddress : "",
                   sourcePrivateKey : "",
                   destinationAddress : "NOT REQUIRED",
+                  destinationPrivateKey : "NOT AVAILABLE",
                   transactionComplete : false
                 }
 
@@ -1009,6 +1014,7 @@ app.post('/placeEtherTransaction',function(req,res){
                 sourceAddress : "",
                 sourcePrivateKey : "",
                 destinationAddress : "NOT REQUIRED",
+                destinationPrivateKey : "NOT AVAILABLE",
                 transactionComplete : false
               }
 
@@ -1085,6 +1091,9 @@ app.get('/getTotalCurrent',function(req,res){
             AM.getCNAV(function(CNAV){
               sum.result = sum.result + balances.tokenBalance*parseFloat(CNAV) + balances.etherBalance;
             })
+          })
+          .catch((error)=>{
+            console.log("## ACCESS TO BLOCKCHAIN ACCOUNT FOR BALANCE FAILED, SERVER DOWN ##");
           })
         })
       }
@@ -1330,7 +1339,17 @@ app.get('/getInvestmentDetails',function(req,res){
 //set CNAV in current scenario collection updation==============================
 app.get('/currentCNAV',function(req,res){
   var CNAV = req.body['CNAV'];
-  AM.setCNAV(CNAV, function(result){console.log(result)});
+  AM.setCNAV(CNAV, function(result){
+    console.log(result);
+    res.status(200).send("CNAV SET");
+  });
+})
+
+//get CNAV from the current scenario collection ================================
+app.get('getCNAV',function(req,res){
+  AM.getCNAV(function(CNAV){
+    res.status(200).send({CNAV:CNAV});
+  })
 })
 
 //set initial current scenario collection data==================================
@@ -1345,7 +1364,17 @@ app.get('/currentScenario',function(req,res){
 //set daily percent return in currentScenario collection =======================
 app.get('/setDailyPercent',function(req,res){
   var dailyPercent = req.body['dailyPercent'];
-  AM.setDailyPercent(dailyPercent, function(result){console.log(result)});
+  AM.setDailyPercent(dailyPercent, function(result){
+    console.log(result);
+    res.status(200).send("DAILY PERCENT SET");
+  });
+})
+
+//get daily percent from current Scenario collection ===========================
+app.get('getDailyPercent',function(req,res){
+  AM.getDailyPercent((daily)=>{
+    res.status(200).send({dailyPercent:daily});
+  })
 })
 
 
@@ -1372,7 +1401,9 @@ app.post('/createAccount',function(req,res){
             })
             //res.status(200).send(accountDetails.address);
           });
-
+        })
+        .catch((error)=>{
+          console.log("## BLOCKCHAIN ACCOUNT CREATION FAILED, SERVER DOWN ##");
         })
       }
       else {
@@ -1412,6 +1443,14 @@ app.get('/getBalance',function(req,res){
               sipBalance : balances.tokenBalance,
               etherBalance : balances.etherBalance
             }
+            res.status(200).send(balanceDetails);
+          })
+          .catch((error)=>{
+            var balanceDetails = {
+              sipBalance : "Blockchain Not Accessible",
+              etherBalance : "Blockchain Not Accessible"
+            }
+            console.log("## BLOCKCHAIN ACCOUNT ACCESS FAILED FOR BALANCE, SERVER DOWN ##");
             res.status(200).send(balanceDetails);
           })
         })

@@ -185,6 +185,16 @@ exports.setDailyPercent = function(dailyPercent, callback)
 	currentScenario.update({about:"currentScenario"},{$set:{dailyPercent:dailyPercent}},callback("Daily Percent Set"));
 }
 
+//get daily percent ============================================================
+exports.getDailyPercent = function(callback)
+{
+	currentScenario.findOne({about:"currentScenario"},function(e,res){
+		if(!e){
+			callback(res.dailyPercent);
+		}
+	})
+}
+
 //get CNAV =====================================================================
 exports.getCNAV = function(callback)
 {

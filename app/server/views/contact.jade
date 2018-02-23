@@ -92,11 +92,11 @@ html(lang='en')
                   li.list-inline-item
                     ul.list-inline.iq-left
                       li.list-inline-item
-                        a(data-toggle='modal', data-target='.iq-login', target='_blank',style='cursor:pointer;')
+                        a(href='/login')
                           i.fa.fa-lock
                           | Login
                       li.list-inline-item
-                        a(data-toggle='modal', data-target='.iq-register', target='_blank',style='cursor:pointer;')
+                        a(href='/signup')
                           i.fa.fa-user
                           | Register
                   li.list-inline-item
@@ -236,93 +236,6 @@ html(lang='en')
     //
       =================================
       Footer
-    //
-      =================================
-      Login
-    .modal.fade.iq-login(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-dialog(role='document')
-        .modal-content
-          .modal-header.text-center
-            h4.modal-title.iq-tw-5 Login
-            a.close(data-dismiss='modal', aria-label='Close',style='cursor:pointer;')
-              span(aria-hidden='true') ×
-          .modal-body
-            form#login_form(method='post', action='/login')
-              .form-group
-                input#recipient-name.form-control(type='text', name='username', placeholder='Enter Name',required='')
-              .form-group
-                input#recipient-password.form-control(type='password', name='password', placeholder='Password',required='')
-              .form-buttons#captcha_input
-                center
-                  .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
-                  //production - 6LfXbzsUAAAAALCk_NicLha3d-KG_0GRNRxAJUMs
-                  //development - 6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P
-                  br
-              hr
-              a.button.iq-mtb-10(href="javascript:document.getElementById('login_form').submit();") Sign In
-              .row
-                .col-xs-6.remember_class
-                  .form-check
-                    label.form-check-label
-                      input.form-check-input(type='checkbox')
-                      | Remember Me
-                .col-xs-6.forgot_class
-                  a(href='#') Forgot Password
-          .modal-footer.text-center
-            div.text_class
-              | Don't Have an Account?
-              a.iq-font-yellow(href='javascript:void(0)',onclick='open_register()') Register Now
-            div.text_class
-              | Didn't receive Activation Link?
-              a.iq-font-yellow(href='javascript:void(0)') Send Mail
-    //
-      =================================
-      Login
-    //
-      =================================
-      Register
-    .modal.fade.iq-register(tabindex='-1', role='dialog', aria-hidden='true')
-      .modal-dialog(role='document')
-        .modal-content
-          .modal-header.text-center
-            h4.modal-title.iq-tw-5 Register
-            a.close(data-dismiss='modal', aria-label='Close',style='cursor:pointer;')
-              span(aria-hidden='true') ×
-          .modal-body
-            form#register_form(method='post', action='/signup')
-              .form-group
-                input#recipient-username.form-control(type='text', placeholder='Username',required='',name='username')
-              .form-group
-                input#recipient-email.form-control(type='text', placeholder='Email',required='',name='emailUser')
-              .form-group
-                input#recipient-Full-name.form-control(type='text', placeholder='Full Name',required='',name='name')
-              .form-group
-                input#mobile-number.form-control(type='number', placeholder='Mobile Number',required='',name='mobileUser')
-              .form-group
-                input#password.form-control(type='password', placeholder='Password',required='',name='passUser')
-              .form-group
-                input#passwordConf.form-control(type='password', placeholder='Confirm Password',required='')
-              .form-group
-                | * Enter 4 digit PIN (Remember it for future)
-                input#sensPin.form-control(type='password', placeholder='Pin',required='',name='pinUser')
-              .form-buttons#captcha_input1
-                center
-                  .g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
-                  //production - 6LfXbzsUAAAAALCk_NicLha3d-KG_0GRNRxAJUMs
-                  //development - 6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P
-                  br
-              a.button.iq-mtb-10(href="javascript:document.getElementById('register_form').submit();") Sign Up
-          .modal-footer.text-center
-            div
-              | Already Have an Account?
-              a.iq-font-yellow(href='javascript:void(0)',onclick='open_login()')
-                | Login
-
-
-
-    //
-      =================================
-      Register
     // back-to-top
     #back-to-top
       a#top.top(href='#top')
@@ -343,14 +256,3 @@ html(lang='en')
     // Custom JavaScript
     script(src='/js/views/js1/custom.js ')
     script(src='https://www.google.com/recaptcha/api.js')
-
-    script.
-      function open_login(){
-        $('.iq-register').modal('hide');
-        $('.iq-login').modal('show');
-      }
-
-      function open_register(){
-        $('.iq-login').modal('hide');
-        $('.iq-register').modal('show');
-      }

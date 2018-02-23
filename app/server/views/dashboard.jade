@@ -155,6 +155,17 @@ html.perfect-scrollbar-off(lang='en')
             .col-lg-12.responseText
           .modal-footer
             
+    #twoFAEnableModal.modal.fade(role='dialog')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close(type='button', data-dismiss='modal') ×
+            h4.modal-title.textModalHeader(style='font-weight:400;') Two Factor Authentication
+          .modal-body
+            .col-lg-12.responseText
+            | You 2FA Authentication is not enabled. Please enable 2FA to make your account more secure.
+          .modal-footer
+
     #myModal.modal.fade(role='dialog')
       .modal-dialog
         .modal-content
@@ -220,7 +231,7 @@ html.perfect-scrollbar-off(lang='en')
                           .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;visibility:hidden;')
                             | Exchange Rate : 1 SIP = $ #{SIP}
                           .col-sm-12.text_class.sipWalletValue_exchange(style='margin:10px;padding:0;font-weight:400;')
-                            | Your SIP Wallet Balance is  100.5 SIP
+                            | Your SIP Wallet Balance is  
                           .col-sm-12
                             form(action='/placeTransaction', method='post',onsubmit="return CheckAddress()")
                               .row.transfer_class(style='border:2px dashed rgb(217,217,217);')
@@ -242,7 +253,7 @@ html.perfect-scrollbar-off(lang='en')
                           .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;visibility:hidden;')
                             | Exchange Rate : 1 ETH = $ #{SIP}
                           .col-sm-12.text_class.ethWalletValue_exchange(style='margin:10px;padding:0;font-weight:400;')
-                            | Your SIP Wallet Balance is  100.5 SIP
+                            | Your ETH Wallet Balance is  
                           .col-sm-12
                             form(action='/placeTransaction', method='post',onsubmit="return CheckAddress()")
                               .row.transfer_class(style='border:2px dashed rgb(217,217,217);')
@@ -326,9 +337,9 @@ html.perfect-scrollbar-off(lang='en')
               a.navbar-brand(style='font-weight:400;')  Dashboard 
               a.navbar-brand
                 button.btn.btn-primary.make_it_left(type='submit', data-toggle='modal', data-target='#myModal')  Transfer 
-              a.navbar-brand.valuesDoll(style='margin-left:150px;')  BTC/USD $#{BTC} 
+              a.navbar-brand.valuesDoll(style='margin-left:150px;')  BTC/USD $#{BTC}
               a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
-              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
+              a.navbar-brand.valuesDoll  SIP/USD $#{SIP}
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -972,6 +983,9 @@ html.perfect-scrollbar-off(lang='en')
           
           if('#{userDetails.twoFA}' != 'true'){
               $('.2fa_form_validation').remove();
+              $('#twoFAEnableModal');
+              $("#myModal1").modal("show");
+
           }
           
           if('#{browserVerified}' =='true')
@@ -980,6 +994,7 @@ html.perfect-scrollbar-off(lang='en')
           }else{
               $('.sendTabCard').remove();
           }
+          
           
           $('#myModal1').on('hidden.bs.modal', function () {
             $('.textModalHeader').html('Whoops');

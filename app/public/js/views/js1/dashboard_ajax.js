@@ -102,19 +102,28 @@ function get_all_balance(){
     url : '/getBalance',
     success : function(result){
 
-      $('.sipWalletValue_trans').html(result.sipBalance+' SIP');
-      $('.ethWalletValue_trans').html(result.etherBalance+' ETH');
-      $('.sipWalletValue_exchange').html('Your SIP Wallet Balance is ' +result.sipBalance+' SIP');
-      $('.ethWalletValue_exchange').html('Your ETH Wallet Balance is ' +result.etherBalance+' ETH');
+      if(result.sipBalance=='Blockchain Not Accessible')
+      {
+
+        $('.responseText').html('Blockhain Not Accessible');
+        $("#myModal1").modal("show");
+      }else {
+
+        $('.sipWalletValue_trans').html(result.sipBalance+' SIP');
+        $('.ethWalletValue_trans').html(result.etherBalance+' ETH');
+        $('.sipWalletValue_exchange').html('Your SIP Wallet Balance is ' +result.sipBalance+' SIP');
+        $('.ethWalletValue_exchange').html('Your ETH Wallet Balance is ' +result.etherBalance+' ETH');
 
 
-      $("#amountInSIP").attr({
-      "max" : result.sipBalance,
-      });
+        $("#amountInSIP").attr({
+        "max" : result.sipBalance,
+        });
 
-      $("#amountINETH").attr({
-      "max" : result.etherBalance,
-      });
+        $("#amountINETH").attr({
+        "max" : result.etherBalance,
+        });
+
+      }
 
       // $('#amountETH').attr({
       //   "max" : ((result.etherBalance*40)/100).toFixed(6),
@@ -250,11 +259,8 @@ function get_verfication_link()
         $("#myModal1").modal("show");
 
       }
-
-
     },error : function(err){
       console.log('Error');
     }
   })
-
 }
