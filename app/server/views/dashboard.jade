@@ -415,7 +415,7 @@ html.perfect-scrollbar-off(lang='en')
                         h3.category(style='margin-top:0;') CNAV
                       .col-sm-9
                         center
-                          h5.title.cnavValue(style='margin-top:7px;') $1000
+                          h5.title.cnavValue(style='margin-top:7px;') $4
                   .card-footer
                     .stats
                       i.material-icons date_range
@@ -953,8 +953,10 @@ html.perfect-scrollbar-off(lang='en')
               a(href='http://www.sipcoin.io') SIPcoin
               |  Crypto Platform #forThePeople
         script.
+          console.log('#{userDetails.accountOnBlockchain}') ;
+
           if('#{userDetails.accountOnBlockchain}' == 'true'){
-            //- $('.generate_address_card').remove();   
+            //- $('.generate_address_card').remove();  
             $('.generate_address_card').css('display','none');   
             getAddr();
           }
