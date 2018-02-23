@@ -715,7 +715,23 @@ html.perfect-scrollbar-off(lang='en')
                             .col-sm-12(style='border:2px dashed rgb(217,217,217);')
                               h5
                                 b.text_class DD92nSFDwJwfMr2zFHV1pRjRUkvuiUSn7w
-              .col-lg-6.col-md-12
+              .col-lg-6.col-md-12.sendVerficaionLinkCard 
+                .card.card-nav-tabs
+                  .card-header(style="background-color:#f9b707;")
+                    h4.title Browser Not Verified
+                  .row
+                    .col-sm-12
+                      br
+                      center
+                        h5.title To enable Send Option, You need to verify Browser 
+                    .col-sm-6.col-lg-offset-3
+                      button.btn.btn-primary(type='button', style='cursor:pointer;margin-top:20px;') Send Verification Link
+                    .col-sm-12
+                      br
+                    .col-sm-12
+                      
+
+              .col-lg-6.col-md-12.sendTabCard  
                 .card.card-nav-tabs
                   .card-header(style="background-color:#f9b707;")
                     .nav-tabs-navigation
@@ -943,7 +959,6 @@ html.perfect-scrollbar-off(lang='en')
             getAddr();
           }
           else {
-          
             //- $('.eth_address_card').remove();            
             $('.eth_address_card').css('display','none');            
           }
@@ -956,8 +971,11 @@ html.perfect-scrollbar-off(lang='en')
           get_dollar_Wallet();
           get_all_balance();
           get_current_Investement();
+          get_current_value_investement();
           // dollar to sip conversion
           $("#amountinDollar").on("paste keyup", function() {
               $('#sip_value_total_trans').val(($("#amountinDollar").val()/'#{SIP}').toFixed(6));
           });
+          
+          
           

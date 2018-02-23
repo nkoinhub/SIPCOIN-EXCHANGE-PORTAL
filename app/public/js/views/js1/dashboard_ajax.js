@@ -202,3 +202,19 @@ function get_current_Investement(){
   })
 
 }
+
+function get_current_value_investement(){
+
+  $.ajax({
+    type : 'GET',
+    crossOrigin : true,
+    contentType : 'application/json',
+    url : '/getInvestmentDetails',
+    success : function(result){
+      $('.currentValueInvestValue').html();
+    },error : function(err){
+      console.log('Error');
+    }
+  })
+
+}

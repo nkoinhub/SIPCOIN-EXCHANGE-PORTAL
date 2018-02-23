@@ -448,50 +448,57 @@ app.get('/resent_verfication_page',function(req,res){
 	})
 
 	//referral details of the user
-	app.get('/referral',function(req,res){
-		if(req.session.user == null)
-		{
-			res.redirect('/');
-		}
-		else {
-			AM.getReferrals(req.session.user.user,req.session.user.email,function(e,o){
-				if(e)
-				{
-					res.redirect('/dashboard');
-				}
-				else {
-					console.log(o);
-					//res.send({referrals : o});
+	// app.get('/referral',function(req,res){
+	// 	if(req.session.user == null)
+	// 	{
+	// 		res.redirect('/');
+	// 	}
+	// 	else {
+	// 		AM.getReferrals(req.session.user.user,req.session.user.email,function(e,o){
+	// 			if(e)
+	// 			{
+	// 				res.redirect('/dashboard');
+	// 			}
+	// 			else {
+	// 				console.log(o);
+	// 				//res.send({referrals : o});
+  //
+	// 				var usd;
+	// 				var sip;
+  //
+	// 				btcCheck().then((USD)=>{
+	// 					usd = USD;
+	// 					return getTokenValue().then((SIP)=>{return SIP});
+	// 				})
+	// 				.then((SIP)=>{
+	// 					sip = SIP;
+  //
+	// 					res.render('referral',{
+	// 						udata : req.session.user,
+	// 						selfReferralCode : o.selfReferralCode,
+	// 						level : o.level,
+	// 						referredCount : o.referredCount,
+	// 						referralTokens : o.referralTokens,
+	// 						USD : usd,
+	// 						SIP : sip,
+	// 						message : 'Referral Data Found',
+  //             planAmt: o.planAmt
+	// 					})
+	// 				})
+	// 				.catch((err)=>{
+	// 					console.log("Error while fetching referral list for user : " + req.session.user.user + " :: Error : " + err)
+	// 				})
+	// 			}
+	// 		})
+	// 	}
+	// })
 
-					var usd;
-					var sip;
+  app.get('/referral',function(req,res){
 
-					btcCheck().then((USD)=>{
-						usd = USD;
-						return getTokenValue().then((SIP)=>{return SIP});
-					})
-					.then((SIP)=>{
-						sip = SIP;
+    
 
-						res.render('referral',{
-							udata : req.session.user,
-							selfReferralCode : o.selfReferralCode,
-							level : o.level,
-							referredCount : o.referredCount,
-							referralTokens : o.referralTokens,
-							USD : usd,
-							SIP : sip,
-							message : 'Referral Data Found',
-              planAmt: o.planAmt
-						})
-					})
-					.catch((err)=>{
-						console.log("Error while fetching referral list for user : " + req.session.user.user + " :: Error : " + err)
-					})
-				}
-			})
-		}
-	})
+  });
+
 
 	// to make the page handle the continuous refresh
 	app.get('/payment',function(req,res){
@@ -1317,6 +1324,8 @@ app.get('/getAddressBlockchain',function(req,res){
     })
   }
 })
+
+
 
 //get the sip balance and ether balance from the blockchain=====================
 app.get('/getBalance',function(req,res){
