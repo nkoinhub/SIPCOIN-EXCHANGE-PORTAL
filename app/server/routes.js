@@ -897,14 +897,18 @@ app.post('/placeTransaction',function(req,res){
     AM.getCNAV(function(CNAV){
       transactionRequest.CNAV = CNAV;
       AM.getAccountByUsername(req.session.user.user, function(result){
-
-        transactionRequest.destinationAddress = result.blockchainAccount.address;
-        transactionRequest.destinationPrivateKey = result.blockchainAccount.privateKey;
-        AM.placeTransactionRequest(transactionRequest, function(result){
-          console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
-          //res.status(200).send('ok');
-          res.redirect('/transactionRequest?TID='+transactionRequest.TID);
-        })
+        if(result.accountOnBlockchain){
+          transactionRequest.destinationAddress = result.blockchainAccount.address;
+          transactionRequest.destinationPrivateKey = result.blockchainAccount.privateKey;
+          AM.placeTransactionRequest(transactionRequest, function(result){
+            console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
+            //res.status(200).send('ok');
+            res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+          });
+        }
+        else {
+          res.redirect('/dashboard');
+        }
       })
     })
   }
@@ -1594,7 +1598,7 @@ app.post('/changePassword',function(req,res){
 			.then((SIP)=>{
 
 				sip = SIP;
-				res.render('after_verfiy',{
+				res.render('accountVerify',{
 					BTC : usd,
 					SIP : sip
 				})
