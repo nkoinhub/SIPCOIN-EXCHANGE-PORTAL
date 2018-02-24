@@ -891,23 +891,31 @@ app.post('/placeTransaction',function(req,res){
       transactionComplete : false
     }
 
-    if(req.body['type'] == 4){
-      transactionRequest.destinationAddress = req.body['destination'];
-    }
-
-
     AM.getCNAV(function(CNAV){
       transactionRequest.CNAV = CNAV;
       AM.getAccountByUsername(req.session.user.user, function(result){
         if(result.accountOnBlockchain){
-          transactionRequest.destinationAddress = result.blockchainAccount.address;
-          transactionRequest.destinationPrivateKey = result.blockchainAccount.privateKey;
+
+          if(req.body['type'] == 4){
+            transactionRequest.destinationAddress = req.body['destination'];
+            transactionRequest.destinationPrivateKey = "NOT AVAILABLE";
+          }
+          else {
+            transactionRequest.destinationAddress = result.blockchainAccount.address;
+            transactionRequest.destinationPrivateKey = result.blockchainAccount.privateKey;
+          }
+
           transactionRequest.sourceAddress = result.blockchainAccount.address;
           transactionRequest.sourcePrivateKey = result.blockchainAccount.privateKey;
           AM.placeTransactionRequest(transactionRequest, function(result){
             console.log("## Transaction Request Placed for user : "+transactionRequest.username + " || Type : "+transactionRequest.typeCode + " || Amount : " + transactionRequest.amount);
             //res.status(200).send('ok');
-            res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+            if(req.body['type'] != 5){
+              res.redirect('/transactionRequest?TID='+transactionRequest.TID);
+            }
+            else {
+              res.redirect('/investmentRequest?TID='+transactionRequest.TID);
+            }
           });
         }
         else {
@@ -953,7 +961,7 @@ app.post('/placeEtherTransaction',function(req,res){
                   dateOfCompletion : "STILL IN PROCESS",
                   sourceAddress : "",
                   sourcePrivateKey : "",
-                  destinationAddress : "NOT REQUIRED",
+                  destinationAddress : "",
                   destinationPrivateKey : "NOT AVAILABLE",
                   transactionComplete : false
                 }
@@ -1013,7 +1021,7 @@ app.post('/placeEtherTransaction',function(req,res){
                 dateOfCompletion : "STILL IN PROCESS",
                 sourceAddress : "",
                 sourcePrivateKey : "",
-                destinationAddress : "NOT REQUIRED",
+                destinationAddress : "",
                 destinationPrivateKey : "NOT AVAILABLE",
                 transactionComplete : false
               }
@@ -1161,6 +1169,61 @@ app.get('/transactionRequest',function(req,res){
   }
 })
 
+//successfully placing the transaction==========================================
+app.get('/investmentRequest',function(req,res){
+  if(req.session.user == null || req.query.TID == undefined) res.redirect('/');
+  else {
+    var TID = req.query.TID;
+    AM.getTransactionRequest(TID, function(result){
+      if(result){
+        //res.send(result);
+        var type;
+        var btc;
+        var eth;
+        var sip;
+
+        if(result.typeCode == 1){
+          type = "Dollar to SIPcoin"
+        }
+        else if(result.typeCode == 2){
+          type = "SIPcoin to Ether"
+        }
+        else if(result.typeCode == 3){
+          type = "Ether to SIPcoin"
+        }
+        else if(result.typeCode == 4){
+          type = "Ether to Another Ether Account"
+        }
+        else if(result.typeCode == 5){
+          type = "Investment of SIPcoins"
+        }
+
+        btcCheck().then((value)=>{
+          btc = value;
+          ethCheck().then((value)=>{
+            eth = value;
+            AM.getCNAV(function(CNAV){
+              sip = CNAV;
+              res.render('transactionRequest',{
+                userDetails : req.session.user,
+                TID : result.TID,
+                amount : result.amount,
+                type : type,
+                CNAV : result.CNAV,
+                dateOfRequest : result.dateOfRequest,
+                destinationAddress : result.destinationAddress,
+                BTC : btc,
+                SIP : sip,
+                ETH : eth
+              })
+            })
+          })
+        })
+      }
+    })
+  }
+})
+
 //transaction history table ====================================================
 app.get('/transactionHistory',function(req,res){
   if(req.session.user == null) res.redirect('/');
@@ -1178,6 +1241,29 @@ app.get('/transactionHistory',function(req,res){
           BTC : btc,
           ETH : eth,
           transactions : JSON.stringify(result)
+        })
+      })
+    });
+  }
+})
+
+//transaction history table ====================================================
+app.get('/investmentHistory',function(req,res){
+  if(req.session.user == null) res.redirect('/');
+  else {
+    var btc,eth,sip;
+    //getTokenValue().then((value)=>{sip=value});
+    AM.getCNAV(function(CNAV){sip=CNAV});
+    ethCheck().then((value)=>{eth=value});
+    btcCheck().then((value)=>{
+      btc=value
+      AM.getAllInvestments(req.session.user.user, function(result){
+        res.render('table',{
+          userDetails : req.session.user,
+          SIP : sip,
+          BTC : btc,
+          ETH : eth,
+          investments : JSON.stringify(result)
         })
       })
     });
@@ -1244,10 +1330,10 @@ app.post('/sendVerification',function(req,res){
 })
 
 //insert investment details, for admin purpose==================================
-app.get('/addInvestment',function(req,res){
+app.post('/addInvestment',function(req,res){
 
   var investmentRecord = {
-    IID : "I"+(req.session.user.user).substr(0,3) + moment().format('x'),
+    IID : "I"+(req.body['username']).substr(0,3) + moment().format('x'),
     username : req.body['username'],
     email : "",
     amount : parseFloat(req.body['amount']),
@@ -1262,7 +1348,7 @@ app.get('/addInvestment',function(req,res){
 
 
   AM.setInvestmentRecord(req.body['username'], investmentRecord.IID, function(result){console.log(result);});
-  AM.addInvestmentInCurrentScenario(req.body['amount'], function(result){console.log(result);});
+  AM.addInvestmentInCurrentScenario(parseFloat(req.body['amount']), function(result){console.log(result);});
 
   if(parseFloat(req.body['amount']) >= 100 && parseFloat(req.body['amount']) <= 1000){
     var endOfInvestment = new Date();
@@ -1322,9 +1408,93 @@ app.get('/addInvestment',function(req,res){
     });
   }
 
-  res.redirect('/dashboard');
+  res.status(200).send('(DIRECT CASH) Investment Added with IID : '+investmentRecord.IID);
 
 })
+
+//insert investment details, for admin purpose, when investment done dia sipcoins
+app.post('/addInvestmentViaSip',function(req,res){
+
+  var investmentRecord = {
+    IID : "I"+(req.body['username']).substr(0,3) + moment().format('x'),
+    username : req.body['username'],
+    email : "",
+    amount : parseFloat(req.body['amount']),
+    equivalentSipCoins : "",
+    dailyPercent : "",
+    fixedPercent : "",
+    dateOfInvestmentMade : new Date(),
+    dateOfInvestmentEnds : "",
+    daysLeft : "",
+    dailyReturnsDoneTillDate : ""
+  }
+
+
+  AM.setInvestmentRecord(req.body['username'], investmentRecord.IID, function(result){console.log(result);});
+  //AM.addInvestmentInCurrentScenario(parseFloat(req.body['amount']), function(result){console.log(result);});
+
+  if(parseFloat(req.body['amount']) >= 100 && parseFloat(req.body['amount']) <= 1000){
+    var endOfInvestment = new Date();
+    endOfInvestment.setDate(endOfInvestment.getDate() + 243);
+
+    investmentRecord.fixedPercent = 0;
+    investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
+    });
+
+  }
+  else if(parseFloat(req.body['amount']) > 1000 && parseFloat(req.body['amount']) <= 10000){
+    var endOfInvestment = new Date();
+    endOfInvestment.setDate(endOfInvestment.getDate() + 213);
+
+    investmentRecord.fixedPercent = 0.1;
+    investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
+    });
+  }
+  else if(parseFloat(req.body['amount']) > 10000 && parseFloat(req.body['amount']) <= 50000){
+    var endOfInvestment = new Date();
+    endOfInvestment.setDate(endOfInvestment.getDate() + 152);
+
+    investmentRecord.fixedPercent = 0.15;
+    investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
+    });
+  }
+  else if(parseFloat(req.body['amount']) > 50000 && parseFloat(req.body['amount']) <= 100000){
+    var endOfInvestment = new Date();
+    endOfInvestment.setDate(endOfInvestment.getDate() + 122);
+
+    investmentRecord.fixedPercent = 0.2;
+    investmentRecord.dateOfInvestmentEnds = new Date(endOfInvestment);
+    AM.getAccountByUsername(req.body['username'], function(o){
+      investmentRecord.email=o.email;
+      AM.getCNAV(function(CNAV){
+        investmentRecord.equivalentSipCoins = parseFloat(req.body['amount'])/CNAV;
+        AM.setInvestment(investmentRecord, function(result){console.log(result);});
+      })
+    });
+  }
+
+  res.status(200).send('(VIA SIP) Investment Added with IID : ' + investmentRecord.IID);
+
+})
+
 
 //get investment details of the user ===========================================
 app.get('/getInvestmentDetails',function(req,res){
@@ -1337,41 +1507,44 @@ app.get('/getInvestmentDetails',function(req,res){
 })
 
 //set CNAV in current scenario collection updation==============================
-app.get('/currentCNAV',function(req,res){
+app.post('/currentCNAV',function(req,res){
   var CNAV = req.body['CNAV'];
-  AM.setCNAV(CNAV, function(result){
+  AM.setCNAV(parseFloat(CNAV), function(result){
     console.log(result);
     res.status(200).send("CNAV SET");
   });
 })
 
 //get CNAV from the current scenario collection ================================
-app.get('getCNAV',function(req,res){
+app.get('/getCNAV',function(req,res){
   AM.getCNAV(function(CNAV){
     res.status(200).send({CNAV:CNAV});
   })
 })
 
 //set initial current scenario collection data==================================
-app.get('/currentScenario',function(req,res){
-  var CNAV = 4//req.body['CNAV'];
-  var dollarPool = 1000000//req.body['dollar'];
-  var sipPool = 5000000//req.body['sipPool'];
-  var dailyPercent = 0.05//req.body['dailyPercent'];
-  AM.setCurrentScenario(dollarPool, sipPool, CNAV, dailyPercent, function(result){console.log(result)});
+app.post('/currentScenario',function(req,res){
+  var CNAV = parseFloat(req.body['CNAV']);
+  var dollarPool = parseFloat(req.body['dollar']);
+  var sipPool = parseFloat(req.body['sipPool']);
+  var dailyPercent = parseFloat(req.body['dailyPercent']);
+  AM.setCurrentScenario(dollarPool, sipPool, CNAV, dailyPercent, function(result){
+    console.log(result);
+    res.status(200).send("Current Scenario Initiated");
+  });
 })
 
 //set daily percent return in currentScenario collection =======================
-app.get('/setDailyPercent',function(req,res){
+app.post('/setDailyPercent',function(req,res){
   var dailyPercent = req.body['dailyPercent'];
-  AM.setDailyPercent(dailyPercent, function(result){
+  AM.setDailyPercent(parseFloat(dailyPercent), function(result){
     console.log(result);
     res.status(200).send("DAILY PERCENT SET");
   });
 })
 
 //get daily percent from current Scenario collection ===========================
-app.get('getDailyPercent',function(req,res){
+app.get('/getDailyPercent',function(req,res){
   AM.getDailyPercent((daily)=>{
     res.status(200).send({dailyPercent:daily});
   })

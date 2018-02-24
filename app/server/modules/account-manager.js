@@ -142,6 +142,7 @@ exports.getTransactionRequest = function(TID, callback)
 	})
 }
 
+
 //set the browser verification back to false====================================
 exports.resetBrowserVerification = function(username, callback)
 {
@@ -170,7 +171,7 @@ exports.setBrowserVerification = function(key, callback)
 //set the CNAV value, i.e. dollar equivalent of SIPcoin=========================
 exports.setCNAV = function(CNAV, callback)
 {
-	currentScenario.update({about:"currentScenario"},{$set:{CNAV:CNAV}},callback("CNAV SET"));
+	currentScenario.update({about:"currentScenario"},{$set:{CNAV:parseFloat(CNAV)}},callback("CNAV SET"));
 }
 
 //set current scenario collection for the initial time =========================
@@ -182,7 +183,7 @@ exports.setCurrentScenario = function(dollarPool, sipPool, CNAV, dailyPercent, c
 //set the daily percent for the returns=========================================
 exports.setDailyPercent = function(dailyPercent, callback)
 {
-	currentScenario.update({about:"currentScenario"},{$set:{dailyPercent:dailyPercent}},callback("Daily Percent Set"));
+	currentScenario.update({about:"currentScenario"},{$set:{dailyPercent:parseFloat(dailyPercent)}},callback("Daily Percent Set"));
 }
 
 //get daily percent ============================================================
@@ -209,8 +210,22 @@ exports.addInvestmentInCurrentScenario = function(amount, callback)
 	currentScenario.findOne({about:"currentScenario"},function(e,res){
 		if(!e){
 			res.dollarPool = res.dollarPool + amount;
-			res.sipPool = res.sipPool - amount/res.CNAV;
+			//res.sipPool = res.sipPool - amount/res.CNAV;
 			currentScenario.save(res,{safe:true},callback("Investment Updated in Current Scenario"));
+		}
+	})
+}
+
+//get all investments for investment history====================================
+exports.getAllInvestments = function(username, callback)
+{
+	investments.find({username:username}).toArray((e,res)=>{
+		if(res.length != 0){
+			callback(res);
+		}
+		else {
+			var result = [];
+			callback(result);
 		}
 	})
 }
