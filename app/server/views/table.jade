@@ -101,9 +101,9 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
               a.navbar-brand  Transaction History 
-              a.navbar-brand.valuesDoll(style='margin-left:283px;')  BTC/USD $#{BTC} 
-              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
-              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
+              a.navbar-brand.valuesDoll.valuesDollBTC(style='margin-left:283px;')
+              a.navbar-brand.valuesDoll.valuesDollETH  
+              a.navbar-brand.valuesDoll SIP/USD $#{SIP}
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -281,3 +281,6 @@ html(lang='en')
     ]
     });
     });
+    
+    $('.valuesDollBTC').html('BTC/USD $'+parseFloat('#{BTC}').toFixed(2));
+    $('.valuesDollETH').html('ETH/USD $'+parseFloat('#{ETH}').toFixed(2));

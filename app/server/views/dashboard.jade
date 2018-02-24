@@ -21,6 +21,18 @@ html.perfect-scrollbar-off(lang='en')
       font-size: 15px;
       }
       
+      .highlight{
+        background-color:#ccc;
+      }
+      
+      .text_classAddress{
+        font-size: 15px;
+      }
+      
+      .text_class_Invest{
+        font-size: 15px;
+      }
+      
       .cardHeightChange{
       height:500px;
       }
@@ -110,6 +122,10 @@ html.perfect-scrollbar-off(lang='en')
       
       .make_it_left_button{
           padding:0px;
+      }
+      
+      .text_class_Invest{
+        font-size: 10px;
       }
       
       .cardHeightChange{
@@ -337,9 +353,9 @@ html.perfect-scrollbar-off(lang='en')
               a.navbar-brand(style='font-weight:400;')  Dashboard 
               a.navbar-brand
                 button.btn.btn-primary.make_it_left(type='submit', data-toggle='modal', data-target='#myModal')  Transfer 
-              a.navbar-brand.valuesDoll(style='margin-left:150px;')  BTC/USD $#{BTC}
-              a.navbar-brand.valuesDoll  ETH/USD $#{ETH} 
-              a.navbar-brand.valuesDoll  SIP/USD $#{SIP}
+              a.navbar-brand.valuesDollBTC.valuesDoll(style='margin-left:150px;')  
+              a.navbar-brand.valuesDollETH.valuesDoll  
+              a.navbar-brand.valuesDollSIP.valuesDoll  SIP/USD $#{SIP}
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -584,21 +600,13 @@ html.perfect-scrollbar-off(lang='en')
                   .card-header(style="background-color:#f9b707;")
                     h4.title Team SIPcoin/Reinvest
                   .row(style='border:2px dashed rgb(217,217,217);margin:20px;')
-                    .col-lg-offset-1.col-sm-3(style='margin-top:20px;')
+                    .col-lg-offset-1.col-sm-6(style='margin-top:20px;')
                       .row
-                        .col-sm-12.inputContainer
-                          label
-                            i.fa.fa-dollar(style='color:black;')
+                        .col-sm-12
                           div
-                            input(type='number', placeholder='Amount in Dollar')
-                    .col-sm-3(style='margin-top:20px;')
-                      .row
-                        .col-sm-12.inputContainer
-                          label(style='color:black;font-weight:bold;') SIP
-                          div
-                            input#sip_value_total(type='number', placeholder='Amount in SIPcoin', readonly='')
+                          h4.getSIPBalanceForInvest  Your SIP wallet balance is 
                     .col-sm-3
-                      button#shift_it.btn.btn-primary(type='button', style='cursor:none;margin-top:20px;') Exchange rate : 1 SIP = $ #{SIP}
+                      button#shift_it.btn.btn-primary.text_class_Invest(type='button', style='cursor:none;margin-top:20px;') Exchange rate : 1 SIP = $ #{SIP}
                     .col-sm-12
                       br
                   .card-content.table-responsive
@@ -608,26 +616,37 @@ html.perfect-scrollbar-off(lang='en')
                         th Earnings
                         th Capital Release
                       tbody
-                        tr
+                        tr.planOne
                           td $100.00 - $1000.00	
                           td 0.00% Fixed + Daily %
                           td 243 Days
-                        tr
-                          td $1010.00 - $5000.00	
+                        tr.planTwo
+                          td $1010.00 - $10000.00	
                           td 0.10% Fixed + Daily %
                           td 213 Days
-                        tr
-                          td $5010.00 - $10000.00	
+                        tr.planThree
+                          td $10010.00 - $50000.00	
                           td 0.15% Fixed + Daily %
                           td 152 Days
-                        tr
-                          td $10010.00 - $100000.00	
+                        tr.planFour
+                          td $50010.00 - $100000.00	
                           td 0.20% Fixed + Daily %
                           td 122 Days
                   .row
                     .col-sm-12
                       center
-                        button.btn.btn-primary(type='button') Reinvest
+                        form(action='/placeTransaction', method='post')
+                          .col-sm-3.col-lg-offset-3(style='margin-top:3px;')
+                            .row
+                              .col-sm-12.inputContainer
+                                label(style='color:black;font-weight:bold;') SIP
+                                div
+                                  input#sip_value_Reinvest(type='number', placeholder='Amount in SIPcoin',required='',name='dollarInputTransfer')
+                                  input#type(style='display:none;',type='number', placeholder='Enter type', name='type',required='',value='5')
+                          .col-sm-3
+                            button.btn.btn-primary(type='submit') Reinvest
+                            br
+                            br
             //
               <div class="row">
               <div class="col-md-4">
@@ -711,9 +730,9 @@ html.perfect-scrollbar-off(lang='en')
                               form(action='/createAccount', method='post')
                                 button.btn.btn-primary(type='submit')
                                   | Generate Address
-                            .col-sm-12.eth_address_card(style='margin-top:20px; border:2px dashed rgb(217,217,217);')
+                            .col-sm-12.eth_address_card(style='margin-top:20px; border:2px dashed rgb(217,217,217);padding-left:0px;padding-right:0px;')
                               h5
-                                b.text_class.eth_address_text DD92nSFDwJwfMr2zFHV1pRjRUkvuiUSn7w
+                                b.text_classAddress.eth_address_text 
                       #bitcoinTab.tab-pane
                         center
                           .row
@@ -729,7 +748,7 @@ html.perfect-scrollbar-off(lang='en')
                               br
                             .col-sm-12(style='border:2px dashed rgb(217,217,217);')
                               h5
-                                b.text_class DD92nSFDwJwfMr2zFHV1pRjRUkvuiUSn7w
+                                b.text_class 
               .col-lg-6.col-md-12.sendVerficaionLinkCard 
                 .card.card-nav-tabs
                   .card-header(style="background-color:#f9b707;")
@@ -969,7 +988,11 @@ html.perfect-scrollbar-off(lang='en')
               a(href='http://www.sipcoin.io') SIPcoin
               |  Crypto Platform #forThePeople
         script.
-          console.log('#{userDetails.accountOnBlockchain}') ;
+          console.log('#{userDetails.accountOnBlockchain}');
+          
+          $('.valuesDollBTC').html('BTC/USD $'+parseFloat('#{BTC}').toFixed(2));
+          $('.valuesDollETH').html('ETH/USD $'+parseFloat('#{ETH}').toFixed(2));
+
 
           if('#{userDetails.accountOnBlockchain}' == 'true'){
             //- $('.generate_address_card').remove();  
@@ -1013,6 +1036,52 @@ html.perfect-scrollbar-off(lang='en')
           $("#amountinDollar").on("paste keyup", function() {
               $('#sip_value_total_trans').val(($("#amountinDollar").val()/'#{SIP}').toFixed(6));
           });
+          
+          // reinvest plane choose
+          
+          $('#sip_value_Reinvest').on("paste keyup", function() {
+              var dollar_amount=($("#sip_value_Reinvest").val()*'#{SIP}').toFixed(6);
+              console.log(dollar_amount);
+              if(dollar_amount>= 100 &&  dollar_amount<= 1000)
+              {
+                $('.planOne').addClass('highlight');
+                $('.planFour').removeClass('highlight');
+                $('.planThree').removeClass('highlight');
+                $('.planTwo').removeClass('highlight');
+
+              }else
+              if(dollar_amount>= 1010 &&  dollar_amount<= 10000)
+              {
+                $('.planTwo').addClass('highlight');
+                $('.planFour').removeClass('highlight');
+                $('.planThree').removeClass('highlight');
+                $('.planOne').removeClass('highlight');
+
+
+              }else
+              if(dollar_amount>= 10010 &&  dollar_amount<= 50000)
+              {
+                $('.planThree').addClass('highlight');
+                $('.planFour').removeClass('highlight');
+                $('.planTwo').removeClass('highlight');
+                $('.planOne').removeClass('highlight');
+
+              }else
+              if(dollar_amount>= 50010 &&  dollar_amount<= 100000)
+              {
+                $('.planFour').addClass('highlight');
+                $('.planThree').removeClass('highlight');
+                $('.planTwo').removeClass('highlight');
+                $('.planOne').removeClass('highlight');
+
+              }else{
+                $('.planFour').removeClass('highlight');
+                $('.planThree').removeClass('highlight');
+                $('.planTwo').removeClass('highlight');
+                $('.planOne').removeClass('highlight');
+              }
+          });
+
           
           function CheckAddress(){
             
