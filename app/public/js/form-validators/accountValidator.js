@@ -3,8 +3,8 @@ function AccountValidator()
 {
 // build array maps of the form inputs & control groups //
 
-	this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf'),$('#passwordconf-tf'),$('#senspin-tf')];
-	this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg'),$('#passwordconf-cg'),$('#senspin-cg')];
+	this.formFields = [$('#name-tf'), $('#email-tf'), $('#user-tf'), $('#pass-tf'),$('#passwordconf-tf'),$('#senspin-tf'),$('#senspin-tf-Conf')];
+	this.controlGroups = [$('#name-cg'), $('#email-cg'), $('#user-cg'), $('#pass-cg'),$('#passwordconf-cg'),$('#senspin-cg'),$('#senspin-cg-Conf')];
 
 // bind the form-error modal window to this controller to display any errors //
 
@@ -21,6 +21,12 @@ function AccountValidator()
 
 	this.validatePassworEqual=function(pass1,pass2){
 		return pass1==pass2;
+	}
+
+// validating pin equality
+
+	this.validatePinEqual=function(pin1,pin2){
+		return pin1==pin2;
 	}
 
 	this.validateName = function(s)
@@ -104,6 +110,12 @@ AccountValidator.prototype.validateForm = function()
 	if(this.validatePassworEqual(this.formFields[3].val(),this.formFields[4].val())==false){
 		this.controlGroups[4].addClass('error');
 		e.push('Password Not Matching');
+	}
+
+	if(this.validatePassworEqual(this.formFields[5].val(),this.formFields[6].val())==false)
+	{
+		this.controlGroups[6].addClass('error');
+		e.push('Pin Not Matching');
 	}
 
 	if(e.length!=0)

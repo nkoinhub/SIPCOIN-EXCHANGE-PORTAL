@@ -180,9 +180,12 @@ html(lang='en')
 								input#pass-tf.form-control(type='password', placeholder='Password',required='',name='passUser')
 							.form-group
 								input#passwordconf-tf.form-control(type='password', placeholder='Confirm Password',required='')
-							.form-group
-								| * Enter 4 digit PIN (Remember it for future)
+							.form-group(style='color:red;')
+								| * Enter 4 digit PIN (Remember it for future transactions) 
 								input#senspin-tf.form-control(type='password', placeholder='Pin',required='',name='pinUser')
+							.form-group(style='color:red;')
+								| * Confirm PIN  (Remember Pin cannot be changed)
+								input#senspin-tf-Conf.form-control(type='password', placeholder='Pin',required='',name='pinUserConf')
 							.form-buttons#captcha_input1
 								center
 									.g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')

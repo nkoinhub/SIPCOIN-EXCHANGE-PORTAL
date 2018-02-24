@@ -113,7 +113,7 @@ function get_all_balance(){
         $('.ethWalletValue_trans').html(result.etherBalance+' ETH');
         $('.sipWalletValue_exchange').html('Your SIP Wallet Balance is ' +result.sipBalance+' SIP');
         $('.ethWalletValue_exchange').html('Your ETH Wallet Balance is ' +result.etherBalance+' ETH');
-
+        $('.getSIPBalanceForInvest').html('Your SIP Wallet Balance is ' +result.sipBalance+' SIP');
 
         $("#amountInSIP").attr({
         "max" : result.sipBalance,
@@ -123,6 +123,9 @@ function get_all_balance(){
         "max" : result.etherBalance,
         });
 
+        $('#sip_value_Reinvest').attr({
+        "max" : result.sipBalance,
+        });
       }
 
       // $('#amountETH').attr({
