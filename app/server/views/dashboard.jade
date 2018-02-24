@@ -316,24 +316,18 @@ html.perfect-scrollbar-off(lang='en')
                 i.material-icons monetization_on
                 p Investment History
             li
-              a(href='/logout')
-                i.material-icons account_circle
-                p Logout
-            li
               a(href='/user')
                 i.material-icons person
                 p My Profile
-            //
-              <li>
-              <a href="./typography.html">
-              <i class="material-icons">settings</i>
-              <p>Settings</p>
-              </a>
-              </li>
             li
               a(href='http://support.sipcoin.io/support/', target='blank')
                 i.material-icons bubble_chart
                 p Support
+            li
+              a(href='/logout')
+                i.material-icons account_circle
+                p Logout
+
             //
               <li>
               <a href="./maps.html">
@@ -454,7 +448,7 @@ html.perfect-scrollbar-off(lang='en')
                         h3.category(style='margin-top:0;') CNAV
                       .col-sm-9
                         center
-                          h5.title.cnavValue(style='margin-top:7px;') $4
+                          h5.title.cnavValue(style='margin-top:7px;') $ #{SIP}
                   .card-footer
                     .stats
                       i.material-icons date_range

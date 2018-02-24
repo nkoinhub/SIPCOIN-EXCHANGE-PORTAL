@@ -1258,7 +1258,7 @@ app.get('/investmentHistory',function(req,res){
     btcCheck().then((value)=>{
       btc=value
       AM.getAllInvestments(req.session.user.user, function(result){
-        res.render('table',{
+        res.render('tableInvest',{
           userDetails : req.session.user,
           SIP : sip,
           BTC : btc,
@@ -1414,9 +1414,11 @@ app.post('/addInvestment',function(req,res){
 
 //insert investment details, for admin purpose, when investment done dia sipcoins
 app.post('/addInvestmentViaSip',function(req,res){
+  console.log(req.body['username']);
+  console.log(req.body['username'].substr(0,3));
 
-  var investmentRecord = {
-    IID : "I"+(req.body['username']).substr(0,3) + moment().format('x'),
+    var investmentRecord = {
+    IID : "I"+req.body['username'].substr(0,3) + moment().format('x'),
     username : req.body['username'],
     email : "",
     amount : parseFloat(req.body['amount']),

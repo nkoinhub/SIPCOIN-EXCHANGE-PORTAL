@@ -66,37 +66,18 @@ html(lang='en')
                 i.material-icons monetization_on
                 p Investment History
             li
-              a(href='/logout')
-                i.material-icons account_circle
-                p Logout
-            li
               a(href='/user')
                 i.material-icons person
                 p My Profile
-            //
-              <li>
-              <a href="./typography.html">
-              <i class="material-icons">settings</i>
-              <p>Settings</p>
-              </a>
-              </li>
             li
               a(href='http://support.sipcoin.io/support/')
                 i.material-icons bubble_chart
                 p Support
-            //
-              <li>
-              <a href="./maps.html">
-              <i class="material-icons">location_on</i>
-              <p>Maps</p>
-              </a>
-              </li>
-              <li>
-              <a href="./notifications.html">
-              <i class="material-icons text-gray">notifications</i>
-              <p>Notifications</p>
-              </a>
-              </li>
+            li
+              a(href='/logout')
+                i.material-icons account_circle
+                p Logout
+
             li.active-pro
               a(href='upgrade.html')
       .main-panel
@@ -248,7 +229,7 @@ html(lang='en')
   script.
     $(document).ready(function(){
     $("#tblReportResultsDemographics_wrapper").remove();
-    $("#general_transaction").append('<table style="border:none;" id="tblReportResultsDemographics" class="table table-striped table-bordered" width="100%"> <thead> <tr> <th>Transaction ID</th> <th>Amount</th> <th>Equivalend SIPcoins</th> <th>Daily % Returns</th> <th>Fixex % Returns</th> <th>Date of Investment</th> <th>Release Date of Investment</th> <th>Days Left</th> <th>Returns Done Till</th> </tr> </thead> <tfoot> <tr> <th>Transaction ID</th> <th>Amount</th> <th>Equivalend SIPcoins</th> <th>Daily % Returns</th> <th>Fixex % Returns</th> <th>Date of Investment</th> <th>Release Date of Investment</th> <th>Days Left</th> <th>Returns Done Till</th> </tr> </tfoot> </table>');
+    $("#general_transaction").append('<table style="border:none;" id="tblReportResultsDemographics" class="table table-striped table-bordered" width="100%"> <thead> <tr> <th>Investment ID</th> <th>Amount</th> <th>Equivalend SIPcoins</th> <th>Daily % Returns</th> <th>Fixex % Returns</th> <th>Date of Investment</th> <th>Release Date of Investment</th> <th>Days Left</th> <th>Returns Done Till</th> </tr> </thead> <tfoot> <tr> <th>Transaction ID</th> <th>Amount</th> <th>Equivalend SIPcoins</th> <th>Daily % Returns</th> <th>Fixex % Returns</th> <th>Date of Investment</th> <th>Release Date of Investment</th> <th>Days Left</th> <th>Returns Done Till</th> </tr> </tfoot> </table>');
     var oTblReport = $("#tblReportResultsDemographics")
     //
     var tr = '!{investments}';
