@@ -5,7 +5,7 @@
   },
 
   "Server":{
-    "IP" : "http://localhost:3000"
+    "IP" : "http://18.218.66.230:3000"
   },
 
   "Transporter":{
