@@ -6,7 +6,21 @@ $(document).ready(function(){
 
 	$('#account-form').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
+
+			$('.loader-5').css('display','block');
+			$('#register-form-btn').css('pointer-events','none');
+
+			if(av.validateForm()==false)
+			{
+				$('.loader-5').css('display','none');
+				$('#register-form-btn').css('pointer-events','auto');
+				return false;
+			}else{
+				return true;
+			}
+
 			//console.log(formData);
+
 
 			// $('#register-form-btn').addClass("disabled");
 			// $('#register-form-btn').css("pointer-events","none");
@@ -19,6 +33,8 @@ $(document).ready(function(){
 
 			if(responseText=='Captcha_not_selected')
 			{
+					$('.loader-5').css('display','none');
+					$('#register-form-btn').css('pointer-events','auto');
 
 					$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
 					var ul = $('.modal-form-errors .modal-body ul');
@@ -36,6 +52,9 @@ $(document).ready(function(){
 
 			if(responseText=='captcha_not_validated')
 			{
+				$('.loader-5').css('display','none');
+				$('#register-form-btn').css('pointer-events','auto');
+
 				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
 				var ul = $('.modal-form-errors .modal-body ul');
 					ul.empty();
@@ -51,6 +70,9 @@ $(document).ready(function(){
 
 			if(responseText=='Sponsor_Referral_Code_Invalid')
 			{
+				$('.loader-5').css('display','none');
+				$('#register-form-btn').css('pointer-events','auto');
+
 				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
 				var ul = $('.modal-form-errors .modal-body ul');
 					ul.empty();
@@ -65,6 +87,9 @@ $(document).ready(function(){
 
 			if(responseText=='Link_Invalid')
 			{
+				$('.loader-5').css('display','none');
+				$('#register-form-btn').css('pointer-events','auto');
+
 				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
 				var ul = $('.modal-form-errors .modal-body ul');
 					ul.empty();
@@ -79,6 +104,9 @@ $(document).ready(function(){
 
 			if(responseText=='Parent_Referral_Code_Invalid')
 			{
+				$('.loader-5').css('display','none');
+				$('#register-form-btn').css('pointer-events','auto');
+
 				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
 				var ul = $('.modal-form-errors .modal-body ul');
 					ul.empty();
@@ -93,6 +121,9 @@ $(document).ready(function(){
 
 			if(responseText=='Link_Already_Occupied')
 			{
+				$('.loader-5').css('display','none');
+				$('#register-form-btn').css('pointer-events','auto');
+
 				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
 				var ul = $('.modal-form-errors .modal-body ul');
 					ul.empty();
@@ -112,6 +143,10 @@ $(document).ready(function(){
 			console.log(responseText);
 		},
 		error : function(e){
+
+			$('.loader-5').css('display','none');
+			$('#register-form-btn').css('pointer-events','auto');
+
 			if (e.responseText == 'email-taken'){
 			    av.showInvalidEmail();
 					grecaptcha.reset();

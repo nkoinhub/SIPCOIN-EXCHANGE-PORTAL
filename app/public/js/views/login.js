@@ -8,7 +8,11 @@ $(document).ready(function(){
 
 	$('#login').ajaxForm({
 		beforeSubmit : function(formData, jqForm, options){
+			$('.loader-5').css('display','block');
+			$('.singInbutton').css('pointer-events','none');
 			if (lv.validateForm() == false){
+			$('.loader-5').css('display','none');
+			$('.singInbutton').css('pointer-events','block');
 				return false;
 			} 	else{
 			// append 'remember-me' option to formData to write local cookie //
@@ -17,8 +21,13 @@ $(document).ready(function(){
 			}
 		},
 		success	: function(responseText, status, xhr, $form){
+			// removing the loader inside
+
 			if(responseText=='Captcha_not_selected')
 			{
+				$('.loader-5').css('display','none');
+				$('.singInbutton').css('pointer-events','auto');
+
 				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
 				var ul = $('.modal-form-errors .modal-body ul');
 					ul.empty();
@@ -36,6 +45,9 @@ $(document).ready(function(){
 
 			if(responseText=='captcha_not_validated')
 			{
+				$('.loader-5').css('display','none');
+				$('.singInbutton').css('pointer-events','auto');
+
 				$('.modal-form-errors .modal-body p').text('Please correct the following problems :');
 				var ul = $('.modal-form-errors .modal-body ul');
 					ul.empty();
@@ -67,6 +79,9 @@ $(document).ready(function(){
 			// if (status == 'success') window.location.href = '/dashboard';
 		},
 		error : function(e){
+			// removing the loader
+			$('.loader-5').css('display','none');
+			$('.singInbutton').css('pointer-events','auto');
 			lv.showLoginError('Login Failure', 'Please check your username and/or password');
 			grecaptcha.reset();
 
