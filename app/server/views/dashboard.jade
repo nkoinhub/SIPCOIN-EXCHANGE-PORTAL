@@ -806,131 +806,89 @@ html.perfect-scrollbar-off(lang='en')
                               .ripple-container
                   .card-content.cardHeightChange(style='margin-left:25px;margin-right:25px;')
                     .tab-content
-                      //- #sipcoinTabSend.tab-pane.active
-                      //-   .row
-                      //-     center
-                      //-       .col-sm-12.text_class(style='margin:10px;padding:0;')
-                      //-         | Your SIPcoin Wallet Balance : 
-                      //-         b.sipWalletValue_trans 0.000000SIP
-                      //-     center
-                      //-       .col-sm-12(style='margin:10px;')
-                      //-         | Transaction Fees : 
-                      //-         b 0.000
-                      //-     form
-                      //-       .form-group(style='margin:0px;')
-                      //-         .row
-                      //-           .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                      //-             | Address
-                      //-           .col-sm-9
-                      //-             input#addressSIP.form_inputs(type='text', placeholder='Enter SIP Address', name='sipAddressInput', required='')
-                      //-       .form-group(style='margin:0px;')
-                      //-         .row
-                      //-           .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                      //-             | Amount
-                      //-           .col-sm-9
-                      //-             input#amountSIP.form_inputs(type='number', placeholder='Enter Amount in SIP', name='sipAmountInput', required='')
-                      //-       .form-group(style='margin:0px;')
-                      //-         .row
-                      //-           .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                      //-             | Pass
-                      //-           .col-sm-9
-                      //-             input#pwdSip.form_inputs(type='password', placeholder='Enter password', name='sipPwdInput', required='')
-                      //-       .form-group(style='margin:0px;')
-                      //-         .row
-                      //-           .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                      //-             | 2FA
-                      //-           .col-sm-9
-                      //-             input#faSIP.form_inputs(type='password', placeholder='2FA', name='sipfaInput', required='')
-                      //-       .form-group(style='margin:0px;')
-                      //-         .row
-                      //-           center
-                      //-             .col-sm-9.col-lg-offset-2
-                      //-               button.btn.btn-primary.sendButtons(type='submit')
-                      //-                 img(src='/images/eth.PNG', style='height:30px;width:30px;')
-                      //-                 | Withdraw from SIP  Wallet
-                        #etheriumTabSend.tab-pane.active
-                          .row
-                            center
-                              .col-sm-12.text_class(style='margin:10px;padding:0;')
-                                | Your ETH Wallet Balance : 
-                                b.ethWalletValue_trans 
-                            center
-                              .col-sm-12(style='margin:10px;')
-                                | Transaction Fees : 
-                                b 0.000
+                      #etheriumTabSend.tab-pane.active
+                        .row
+                          center
+                            .col-sm-12.text_class(style='margin:10px;padding:0;')
+                              | Your ETH Wallet Balance : 
+                              b.ethWalletValue_trans 
+                          center
+                            .col-sm-12(style='margin:10px;')
+                              | Transaction Fees : 
+                              b 0.000
+                          .form-group(style='margin:0px;')
+                            .row
+                              .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
+                                | Address
+                              .col-sm-9
+                                input#addressETH.form_inputs(type='text', placeholder='Enter ETH Address', name='ethAddressInput', required='')
+                          .form-group(style='margin:0px;')
+                            .row
+                              .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
+                                | Amount
+                              .col-sm-9
+                                input#amountETH.form_inputs(type='number', placeholder='Enter Amount', name='dollarInputTransfer', required='')
+                          .form-group(style='margin:0px;')
+                            .row
+                              .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
+                                | Pin
+                              .col-sm-9
+                                input#pinETH.form_inputs(type='password', placeholder='Enter PIN',required='')
+                          .form-group.2fa_form_validation(style='margin:0px;')
+                            .row
+                              .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
+                                | 2FA
+                              .col-sm-9
+                                input#faETHValue.form_inputs(type='password', placeholder='2FA', name='ethfaInput', required='')
+                          .form-group(style='margin:0px;')
+                            .row
+                              center
+                                .col-sm-9.col-lg-offset-2.make_it_left_button
+                                  button.btn.btn-primary.sendButtons(onclick='send_ether_to_eher()')
+                                    img(src='/images/eth.PNG', style='height:30px;width:30px;')
+                                    |                                                        | Withdraw from ETH Wallet
+                      #bitcoinTabSend.tab-pane
+                        .row
+                          center
+                            .col-sm-12.text_class(style='margin:10px;padding:0;')
+                              | Your Bicoin Wallet Balance : 
+                              b 0.000000BTC
+                          center
+                            .col-sm-12(style='margin:10px;')
+                              | Transaction Fees : 
+                              b 0.000
+                          form
                             .form-group(style='margin:0px;')
                               .row
                                 .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
                                   | Address
                                 .col-sm-9
-                                  input#addressETH.form_inputs(type='text', placeholder='Enter ETH Address', name='ethAddressInput', required='')
+                                  input#addressBTC.form_inputs(type='text', placeholder='Enter SIP Address', name='btcAddressInput', required='')
                             .form-group(style='margin:0px;')
                               .row
                                 .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
                                   | Amount
                                 .col-sm-9
-                                  input#amountETH.form_inputs(type='number', placeholder='Enter Amount', name='dollarInputTransfer', required='')
+                                  input#amountBTC.form_inputs(type='number', placeholder='Enter Amount', name='btcAmountInput', required='')
                             .form-group(style='margin:0px;')
                               .row
                                 .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                  | Pin
+                                  | Pass
                                 .col-sm-9
-                                  input#pinETH.form_inputs(type='password', placeholder='Enter PIN',required='')
-                            .form-group.2fa_form_validation(style='margin:0px;')
+                                  input#pwdBTC.form_inputs(type='password', placeholder='Enter password', name='btcPwdInput', required='')
+                            .form-group(style='margin:0px;')
                               .row
                                 .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
                                   | 2FA
                                 .col-sm-9
-                                  input#faETHValue.form_inputs(type='password', placeholder='2FA', name='ethfaInput', required='')
+                                  input#faBTC.form_inputs(type='password', placeholder='2FA', name='btcfaInput', required='')
                             .form-group(style='margin:0px;')
                               .row
                                 center
-                                  .col-sm-9.col-lg-offset-2.make_it_left_button
-                                    button.btn.btn-primary.sendButtons(onclick='send_ether_to_eher()')
-                                      img(src='/images/eth.PNG', style='height:30px;width:30px;')
-                                      |                                                        | Withdraw from ETH Wallet
-                        #bitcoinTabSend.tab-pane
-                          .row
-                            center
-                              .col-sm-12.text_class(style='margin:10px;padding:0;')
-                                | Your Bicoin Wallet Balance : 
-                                b 0.000000BTC
-                            center
-                              .col-sm-12(style='margin:10px;')
-                                | Transaction Fees : 
-                                b 0.000
-                            form
-                              .form-group(style='margin:0px;')
-                                .row
-                                  .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                    | Address
-                                  .col-sm-9
-                                    input#addressBTC.form_inputs(type='text', placeholder='Enter SIP Address', name='btcAddressInput', required='')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                    | Amount
-                                  .col-sm-9
-                                    input#amountBTC.form_inputs(type='number', placeholder='Enter Amount', name='btcAmountInput', required='')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                    | Pass
-                                  .col-sm-9
-                                    input#pwdBTC.form_inputs(type='password', placeholder='Enter password', name='btcPwdInput', required='')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  .col-sm-2.col-lg-offset-1(style='margin-top:12px;float:left;')
-                                    | 2FA
-                                  .col-sm-9
-                                    input#faBTC.form_inputs(type='password', placeholder='2FA', name='btcfaInput', required='')
-                              .form-group(style='margin:0px;')
-                                .row
-                                  center
-                                    .col-sm-9.col-lg-offset-2
-                                      button.btn.btn-primary.sendButtons(type='submit')
-                                        img(src='/images/bitcoin.PNG', style='height:30px;width:30px;')
-                                        |                                                        | Withdraw from BTC Wallet
+                                  .col-sm-9.col-lg-offset-2
+                                    button.btn.btn-primary.sendButtons(type='submit')
+                                      img(src='/images/bitcoin.PNG', style='height:30px;width:30px;')
+                                      |                                                        | Withdraw from BTC Wallet
               //
                 <div class="col-lg-6 col-md-12">
                 <div class="card">
