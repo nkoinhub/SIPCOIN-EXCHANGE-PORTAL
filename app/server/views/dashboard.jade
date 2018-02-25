@@ -1028,7 +1028,7 @@ html.perfect-scrollbar-off(lang='en')
               $('#sip_value_Reinvest').val(sip_amount);
               
               var sipBalance=$('#sip_value_ReinvestHidden').attr('max');
-              if(sip_amount>sipBalance)
+              if(parseFloat(sip_amount)>parseFloat(sipBalance))
               {
                 $('.buttonTextChange').html('Insufficient Funds');
                 $('.buttonTextChange').css('background-color','grey');
