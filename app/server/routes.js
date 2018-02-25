@@ -1125,6 +1125,8 @@ app.get('/getTotalCurrent',function(req,res){
 
     AM.getInvestmentDetails(req.session.user.user, function(result){
       sum.result = sum.result + result.amount;
+      console.log("investment sum : ");
+      console.log(sum);
     })
 
     AM.checkAccountCreation(req.session.user.user, function(result){
@@ -1147,6 +1149,8 @@ app.get('/getTotalCurrent',function(req,res){
 
     AM.getDollarWalletBalance(req.session.user.user, function(result){
       sum.result = sum.result + result;
+      console.log("dollar wallet : ");
+      console.log(sum);
     })
 
     setTimeout(()=>{
