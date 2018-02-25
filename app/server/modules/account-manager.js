@@ -39,11 +39,11 @@ db.open(function(e, d){
 			});
 		}	else{
 			console.log('mongo :: connected to database :: "'+dbName+'"');
-			exports.insertSIPStageDocument();
+			//exports.insertSIPStageDocument();
 
-			setInterval(()=>{
-				exports.updateSIPStageDocument()
-			},3000)
+			// setInterval(()=>{
+			// 	exports.updateSIPStageDocument()
+			// },3000)
 
 			// setInterval(()=>{
 			// 	console.log("Referral System Update Executed")
@@ -55,12 +55,13 @@ db.open(function(e, d){
 
 var accounts = db.collection('accounts');
 var transactions = db.collection('transactions');
-var referrals = db.collection('referrals');
-var sipStage = db.collection('SIPStage');
-var Res = db.collection('RES');
-var withdrawalCol=db.collection('withdrawals');
 var investments = db.collection('investments');
 var currentScenario = db.collection('currentScenario');
+//////////////////////////// OLD ICO ///////////////////////////////////////////
+// var referrals = db.collection('referrals');
+// var sipStage = db.collection('SIPStage');
+// var Res = db.collection('RES');
+// var withdrawalCol=db.collection('withdrawals');
 
 //daily scheduled job for the calculation of returns on the basis of investment and updating the investment collection and accounts of each user
 var k = schedule.scheduleJob({hour: 1, minute: 54, dayOfWeek: [0,1,2,3,4,5,6]}, function(){
@@ -202,6 +203,12 @@ exports.getCNAV = function(callback)
 	currentScenario.findOne({about:"currentScenario"},function(e,res){
 		callback(res.CNAV);
 	})
+}
+
+//set transaction hash returned from the admin==================================
+exports.setTransactionHash = function(TID, transactionHash, callback)
+{
+	transactions.update({TID:TID},{$set:{transactionHash:transactionHash, transactionComplete:true, dateOfCompletion:moment().format('MMMM Do YYYY, h:mm:ss a')}},callback("Transaction Hash Set for TID : "+TID));
 }
 
 //add investment dollar in dollarPool and subtract the equivalent sipcoins from the sipPool
@@ -1059,6 +1066,26 @@ exports.getTransactions = function(username, emailid, callback)
 		});
 }
 
+//get transactions for blockchain admin ========================================
+exports.getTransactionsForAdmin = function(callback)
+{
+	transactions.find({transactionComplete:false}).toArray((e,res)=>{
+		if(res.length != 0){
+			callback(res);
+		}
+		else {
+			var result = [];
+			callback(result);
+		}
+	})
+}
+
+//subtract in dollar wallet of the user, as requested by admin==================
+exports.subtractInDollarWallet = function(username, amt, callback)
+{
+	accounts.update({user:username},{$inc:{dollarWallet:-amt}},callback("Dollar Wallet Subtracted of User : "+username));
+}
+
 exports.insertTransaction = function(newData, callback)
 {
 	transactions.insert(newData);
@@ -1181,42 +1208,42 @@ var getFirstTransactionTokens = function(user) {
 	})
 }
 
-var mapConvert = {
-	'0': 0,
-	'1': 2,
-  '2': 6,
-  '3': 14,
-  '4': 30,
-  '5': 62,
-  '6': 126,
-  '7': 254,
-  '8': 510,
-  '9': 1022,
-  '10': 2046,
-  '11': 4094,
-  '12': 8190,
-  '13': 16382,
-  '14': 32766,
-  '15': 65534
-}
-
-var bonusPercent = {
-	'1' : 10,
-	'2' : 4,
-	'3' : 3,
-	'4' : 3,
-	'5' : 3,
-	'6' : 2,
-	'7' : 2,
-	'8' : 2,
-	'9' : 1,
-	'10' : 1,
-	'11' : 1,
-	'12' : 1,
-	'13' : 0.5,
-	'14' : 0.5,
-	'15' : 0.5
-}
+// var mapConvert = {
+// 	'0': 0,
+// 	'1': 2,
+//   '2': 6,
+//   '3': 14,
+//   '4': 30,
+//   '5': 62,
+//   '6': 126,
+//   '7': 254,
+//   '8': 510,
+//   '9': 1022,
+//   '10': 2046,
+//   '11': 4094,
+//   '12': 8190,
+//   '13': 16382,
+//   '14': 32766,
+//   '15': 65534
+// }
+//
+// var bonusPercent = {
+// 	'1' : 10,
+// 	'2' : 4,
+// 	'3' : 3,
+// 	'4' : 3,
+// 	'5' : 3,
+// 	'6' : 2,
+// 	'7' : 2,
+// 	'8' : 2,
+// 	'9' : 1,
+// 	'10' : 1,
+// 	'11' : 1,
+// 	'12' : 1,
+// 	'13' : 0.5,
+// 	'14' : 0.5,
+// 	'15' : 0.5
+// }
 
 var btcCheck = function(){
 	return new Promise(function(resolve,reject){
@@ -1228,79 +1255,79 @@ var btcCheck = function(){
 	});
 }
 
-var IncLevelAndTokensOfRefRecord = function(user, tokens, callback){
-	referrals.update({username:user},{$inc:{level:1,referralTokens:tokens}},callback);
-}
-
-var RefSysUpdate = function() {
-	console.log("RefSysUpdate function called");
-	getREFCollection().then((referralsArray)=>{
-
-		console.log("referrals array found of length : "+referralsArray.length);
-
-		for(var i = 0; i<referralsArray.length; i++)
-		{
-			var traverseRefArray = function(i) {
-				console.log("Referral Array : " + i);
-				var record = referralsArray[i];
-				var level = record.level;
-				var refCount = record.referredCount;
-				var selfRef = record.selfReferralCode;
-				var referred = record.referred;
-				var idealRefTillLevel = mapConvert[level];
-
-				if(refCount == idealRefTillLevel)
-				{
-					console.log("Ideal Count Reached for index: " + i + " username : "+record.username);
-					var startIndex = mapConvert[level-1];
-					var endIndex = mapConvert[level] - 1;
-					var TokensOfFirstInvestment = 0;
-					var tokens;
-					var sip;
-					console.log("start index : "+startIndex);
-					console.log("end index : "+endIndex);
-
-					new Promise(function(resolve,reject){
-						for(var index = startIndex; index <=endIndex; index++)
-						{
-							console.log("inside index : "+index);
-							var calcBusinessValue = function(index, endIndex, resolve) {
-								getUsername(referred[index]).then((username)=>{
-									return getFirstTransactionTokens(username).then((value)=>{return value;})
-								})
-								.then((TotalValue)=>{
-									TokensOfFirstInvestment = TokensOfFirstInvestment + TotalValue;
-									console.log("Self Ref : "+selfRef + " || Referred : "+referred[index] + " || Value From the Ref : " + TotalValue + " || Final Tokens Till Now : " + TokensOfFirstInvestment);
-									if(index == endIndex) resolve("Total Tokens Calculated");
-								})
-							}
-							calcBusinessValue(index, endIndex, resolve);
-						}
-					})
-					.then((message)=>{
-						console.log(message);
-						//currentTokenValue((SIP)=>{
-							return (TokensOfFirstInvestment*bonusPercent[level]/100);
-						//})
-					})
-					.then((tokens)=>{
-						record.level = record.level + 1;
-						exports.incrementRefTokens(record.username, parseFloat((tokens).toFixed(8)), function(message){
-							IncLevelAndTokensOfRefRecord(record.username, parseFloat((tokens).toFixed(8)), function(){
-								console.log("Tokens : " + message + " || Username : "+record.username);
-								console.log("Completion of Referral Updation for : "+record.username);
-							})
-						})
-					})
-				}
-			}
-			traverseRefArray(i);
-		}
-	})
-	.catch((err)=>{
-		console.log("Error while executing RefSysUpdate Function. Error : " + err);
-	})
-}
+// var IncLevelAndTokensOfRefRecord = function(user, tokens, callback){
+// 	referrals.update({username:user},{$inc:{level:1,referralTokens:tokens}},callback);
+// }
+//
+// var RefSysUpdate = function() {
+// 	console.log("RefSysUpdate function called");
+// 	getREFCollection().then((referralsArray)=>{
+//
+// 		console.log("referrals array found of length : "+referralsArray.length);
+//
+// 		for(var i = 0; i<referralsArray.length; i++)
+// 		{
+// 			var traverseRefArray = function(i) {
+// 				console.log("Referral Array : " + i);
+// 				var record = referralsArray[i];
+// 				var level = record.level;
+// 				var refCount = record.referredCount;
+// 				var selfRef = record.selfReferralCode;
+// 				var referred = record.referred;
+// 				var idealRefTillLevel = mapConvert[level];
+//
+// 				if(refCount == idealRefTillLevel)
+// 				{
+// 					console.log("Ideal Count Reached for index: " + i + " username : "+record.username);
+// 					var startIndex = mapConvert[level-1];
+// 					var endIndex = mapConvert[level] - 1;
+// 					var TokensOfFirstInvestment = 0;
+// 					var tokens;
+// 					var sip;
+// 					console.log("start index : "+startIndex);
+// 					console.log("end index : "+endIndex);
+//
+// 					new Promise(function(resolve,reject){
+// 						for(var index = startIndex; index <=endIndex; index++)
+// 						{
+// 							console.log("inside index : "+index);
+// 							var calcBusinessValue = function(index, endIndex, resolve) {
+// 								getUsername(referred[index]).then((username)=>{
+// 									return getFirstTransactionTokens(username).then((value)=>{return value;})
+// 								})
+// 								.then((TotalValue)=>{
+// 									TokensOfFirstInvestment = TokensOfFirstInvestment + TotalValue;
+// 									console.log("Self Ref : "+selfRef + " || Referred : "+referred[index] + " || Value From the Ref : " + TotalValue + " || Final Tokens Till Now : " + TokensOfFirstInvestment);
+// 									if(index == endIndex) resolve("Total Tokens Calculated");
+// 								})
+// 							}
+// 							calcBusinessValue(index, endIndex, resolve);
+// 						}
+// 					})
+// 					.then((message)=>{
+// 						console.log(message);
+// 						//currentTokenValue((SIP)=>{
+// 							return (TokensOfFirstInvestment*bonusPercent[level]/100);
+// 						//})
+// 					})
+// 					.then((tokens)=>{
+// 						record.level = record.level + 1;
+// 						exports.incrementRefTokens(record.username, parseFloat((tokens).toFixed(8)), function(message){
+// 							IncLevelAndTokensOfRefRecord(record.username, parseFloat((tokens).toFixed(8)), function(){
+// 								console.log("Tokens : " + message + " || Username : "+record.username);
+// 								console.log("Completion of Referral Updation for : "+record.username);
+// 							})
+// 						})
+// 					})
+// 				}
+// 			}
+// 			traverseRefArray(i);
+// 		}
+// 	})
+// 	.catch((err)=>{
+// 		console.log("Error while executing RefSysUpdate Function. Error : " + err);
+// 	})
+// }
 
 
 // var testFunc = function()
