@@ -9,10 +9,12 @@
   },
 
   "Transporter":{
-    "service" : "gmail",
+    "host" : "smtp.zoho.com",
+    "port" : 465,
+    "secure" : true,
     "auth" : {
-      "user" : "coinsipbit@gmail.com",
-      "pass" : "SMuley1@3"
+      "user" : "admin@sipcoin.io",
+      "pass" : "adminadmin@123"
     }
   },
 
