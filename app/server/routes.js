@@ -1134,6 +1134,8 @@ app.get('/getTotalCurrent',function(req,res){
             balances = JSON.parse(balances);
             AM.getCNAV(function(CNAV){
               sum.result = sum.result + balances.tokenBalance*parseFloat(CNAV) + balances.etherBalance;
+              console.log("blockchain sum : ");
+              console.log(sum);
             })
           })
           .catch((error)=>{
@@ -1149,7 +1151,7 @@ app.get('/getTotalCurrent',function(req,res){
 
     setTimeout(()=>{
       res.status(200).send(sum);
-    },3000);
+    },6000);
   }
 })
 
