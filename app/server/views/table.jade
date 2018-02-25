@@ -54,7 +54,7 @@ html(lang='en')
                 i.material-icons dashboard
                 p Dashboard
             li
-              a(href='/referral')
+              a(href='/dashboard')
                 i.material-icons group
                 p My Referrals
             li.active
@@ -265,7 +265,7 @@ html(lang='en')
   script.
     $(document).ready(function(){
     $("#tblReportResultsDemographics_wrapper").remove();
-    $("#general_transaction").append('<table style="border:none;" id="tblReportResultsDemographics" class="table table-striped table-bordered" width="100%"> <thead> <tr> <th>Transaction ID</th> <th>Amount</th> <th>Transaction Type</th> <th>CNAV</th> <th> Date of Request </th> <th>Date of Completion</th> <th>Destinaion Address</th> </tr> </thead> <tfoot> <tr> <th>Transaction ID</th> <th>Amount</th> <th>Transaction Type</th> <th>CNAV</th> <th> Date of Request </th> <th>Date of Completion</th> <th>Destinaion Address</th> </tr> </tfoot> </table>');
+    $("#general_transaction").append('<table style="border:none;" id="tblReportResultsDemographics" class="table table-striped table-bordered" width="100%"> <thead> <tr> <th>Transaction ID</th> <th> Transaction Hash </th> <th>Amount</th> <th>Transaction Type</th> <th>CNAV</th> <th> Date of Request </th> <th>Date of Completion</th> <th>Destinaion Address</th> </tr> </thead> <tfoot> <tr> <th>Transaction ID</th> <th> Transaction Hash </th> <th>Amount</th> <th>Transaction Type</th> <th>CNAV</th> <th> Date of Request </th> <th>Date of Completion</th> <th>Destinaion Address</th> </tr> </tfoot> </table>');
     var oTblReport = $("#tblReportResultsDemographics")
     //
     var tr = '!{transactions}';
@@ -274,6 +274,7 @@ html(lang='en')
     "data" : jQuery.parseJSON(tr),
     "columns" : [
     { "data" : "TID"},
+    { "data" : "transactionHash"},
     { "data" : "amount"},
     { "data" : "typeCode"},
     { "data" : "CNAV"},
