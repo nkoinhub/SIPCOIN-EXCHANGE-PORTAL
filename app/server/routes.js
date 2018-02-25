@@ -2326,44 +2326,43 @@ app.post('/changePassword',function(req,res){
 	// 	});
 	// });
 
-  ////////////////////////////////// OLD ICO//////////////////////////////////////
 
-	// app.get('/confirmation',function(req,res){
-  //
-	// 	if(req.session.user!=null)
-	// 	{
-	// 		res.redirect('/');
-	// 	}else{
-  //
-	// 		var usd;
-	// 		var sip;
-	// 		var email=req.query["email"];
-	// 		var user=req.query["user"];
-  //
-	// 		btcCheck().then((USD)=>{
-	// 			usd = USD;
-	// 			return getTokenValue().then((SIP)=>{return SIP});
-	// 		})
-	// 		.then((SIP)=>{
-	// 			sip = SIP;
-  //
-	// 			AM.getAccountByEmail(email,function(o){
-	// 				if(o != null)
-	// 				{
-	// 					res.render('confirmation',{
-	// 						BTC : usd,
-	// 						SIP : sip,
-	// 						EMAIL:email,
-	// 						USER:user
-	// 					})
-	// 				}
-	// 				else {
-	// 					res.redirect('/');
-	// 				}
-	// 			})
-	// 		})
-	// 	}
-	// });
+	app.get('/confirmation',function(req,res){
+
+		if(req.session.user!=null)
+		{
+			res.redirect('/');
+		}else{
+
+			var usd;
+			var sip;
+			var email=req.query["email"];
+			var user=req.query["user"];
+
+			btcCheck().then((USD)=>{
+				usd = USD;
+				return getTokenValue().then((SIP)=>{return SIP});
+			})
+			.then((SIP)=>{
+				sip = SIP;
+
+				AM.getAccountByEmail(email,function(o){
+					if(o != null)
+					{
+						res.render('confirmation',{
+							BTC : usd,
+							SIP : sip,
+							EMAIL:email,
+							USER:user
+						})
+					}
+					else {
+						res.redirect('/');
+					}
+				})
+			})
+		}
+	});
 
   ////////////////////////////////// OLD ICO//////////////////////////////////////
 
