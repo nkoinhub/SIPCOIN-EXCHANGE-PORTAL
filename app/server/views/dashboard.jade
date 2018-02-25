@@ -670,7 +670,7 @@ html.perfect-scrollbar-off(lang='en')
                                   input#sip_value_ReinvestHidden(type='number', placeholder='Equivalent SIPcoins',required='', name='equiSipValue',style='display:none;')
 
                           .col-sm-3
-                            button.btn.btn-primary(type='submit') Reinvest
+                            button.btn.btn-primary(type='submit').buttonTextChange Reinvest
                             br
                             br
             //
@@ -1026,6 +1026,17 @@ html.perfect-scrollbar-off(lang='en')
               console.log(dollar_amount);
               var sip_amount=(dollar_amount/'#{SIP}').toFixed(6);
               $('#sip_value_Reinvest').val(sip_amount);
+              
+              var sipBalance=$('#sip_value_ReinvestHidden').attr('max');
+              if(sip_amount>sipBalance)
+              {
+                $('.buttonTextChange').html('Insufficient Funds');
+                $('.buttonTextChange').css('background-color','grey');
+              }else{
+                $('.buttonTextChange').html('Reinvest');
+                $('.buttonTextChange').css('background-color','#9c27b0');
+              }
+              
                 
               if(dollar_amount>= 100 &&  dollar_amount<= 1000)
               {
