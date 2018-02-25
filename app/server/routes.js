@@ -2347,17 +2347,17 @@ app.post('/changePassword',function(req,res){
 
 			btcCheck().then((USD)=>{
 				usd = USD;
-				return getTokenValue().then((SIP)=>{return SIP});
+				//return getTokenValue().then((SIP)=>{return SIP});
 			})
 			.then((SIP)=>{
-				sip = SIP;
+				//sip = SIP;
 
 				AM.getAccountByEmail(email,function(o){
 					if(o != null)
 					{
 						res.render('confirmation',{
 							BTC : usd,
-							SIP : sip,
+							//SIP : sip,
 							EMAIL:email,
 							USER:user
 						})
