@@ -115,6 +115,10 @@ function get_all_balance(){
         $('.ethWalletValue_exchange').html('Your ETH Wallet Balance is ' +result.etherBalance+' ETH');
         $('.getSIPBalanceForInvest').html('Your SIP Wallet Balance is ' +result.sipBalance+' SIP');
 
+        $('#sip_value_ReinvestHidden').attr({
+          "max":result.sipBalance
+        });
+
         $("#amountInSIP").attr({
         "max" : result.sipBalance,
         });

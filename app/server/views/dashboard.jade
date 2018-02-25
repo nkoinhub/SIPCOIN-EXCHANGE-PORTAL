@@ -659,11 +659,16 @@ html.perfect-scrollbar-off(lang='en')
                         form(action='/placeTransaction', method='post')
                           .col-sm-3.col-lg-offset-3(style='margin-top:3px;')
                             .row
-                              .col-sm-12.inputContainer
-                                label(style='color:black;font-weight:bold;') SIP
+                              .col-sm-6.inputContainer
+                                label(style='color:black;font-weight:bold;') $
                                 div
-                                  input#sip_value_Reinvest(type='number', placeholder='Amount in SIPcoin',required='',name='dollarInputTransfer')
+                                  input#doll_value_Reinvest(type='number', placeholder='Enter Dollars',required='',name='dollarInputTransfer')
                                   input#type(style='display:none;',type='number', placeholder='Enter type', name='type',required='',value='5')
+                              .col-sm-6.inputContainer
+                                div
+                                  input#sip_value_Reinvest(type='number', placeholder='Equivalent SIPcoins',required='', name='equiSipValue' readonly)
+                                  input#sip_value_ReinvestHidden(type='number', placeholder='Equivalent SIPcoins',required='', name='equiSipValue',style='display:none;')
+
                           .col-sm-3
                             button.btn.btn-primary(type='submit') Reinvest
                             br
@@ -1016,9 +1021,12 @@ html.perfect-scrollbar-off(lang='en')
           
           // reinvest plane choose
           
-          $('#sip_value_Reinvest').on("paste keyup", function() {
-              var dollar_amount=($("#sip_value_Reinvest").val()*'#{SIP}').toFixed(6);
+          $('#doll_value_Reinvest').on("paste keyup", function() {
+              var dollar_amount=$("#doll_value_Reinvest").val();
               console.log(dollar_amount);
+              var sip_amount=(dollar_amount/'#{SIP}').toFixed(6);
+              $('#sip_value_Reinvest').val(sip_amount);
+                
               if(dollar_amount>= 100 &&  dollar_amount<= 1000)
               {
                 $('.planOne').addClass('highlight');
