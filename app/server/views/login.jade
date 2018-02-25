@@ -30,6 +30,7 @@ html(lang='en')
     link(rel='stylesheet', type='text/css', href='/css/responsive.css')
     // Custom CSS
     link(rel='stylesheet', type='text/css', href='/css/custom.css')
+    link(rel='stylesheet', href='/css/style_loader.css')
     
     style.
       
@@ -227,17 +228,24 @@ html(lang='en')
             h4.modal-title.textModalHeader(style='font-weight:400;') Resend Verification Mail
           .modal-body
             .col-lg-12
-              form(method='post',action='/')
+              form#sendResendMail(method='post')
                 .form-group
                   input.form-control(type='text', name='username', placeholder='Enter your user name',required='')
                 center
                   button.btn.btn-primary(type='submit', style='background-color:#f9b707;border-color:white;cursor:pointer;outline:none;border:none;')
                     | Send Mail
                     span
-                      .loader-5.center
+                      .loader-6.center
                         span
-
-          .modal-footer
+    #successModal.modal.fade(role='dialog')
+      .modal-dialog
+        .modal-content
+          .modal-header
+            h4.modal-title.textModalHeader(style='font-weight:400;').topText
+          .modal-body
+            .col-lg-12
+              center.responseText
+                
 
     #loading
       #loading-center
@@ -331,7 +339,7 @@ html(lang='en')
                   center
                     a#forgot-password.text_class.iq-font-yellow(href='javascript:void(0);') Forgot Password
                     div.text_class
-                      | Din't Recieve email? 
+                      | Didn't Recieve email? 
                       a.iq-font-yellow(href='javascript:void(0);', data-toggle='modal', data-target='#myModal') Resend Activation Email
                     div.text_class
                       | Don't Have an Account? 

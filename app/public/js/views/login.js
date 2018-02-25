@@ -120,4 +120,39 @@ $(document).ready(function(){
 		}
 	});
 
+
+	$('#sendResendMail').ajaxForm({
+		url: '/resendActivation',
+		beforeSubmit : function(formData, jqForm, options){
+			$('.loader-6').css('display','block');
+		},
+		success	: function(responseText, status, xhr, $form){
+			console.log(responseText);
+
+			if(responseText=='ok')
+			{
+				$('#myModal').modal('hide');
+				$('.responseText').html('Please check your registered email to verify your account');
+				$('.topText').html('Verification Mail Sent Sucessfully');
+				$('#successModal').modal('show');
+				$('.loader-6').css('display','none');
+
+			}else {
+				$('#myModal').modal('hide');
+				$('.responseText').html('Please enter correct user name');
+				$('.topText').html('Verification Mail not Sent');
+				$('#successModal').modal('show');
+				$('.loader-6').css('display','none');
+
+			}
+
+		},
+		error : function(e){
+			alert(e);
+		}
+	});
+
+
+
+
 });

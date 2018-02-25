@@ -271,11 +271,10 @@ module.exports = function(app) {
 
 // resend activation email
 	app.post('/resendActivation',function(req,res){
-    AM.getDataForResend(req.body['username'], function(data){
+    AM.getDataForResend(req.body['username'],function(data){
       console.log(data);
       if(data != null) {
         var URLforVerification = serverIP +"/verify?secretKey=" + data.secret + "&veri=" + makeid(5);
-
         var mailOptions = {
           from: sipCoinEmailId,
           to: data.email,
@@ -289,12 +288,12 @@ module.exports = function(app) {
             console.log("email_not_sent");
           } else {
             console.log('Email sent: ' + info.response);
-            res.redirect('/login');
+            res.status(200).send('ok');
           }
         })
       }
       else {
-        res.redirect('/signup');
+        res.status(200).send('user not valid');
       }
     });
 });
