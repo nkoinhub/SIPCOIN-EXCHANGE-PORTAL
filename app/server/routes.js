@@ -1135,7 +1135,7 @@ app.get('/getTotalCurrent',function(req,res){
           acntBalance(address).then((balances)=>{
             balances = JSON.parse(balances);
             AM.getCNAV(function(CNAV){
-              sum.result = sum.result + balances.tokenBalance*parseFloat(CNAV) + balances.etherBalance;
+              sum.result = sum.result + parseFloat(balances.tokenBalance)*parseFloat(CNAV) + parseFloat(balances.etherBalance);
               console.log("blockchain sum : ");
               console.log(sum);
             })
