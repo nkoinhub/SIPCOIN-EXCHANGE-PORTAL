@@ -182,6 +182,17 @@ var getTransactionDoc = function(TID){
 // 	});
 // }
 
+// EDITED
+ var getTokenValue = function(){
+ 	//var tokenValue;
+ 	return new Promise(function(resolve,reject){
+ 		console.log("inside getTokenValue");
+ 		AM.currentTokenValue(function(o){
+ 			if(o) resolve(o[0].tokenValue);
+ 		})
+ 	});
+ }
+
 //get node info for each parent
 var getNodeInfo = function(referral){
 	return new Promise(function(resolve,reject){
@@ -203,6 +214,14 @@ module.exports = function(app) {
 	// 		res.send(data);
 	// 	})
 	// })
+
+  //tree generation algorithm call and respond - EDITED
+	 app.post('/referralTree',function(req,res){
+	 	AM.formTreeData(req.body.root_referral, function(data){
+	 		console.log(data);
+	 		res.send(data);
+	 	})
+	 })
 
 
   // app.get('/about_us',function(req,res){
@@ -297,6 +316,57 @@ module.exports = function(app) {
       }
     });
 });
+
+
+//referral details of the user - EDITED
+ app.get('/referral',function(req,res){
+ 	if(req.session.user == null)
+ 	{
+ 		res.redirect('/');
+ 	}
+ 	else {
+ 		AM.getReferrals(req.session.user.user,req.session.user.email,function(e,o){
+ 			if(e)
+ 			{
+ 				res.redirect('/dashboard');
+ 			}
+ 			else {
+ 				console.log(o);
+ 				//res.send({referrals : o});
+
+ 				var usd;
+ 				var sip;
+
+ 				btcCheck().then((USD)=>{
+ 					usd = USD;
+ 					return getTokenValue().then((SIP)=>{return SIP});
+ 				})
+ 				.then((SIP)=>{
+ 					sip = SIP;
+
+ 					res.render('referral',{
+ 						udata : req.session.user,
+ 						selfReferralCode : o.selfReferralCode,
+ 						level : o.level,
+ 						referredCount : o.referredCount,
+ 						referralTokens : o.referralTokens,
+            totalLeftSideBusiness : o.totalLeftSideBusiness,
+            totalRightSideBusiness : o.totalRightSideBusiness,
+            leftCount : o.leftCount,
+            rightCount : o.rightCount,
+ 						USD : usd,
+ 						SIP : sip,
+ 						message : 'Referral Data Found',
+             planAmt: o.planAmt
+ 					})
+ 				})
+ 				.catch((err)=>{
+ 					console.log("Error while fetching referral list for user : " + req.session.user.user + " :: Error : " + err)
+ 				})
+ 			}
+ 		})
+ 	}
+ })
 
 ////////////////////////////////// OLD ICO//////////////////////////////////////
 // app.get('/resent_verfication_page',function(req,res){
@@ -2120,7 +2190,7 @@ app.post('/changePassword',function(req,res){
 
 
 //signup submission of registration form along with referral
-	app.post('/signup', function(req, res){
+app.post('/signup', function(req, res){
 
 		if(req.body['g-recaptcha-response'] === undefined || req.body['g-recaptcha-response'] === '' || req.body['g-recaptcha-response'] === null) {
 			res.status(200).send('Captcha_not_selected');
@@ -2139,6 +2209,22 @@ app.post('/changePassword',function(req,res){
 					// res.json({"responseCode" : 1,"responseDesc" : "Failed captcha verification"});
 				}else {
 
+          //===Added New Acc for referral
+          var newAccountForReferral = {
+    				username 	: req.body['username'],
+    				email 	: req.body['emailUser'],
+            selfReferralCode : ((req.body['username']).substr(0,3) + ((moment().format('x')).toString()).substr(4,3) + (req.body['username']).substr(0,Math.floor(Math.random()*3 + 1))).toUpperCase() + ((moment().format('x')).toString()).substr(8,3),
+            sponsorReferralCode : (req.body['sponsorReferralCode']).toUpperCase(), // referral changed to sponsorReferralCode
+            parentReferralCode : "",
+            leftLink : null,
+            rightLink : null,
+            link : req.body['link']
+
+    				//secret : makeid(20),
+    				//accountVerified : false
+    			}
+          //===
+
           var newAccount = {
           	name 	: req.body['name'],
           	email 	: req.body['emailUser'],
@@ -2154,8 +2240,15 @@ app.post('/changePassword',function(req,res){
           	accountVerified : false,
             investmentIDs : [],
             accountOnBlockchain : false,
-            dollarWallet : 0
+            dollarWallet : 0,
+            selfReferralCode : newAccountForReferral.selfReferralCode,
+            sponsorReferralCode : newAccountForReferral.sponsorReferralCode // referral changed to sponsorReferralCode
           }
+
+  /*
+          //Code for adding a new account without ANY CONCERN with referral - previous code when referral was not considered!
+          //Working code
+          //DON NOT DELETE!
 
           AM.addNewAccount(newAccount, function(e){
             if (e){
@@ -2184,12 +2277,198 @@ app.post('/changePassword',function(req,res){
                 res.status(200).send('ok');
               });
             }
-          });
+          }); // addNewAccount() Ends here
+          */
 
-				}
-		 });
-	 }
-	});
+
+          //new method without parentID insertion
+					if(newAccountForReferral.sponsorReferralCode != "")
+					{
+						if(req.body['link'] != undefined)
+						{
+							AM.checkForReferral(newAccountForReferral.sponsorReferralCode, function(result){
+							if(result == true)
+							{
+								console.log("Sponsor Referral Code : Present");
+
+								AM.findParentForNewNode(newAccountForReferral.sponsorReferralCode, req.body['link'], function(parentNode){
+									console.log("Parent Node found for New Node : " + parentNode);
+
+									AM.addNewAccount(newAccount, function(e){
+									if (e){
+										res.status(400).send(e);
+										}	else{
+											AM.referralCreate(newAccountForReferral.username, newAccountForReferral.email, newAccountForReferral.selfReferralCode, newAccountForReferral.sponsorReferralCode, parentNode, req.body['link'], function(){
+												var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
+
+												var mailOptions = {
+													from: sipCoinEmailId,
+													to: newAccountForReferral.email,
+													subject: 'SIPCOIN || Successful Registration',
+													html: part1 +URLforVerification+part2,
+												};
+
+                        if (newAccountForReferral.sponsorReferralCode==parentNode)
+                        {
+                          console.log("parent and sponsors are same");
+
+                          AM.referralAddInSponsorAndParent(newAccountForReferral.sponsorReferralCode, newAccountForReferral.selfReferralCode, newAccountForReferral.selfReferralCode, req.body['link'], function(message){console.log(message)});
+
+                        } else {
+                          console.log("parent and sponsors are not same");
+
+												AM.referralAddInParent(parentNode, newAccountForReferral.selfReferralCode, req.body['link'], function(message){
+                          console.log(message);
+                          AM.referralAddInSponsor(newAccountForReferral.sponsorReferralCode, newAccountForReferral.selfReferralCode, function(message){console.log(message)});
+                          });
+                        }
+
+                        //Here it was
+
+												transporter.sendMail(mailOptions, function(error, info){
+													if (error) {
+														console.log("Email Not Sent, Error : " + error);
+													} else {
+														console.log('Email Sent: ' + info.response);
+													}
+													res.status(200).send('ok');
+												});
+
+                        /*//----=============================================
+                        //Here it is
+                        // Incrementing Left/Right Count of parents.
+                        // variables have the selfReferralCode of themselves
+                        var parent = parentNode;
+                        var child = newAccountForReferral.selfReferralCode;
+                        var link = newAccountForReferral.link;
+                        //console.log("Parent: " + parent + " Child: " + child + " Link: " + link);
+
+                        AM.incrementCountOfParent(parent, link, function(message){
+                          console.log("INSIDE");
+                            console.log(message);
+                          })
+
+
+                        //console.log(count + " Number of Parent's Left/Right Count Incremented");
+                        //----=============================================*/
+
+
+											})
+										}
+									});
+								})
+							}
+							else {
+								console.log("Sponsor referral code invalid")
+								res.status(200).send('Sponsor_Referral_Code_Invalid');
+							}
+						})
+						}
+						else {
+							console.log("Link invalid")
+							res.status(200).send('Link_Invalid');
+						}
+					}
+
+					else {
+
+						//============================dont remove this portion of code, can be used for inital user creation - for e.g. ADMIN, without the need of sponsor code and without looking for parent referral code
+						// AM.addNewAccount(newAccount, function(e){
+						// if (e){
+						// 	res.status(400).send(e);
+						// 	}	else{
+						// 		AM.referralCreate(newAccount.user, newAccount.email, newAccount.selfReferralCode, "SIP35970SIPADM", "SIP35970SIPADM", "root", function(){
+						// 			var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
+            //
+						// 			var mailOptions = {
+						// 				from: sipCoinEmailId,
+						// 				to: newAccount.email,
+						// 				subject: ' SIPCOIN || Successful Registration',
+						// 				html: part1 +URLforVerification+part2,
+						// 			};
+            //
+						// 			transporter.sendMail(mailOptions, function(error, info){
+						// 			 if (error) {
+						// 				 console.log(error);
+						// 				 console.log("email_not_sent");
+						// 				 //response_value="Not Registred Sucessfully";
+						// 				 //res.json({"mail_value" : "mail_not_sent"});
+						// 			 } else {
+						// 				 console.log('Email sent: ' + info.response);
+						// 				 //res.json({"mail_value" : "mail_sent"});
+						// 				 //response_value="Registred Sucessfully";
+						// 			 }
+						// 			 res.status(200).send('ok');
+						// 			})
+						// 		})
+						// 	}
+						// });
+
+						AM.findParentForNewNode(adminSponsorCode, "right", function(parentNode){
+							console.log("Parent Node found for New Node : " + parentNode);
+
+							AM.addNewAccount(newAccount, function(e){
+							if (e){
+								res.status(400).send(e);
+								}	else{
+									AM.referralCreate(newAccountForReferral.username, newAccountForReferral.email, newAccountForReferral.selfReferralCode,  adminSponsorCode, parentNode, "right", function(){
+										var URLforVerification = serverIP +"/verify?secretKey=" + newAccount.secret + "&veri=" + makeid(5);
+
+										var mailOptions = {
+											from: sipCoinEmailId,
+											to: newAccountForReferral.email,
+											subject: 'SIPCOIN || Successful Registration',
+											html: part1 +URLforVerification+part2,
+										};
+
+										AM.referralAddInParent(parentNode, newAccountForReferral.selfReferralCode, "right", function(message){console.log(message)});
+										AM.referralAddInSponsor(adminSponsorCode, newAccountForReferral.selfReferralCode, function(message){console.log(message)});
+
+                    //Here it was
+
+										transporter.sendMail(mailOptions, function(error, info){
+											if (error) {
+												console.log("Email Not Sent, Error : " + error);
+											} else {
+												console.log('Email Sent: ' + info.response);
+											}
+											res.status(200).send('ok');
+										});
+
+                    /*//----=============================================
+                    // Incrementing Left/Right Count of parents.
+                    // variables have the selfReferralCode of themselves
+                    var parent = parentNode;
+                    var child = newAccountForReferral.selfReferralCode;
+                    var link = "right";
+
+
+                    AM.incrementCountOfParent(parent, link, function(message){
+                      console.log("INSIDE");
+                        console.log(message);
+                      })
+
+                    //console.log(count + " Number of Parent's Left/Right Count Incremented");
+                    //----=============================================*/
+
+
+									})
+								}
+							});
+						})
+
+          } //End of else
+
+
+
+
+
+        } //End of else 1
+
+      });
+		 }
+	 //}
+});
 
 
 

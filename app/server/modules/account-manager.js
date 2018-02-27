@@ -57,9 +57,11 @@ var accounts = db.collection('accounts');
 var transactions = db.collection('transactions');
 var investments = db.collection('investments');
 var currentScenario = db.collection('currentScenario');
+// Added
+var referrals = db.collection('referrals');
 //////////////////////////// OLD ICO ///////////////////////////////////////////
 // var referrals = db.collection('referrals');
-// var sipStage = db.collection('SIPStage');
+var sipStage = db.collection('SIPStage');
 // var Res = db.collection('RES');
 // var withdrawalCol=db.collection('withdrawals');
 
@@ -123,6 +125,7 @@ var getChildrenNew = function(referral, link)
 		}
 	})
 }
+
 
 //place transaction request containing the type code of the transaction=========
 exports.placeTransactionRequest = function(transactionReq, callback)
@@ -675,11 +678,28 @@ exports.referralCreate = function(username, emailid, selfRef, sponsorRef, parent
 		rightLink : null,
 		link : link,//left || right || root
 		planAmt : -1,// plan amount assign after considering the first transaction
+		planAmountSet : false,
 		currentAmt : 0,
 		referred : [],
 		level : 1,
 		referredCount : 0,
-		referralTokens : 0
+		referralTokens : 0,
+		leftCount : 0,
+		rightCount : 0,
+		totalLeftSideBusiness : 0,
+		totalRightSideBusiness : 0,
+		isConsideredForDirectCommission : false,
+		isEligibleForDirectCommission : false,
+		prevLeftSideBusiness : 0,
+		prevRightSideBusiness : 0,
+		currentLeftSideBusiness : 0,
+		currentRightSideBusiness : 0,
+		totalBinaryCommission : 0,
+		totalDirectCommission : 0,
+		totalCommission : 0
+
+
+
 	}
 
 	referrals.insert(referralDoc, callback);
@@ -927,6 +947,105 @@ exports.manualLogin = function(user, pass, callback)
 			});
 		}
 	});
+}
+/*
+// New function for incrementing the count of parent nodes until you reach root.
+exports.incrementCountOfParent = function(self, link, callback)
+{
+	console.log("Inside ICOP");
+	referrals.findOne({selfReferralCode:self}, function(e, o) {
+		if(e){
+			callback('Error Occured!');
+		} else {
+			if(link == "left")
+			{
+					referrals.updateOne({selfReferralCode : self}, {$inc : {leftCount : 1}}, function(e, o){
+						if(e){
+							callback('Could NOT INCREMENT leftCount!');
+						} else {
+							callback('leftCount INCREMENTED!');
+						}
+					})
+			} else if(link == "right") {
+
+					referrals.updateOne({selfReferralCode : self}, {$inc : {rightCount : 1}}, function(e, o){
+						if(e){
+							callback('Could NOT INCREMENT rightCount!');
+						} else {
+							callback('rightCount INCREMENTED!');
+						}
+					})
+			}
+			else{
+				callback('No Left/Right LINK found!');
+			}
+		}
+	});
+}*/
+
+/*var incParentLeftRightCount = function(parent, link)
+{
+	return new Promise(function(resolve,reject){
+		if(link == "left")
+		{
+			referrals.updateOne({selfReferralCode:parent}, {$inc : {leftCount : 1}},function(e,res){
+				resolve(res);
+			})
+		}
+		else if(link == "right"){
+			referrals.updateOne({selfReferralCode:parent},{$inc : {rightCount : 1}},function(e,res){
+				resolve(res);
+			})
+		}
+	})
+}*/
+
+/*exports.incrementCountOfParent = function(parent, link, callback)
+{
+	//console.log("Inside ICOP");
+	console.log("Parent: " + parent + " Link: " + link);
+
+	referrals.findOne({selfReferralCode:parent},function(e,o){
+
+			console.log(o);
+			parent = o.selfReferralCode;
+			while(parent != null || parent != undefined)
+			{
+				if(link == "left")
+				{
+					referrals.updateOne({selfReferralCode: parent}, {$inc : {leftCount : 1}});
+					//child = parent;
+				} else if (link == "right"){
+					referrals.updateOne({selfReferralCode: parent}, {$inc : {rightCount : 1}});
+				}
+				parent = o.parentReferralCode;
+			}
+			callback('Incremented Left/Right counts of all the parents.');
+		})
+
+}
+//-------================*/
+
+
+// adding referral in Sponsor and parent
+exports.referralAddInSponsorAndParent = function(selfCode, toBePushedCode, toBeLinked, link,  callback)
+{
+	referrals.findOne({selfReferralCode:selfCode},function(e,o){
+
+		if(o)
+		{
+
+			if(link == "left")
+			{
+				o.leftLink = toBeLinked;
+			} else if (link=="right"){
+				o.rightLink = toBeLinked;
+			}
+			o.referred.push(toBePushedCode);
+			o.referredCount = o.referredCount + 1;
+			referrals.save(o, {safe:true}, callback("New Referral : " + toBePushedCode + " added in sponsorer : " + selfCode));
+		}
+	})
 }
 
 /* record insertion, update & deletion methods */

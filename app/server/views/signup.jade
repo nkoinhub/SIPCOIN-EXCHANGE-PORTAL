@@ -1,7 +1,7 @@
 doctype html
 html(lang='en')
 	head
-		title SIPCOIN - Crypto Currency 
+		title SIPCOIN - Crypto Currency
 		// Required meta tags
 		meta(charset='utf-8')
 		meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
@@ -32,12 +32,12 @@ html(lang='en')
 		link(rel='stylesheet', type='text/css', href='/css/custom.css')
 		script(src='https://www.google.com/recaptcha/api.js')
 		style.
-			
+
 			.btn:focus,.btn:active {
 			 outline: none !important;
 			 box-shadow: none;
 			 }
-			 
+
 			 .loader-5 {
 			 display:none;
 			 margin-left: 210px;
@@ -161,14 +161,14 @@ html(lang='en')
 			 100% { transform: translate3d(0, 0, 0) scale(1); }
 			 }
 
-			input[type=number]::-webkit-inner-spin-button, 
-			input[type=number]::-webkit-outer-spin-button { 
+			input[type=number]::-webkit-inner-spin-button,
+			input[type=number]::-webkit-outer-spin-button {
 				-webkit-appearance: none;
 				-moz-appearance: none;
 				appearance: none;
-				margin: 0; 
+				margin: 0;
 			}
-			
+
 			.card {
 				padding:20px;
 				margin:20px;
@@ -185,43 +185,43 @@ html(lang='en')
 			.container {
 				padding: 2px 16px;
 			}
-			
+
 			#captcha_input{
 			margin-top:10%;
 			margin-left:6%;
 			}
-			
+
 			.remember_class{
 			margin-left:25px;
 			}
-			
+
 			.forgot_class{
 			margin-left:65px;
-			}  
-			
-			
+			}
+
+
 			@media(max-width:767px) {
 			.remember_class{
 			margin-left:15px;
 			}
-			
+
 			.card{
 				left:45%;
 			}
-			
+
 			.forgot_class{
 			margin-left:25px;
-			}  
+			}
 
-			
+
 			.text_class{
 			font-size:13px;
 			}
-			
+
 			#captcha_input{
 				margin-left:-4%;
 			}
-			
+
 			#captcha_input1{
 				margin-left:-5%;
 			}
@@ -309,11 +309,31 @@ html(lang='en')
 							.form-group
 								input#passwordconf-tf.form-control(type='password', placeholder='Confirm Password',required='')
 							.form-group(style='color:red;')
-								| * Enter 4 digit PIN (Remember it for future transactions) 
+								| * Enter 4 digit PIN (Remember it for future transactions)
 								input#senspin-tf.form-control(type='password', placeholder='Pin',required='',name='pinUser')
 							.form-group(style='color:red;')
 								| * Confirm PIN  (Remember Pin cannot be changed)
 								input#senspin-tf-Conf.form-control(type='password', placeholder='Pin',required='',name='pinUserConf')
+							.form-group
+								#referral-tf.form-group
+								input.form-control(type='text', placeholder='Sponsor ID',name='sponsorReferralCode', value=ref)
+
+								br
+							.form-group
+								#option_link-tf.label.control-label.col-sm-9.h6 Select Link
+
+								.row
+									.col-sm-12
+										center
+											.label.radio-inline
+												input(type='radio', name='link',value='left')
+												|  Left
+												&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp
+												input(type='radio', name='link',value='right')
+												|  Right
+											br
+
+
 							.form-buttons#captcha_input1
 								center
 									.g-recaptcha(data-sitekey='6LdO6j0UAAAAAGEunSa_Fq3ZarHhFeJbPYqDyO4P')
@@ -408,7 +428,7 @@ html(lang='en')
 			}
 			});
 			}
-			}); 
+			});
 
 include modals/form-errors
 include modals/alert

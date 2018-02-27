@@ -3,7 +3,7 @@ html.perfect-scrollbar-off(lang='en')
   head
     meta(charset='utf-8')
     //meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title SIPcoin - Crypto Currency 
+    title SIPcoin - Crypto Currency
     //meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
     //meta(name='viewport', content='width=device-width')
     link(rel='stylesheet',type='text/css', href='/css/bootstrap-core.css')
@@ -22,23 +22,23 @@ html.perfect-scrollbar-off(lang='en')
       .text_class{
       font-size: 15px;
       }
-      
+
       .highlight{
         background-color:#ccc;
       }
-      
+
       .text_classAddress{
         font-size: 15px;
       }
-      
+
       .text_class_Invest{
         font-size: 15px;
       }
-      
+
       .cardHeightChange{
       height:500px;
       }
-      
+
       transfer_class{
       margin-left:20px;
       margin-right:20px;
@@ -121,15 +121,15 @@ html.perfect-scrollbar-off(lang='en')
       margin-right:0px;
       margin-top:0px;
       }
-      
+
       .make_it_left_button{
           padding:0px;
       }
-      
+
       .text_class_Invest{
         font-size: 10px;
       }
-      
+
       .cardHeightChange{
       height:550px;
       }
@@ -162,7 +162,7 @@ html.perfect-scrollbar-off(lang='en')
       }
       }
   body
-  
+
     #myModal1.modal.fade(role='dialog')
       .modal-dialog
         .modal-content
@@ -172,7 +172,7 @@ html.perfect-scrollbar-off(lang='en')
           .modal-body
             .col-lg-12.responseText
           .modal-footer
-            
+
     #twoFAEnableModal.modal.fade(role='dialog')
       .modal-dialog
         .modal-content
@@ -219,7 +219,7 @@ html.perfect-scrollbar-off(lang='en')
                           .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;')
                             | Exchange Rate : 1 SIP = $ #{SIP}
                           .col-sm-12.text_class.dollarWalletValue_exchange(style='margin:10px;padding:0;font-weight:400;')
-                          .col-sm-12                          
+                          .col-sm-12
                             form(action='/placeTransaction', method='post',onsubmit="return CheckAddress()")
                               .row.transfer_class(style='border:2px dashed rgb(217,217,217);')
                                 .col-sm-6(style='margin-top:20px;')
@@ -249,15 +249,15 @@ html.perfect-scrollbar-off(lang='en')
                           .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;visibility:hidden;')
                             | Exchange Rate : 1 SIP = $ #{SIP}
                           .col-sm-12.text_class.sipWalletValue_exchange(style='margin:10px;padding:0;font-weight:400;')
-                            | Your SIP Wallet Balance is 
+                            | Your SIP Wallet Balance is
                             svg.spinner(viewbox='0 0 50 50',style='margin-left:10px;margin-top:1px;')
                               circle.path(cx='25', cy='25', r='20', fill='none', stroke-width='5')
- 
+
                           .col-sm-12
                             form(action='/placeTransaction', method='post',onsubmit="return CheckAddress()")
                               .row.transfer_class(style='border:2px dashed rgb(217,217,217);')
                                 .col-sm-6.col-lg-offset-3(style='margin-top:20px;')
-                                  .row 
+                                  .row
                                     .col-sm-12.inputContainer
                                         label(style='color:black;font-weight:bold;') SIP
                                         div
@@ -274,7 +274,7 @@ html.perfect-scrollbar-off(lang='en')
                           .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;visibility:hidden;')
                             | Exchange Rate : 1 ETH = $ #{SIP}
                           .col-sm-12.text_class.ethWalletValue_exchange(style='margin:10px;padding:0;font-weight:400;')
-                            | Your ETH Wallet Balance is  
+                            | Your ETH Wallet Balance is
                             svg.spinner(viewbox='0 0 50 50',style='margin-left:10px;margin-top:1px;')
                               circle.path(cx='25', cy='25', r='20', fill='none', stroke-width='5')
 
@@ -282,7 +282,7 @@ html.perfect-scrollbar-off(lang='en')
                             form(action='/placeTransaction', method='post',onsubmit="return CheckAddress()")
                               .row.transfer_class(style='border:2px dashed rgb(217,217,217);')
                                 .col-sm-6.col-lg-offset-3(style='margin-top:20px;')
-                                  .row 
+                                  .row
                                     .col-sm-12.inputContainer
                                         label(style='color:black;font-weight:bold;') SIP
                                         div
@@ -293,8 +293,8 @@ html.perfect-scrollbar-off(lang='en')
                                     button.btn.btn-primary(type='submit', style='margin-top:10px;margin-bottom:0px;') Transfer
                                 .col-sm-12.text_class(style='margin:10px;padding:0;font-weight:400;')
                                   | Your Wallet Balance Will be Updated after 4-6 Hours
-                            
-                    
+
+
           .modal-footer
             // <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
     .wrapper
@@ -312,7 +312,7 @@ html.perfect-scrollbar-off(lang='en')
                 i.material-icons dashboard
                 p Dashboard
             li
-              a(href='/dashboard')
+              a(href='/referral')
                 i.material-icons group
                 p My Referrals
             li
@@ -360,11 +360,11 @@ html.perfect-scrollbar-off(lang='en')
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-              a.navbar-brand(style='font-weight:400;')  Dashboard 
+              a.navbar-brand(style='font-weight:400;')  Dashboard
               a.navbar-brand
-                button.btn.btn-primary.make_it_left(type='submit', data-toggle='modal', data-target='#myModal')  Transfer 
-              a.navbar-brand.valuesDollBTC.valuesDoll(style='margin-left:150px;')  
-              a.navbar-brand.valuesDollETH.valuesDoll  
+                button.btn.btn-primary.make_it_left(type='submit', data-toggle='modal', data-target='#myModal')  Transfer
+              a.navbar-brand.valuesDollBTC.valuesDoll(style='margin-left:150px;')
+              a.navbar-brand.valuesDollETH.valuesDoll
               a.navbar-brand.valuesDollSIP.valuesDoll  SIP/USD $#{SIP}
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
@@ -470,7 +470,7 @@ html.perfect-scrollbar-off(lang='en')
                   .card-content(style='text-align:left;')
                     .row
                       .col-sm-3
-                        h3.category(style='margin-top:0;') CNAV 
+                        h3.category(style='margin-top:0;') CNAV
                       .col-sm-9
                         center
                           .panel-group(style='margin-bottom:0px;')
@@ -478,7 +478,7 @@ html.perfect-scrollbar-off(lang='en')
                               .panel-heading(style='background-color:white;border-color:white;margin-bottom:0px;padding-bottom:0px;padding-top:5px;padding-left:0px;padding-right:0px;')
                                 h4.panel-title.cnavValue
                                   a(data-toggle='collapse', href='#collapse1')
-                                    | Get Details 
+                                    | Get Details
                                     i.material-icons keyboard_arrow_down
                               #collapse1.panel-collapse.collapse
                                 .panel-body
@@ -489,16 +489,16 @@ html.perfect-scrollbar-off(lang='en')
                                         //- th Values
                                       tbody
                                         tr
-                                          td Week 1	
+                                          td Week 1
                                           td $ 1234.5
                                         tr
-                                          td Week 2	
+                                          td Week 2
                                           td $ 1234.5
                                         tr
-                                          td Week 3	
+                                          td Week 3
                                           td $ 1234.5
                                         tr
-                                          td Week 4	
+                                          td Week 4
                                           td $ 1234.5
 
                   .card-footer
@@ -510,7 +510,7 @@ html.perfect-scrollbar-off(lang='en')
                   .card-content(style='text-align:left;')
                     .row
                       .col-sm-3
-                        h3.category(style='margin-top:0;') CNAV 
+                        h3.category(style='margin-top:0;') CNAV
                       .col-sm-9
                         center
                           .panel-group(style='margin-bottom:0px;')
@@ -518,7 +518,7 @@ html.perfect-scrollbar-off(lang='en')
                               .panel-heading(style='background-color:white;border-color:white;margin-bottom:0px;padding-bottom:0px;padding-top:5px;padding-left:0px;padding-right:0px;')
                                 h4.panel-title.cnavValue
                                   a(data-toggle='collapse', href='#collapse2')
-                                    | Get Details 
+                                    | Get Details
                                     i.material-icons keyboard_arrow_down
                               #collapse2.panel-collapse.collapse
                                 .panel-body
@@ -529,13 +529,13 @@ html.perfect-scrollbar-off(lang='en')
                                         //- th Values
                                       tbody
                                         tr
-                                          td Month 1	
+                                          td Month 1
                                           td $ 1234.5
                                         tr
-                                          td Month 2	
+                                          td Month 2
                                           td $ 1234.5
                                         tr
-                                          td Month 3	
+                                          td Month 3
                                           td $ 1234.5
                   .card-footer
                     .stats
@@ -547,7 +547,7 @@ html.perfect-scrollbar-off(lang='en')
                   .card-header(style='background-color:white;box-shadow:none;margin-top:1px;margin-left:0px;margin-right:0px;')
                     img(src='/images/dollar_wallet.png', style='height:60px;width:60px;')
                   .card-content(style='margin-top:6px;height:100px;')
-                    p.category Dollar Wallet 
+                    p.category Dollar Wallet
                     h5.title.dollarWalletValue
                       svg.spinner(viewbox='0 0 50 50')
                         circle.path(cx='25', cy='25', r='20', fill='none', stroke-width='5')
@@ -565,7 +565,7 @@ html.perfect-scrollbar-off(lang='en')
                   .card-content(style='margin-top:6px;height:100px;')
                     p.category SIP Wallet
                     button.btn.btn-info.sipWalletButton(type='button',onclick='get_sip_wallet()',style='padding:5px;') Get Balance
-                    h5.title.sipWalletValue 
+                    h5.title.sipWalletValue
                   //
                     <div class="card-footer">
                     <div class="stats">
@@ -577,7 +577,7 @@ html.perfect-scrollbar-off(lang='en')
                   .card-header(style='background-color:white;box-shadow:none;margin-top:1px;margin-left:0px;margin-right:0px;')
                     img(src='/images/eth.PNG', style='height:60px;width:60px;')
                   .card-content(style='margin-top:6px;height:100px;')
-                    p.category ETH Wallet 
+                    p.category ETH Wallet
                     button.btn.btn-info.ethWalletButton(type='button',onclick='get_eth_wallet()',style='padding:5px;') Get Balance
                     h5.title.ethWalletValue
                   //
@@ -622,7 +622,7 @@ html.perfect-scrollbar-off(lang='en')
                         .col-sm-12
                           div
                             h4.getSIPBalanceForInvest
-                              | Your SIP wallet balance is 
+                              | Your SIP wallet balance is
                               svg.spinner(viewbox='0 0 50 50',style='margin-left:10px;margin-top:1px;')
                                 circle.path(cx='25', cy='25', r='20', fill='none', stroke-width='5')
 
@@ -638,19 +638,19 @@ html.perfect-scrollbar-off(lang='en')
                         th Capital Release
                       tbody
                         tr.planOne
-                          td $100.00 - $1000.00	
+                          td $100.00 - $1000.00
                           td 0.00% Fixed + Daily %
                           td 243 Days
                         tr.planTwo
-                          td $1010.00 - $10000.00	
+                          td $1010.00 - $10000.00
                           td 0.10% Fixed + Daily %
                           td 213 Days
                         tr.planThree
-                          td $10010.00 - $50000.00	
+                          td $10010.00 - $50000.00
                           td 0.15% Fixed + Daily %
                           td 152 Days
                         tr.planFour
-                          td $50010.00 - $100000.00	
+                          td $50010.00 - $100000.00
                           td 0.20% Fixed + Daily %
                           td 122 Days
                   .row
@@ -758,7 +758,7 @@ html.perfect-scrollbar-off(lang='en')
                                   | Generate Address
                             .col-sm-12.eth_address_card(style='margin-top:20px; border:2px dashed rgb(217,217,217);padding-left:0px;padding-right:0px;')
                               h5
-                                b.text_classAddress.eth_address_text 
+                                b.text_classAddress.eth_address_text
                       #bitcoinTab.tab-pane
                         center
                           .row
@@ -774,8 +774,8 @@ html.perfect-scrollbar-off(lang='en')
                               br
                             .col-sm-12(style='border:2px dashed rgb(217,217,217);')
                               h5
-                                b.text_class 
-              .col-lg-6.col-md-12.sendVerficaionLinkCard 
+                                b.text_class
+              .col-lg-6.col-md-12.sendVerficaionLinkCard
                 .card.card-nav-tabs
                   .card-header(style="background-color:#f9b707;")
                     h4.title Browser Not Verified
@@ -783,16 +783,16 @@ html.perfect-scrollbar-off(lang='en')
                     .col-sm-12
                       br
                       center
-                        h5.title To enable Send Option, You need to verify Browser 
+                        h5.title To enable Send Option, You need to verify Browser
                     .col-sm-6.col-lg-offset-3
                       center
                         button.btn.btn-primary(type='button', style='cursor:pointer;margin-top:20px;',onclick='get_verfication_link()') Send Verification Link
                     .col-sm-12
                       br
                     .col-sm-12
-                      
 
-              .col-lg-6.col-md-12.sendTabCard  
+
+              .col-lg-6.col-md-12.sendTabCard
                 .card.card-nav-tabs
                   .card-header(style="background-color:#f9b707;")
                     .nav-tabs-navigation
@@ -815,11 +815,11 @@ html.perfect-scrollbar-off(lang='en')
                         .row
                           center
                             .col-sm-12.text_class(style='margin:10px;padding:0;')
-                              | Your ETH Wallet Balance : 
-                              b.ethWalletValue_trans 
+                              | Your ETH Wallet Balance :
+                              b.ethWalletValue_trans
                           center
                             .col-sm-12(style='margin:10px;')
-                              | Transaction Fees : 
+                              | Transaction Fees :
                               b 0.000
                           .form-group(style='margin:0px;')
                             .row
@@ -856,11 +856,11 @@ html.perfect-scrollbar-off(lang='en')
                         .row
                           center
                             .col-sm-12.text_class(style='margin:10px;padding:0;')
-                              | Your Bicoin Wallet Balance : 
+                              | Your Bicoin Wallet Balance :
                               b 0.000000BTC
                           center
                             .col-sm-12(style='margin:10px;')
-                              | Transaction Fees : 
+                              | Transaction Fees :
                               b 0.000
                           form
                             .form-group(style='margin:0px;')
@@ -972,43 +972,43 @@ html.perfect-scrollbar-off(lang='en')
               a(href='http://www.sipcoin.io') SIPcoin
               |  Crypto Platform #forThePeople
         script.
-          
+
           $('.valuesDollBTC').html('BTC/USD $'+parseFloat('#{BTC}').toFixed(2));
           $('.valuesDollETH').html('ETH/USD $'+parseFloat('#{ETH}').toFixed(2));
 
 
           if('#{userDetails.accountOnBlockchain}' == 'true'){
-            //- $('.generate_address_card').remove();  
-            $('.generate_address_card').css('display','none');   
+            //- $('.generate_address_card').remove();
+            $('.generate_address_card').css('display','none');
             getAddr();
           }
           else {
-            //- $('.eth_address_card').remove();            
-            $('.eth_address_card').css('display','none');            
+            //- $('.eth_address_card').remove();
+            $('.eth_address_card').css('display','none');
           }
-          
+
           if('#{userDetails.twoFA}' != 'true'){
               $('.2fa_form_validation').remove();
               $("#twoFAEnableModal").modal("show");
 
           }
-          
+
           if('#{browserVerified}' =='true')
           {
               $('.sendVerficaionLinkCard').remove();
           }else{
               $('.sendTabCard').remove();
           }
-          
-          
+
+
           $('#myModal1').on('hidden.bs.modal', function () {
             $('.textModalHeader').html('Whoops');
             $('.responseText').html('');
           })
 
-          
-          
-        
+
+
+
           // getting the dollar balance
           get_dollar_Wallet();
           get_all_balance();
@@ -1018,15 +1018,15 @@ html.perfect-scrollbar-off(lang='en')
           $("#amountinDollar").on("paste keyup", function() {
               $('#sip_value_total_trans').val(($("#amountinDollar").val()/'#{SIP}').toFixed(6));
           });
-          
+
           // reinvest plane choose
-          
+
           $('#doll_value_Reinvest').on("paste keyup", function() {
               var dollar_amount=$("#doll_value_Reinvest").val();
               console.log(dollar_amount);
               var sip_amount=(dollar_amount/'#{SIP}').toFixed(6);
               $('#sip_value_Reinvest').val(sip_amount);
-              
+
               var sipBalance=$('#sip_value_ReinvestHidden').attr('max');
               if(parseFloat(sip_amount)>parseFloat(sipBalance))
               {
@@ -1036,8 +1036,8 @@ html.perfect-scrollbar-off(lang='en')
                 $('.buttonTextChange').html('Reinvest');
                 $('.buttonTextChange').css('background-color','#9c27b0');
               }
-              
-                
+
+
               if(dollar_amount>= 100 &&  dollar_amount<= 1000)
               {
                 $('.planOne').addClass('highlight');
@@ -1078,21 +1078,17 @@ html.perfect-scrollbar-off(lang='en')
               }
           });
 
-          
+
           function CheckAddress(){
-            
+
             if('#{userDetails.accountOnBlockchain}' =='true'){
               return true;
             }else{
-              
+
               $("#myModal").modal("hide");
               $('.responseText').html('Please Create BlockChain Address To Transfer');
               $("#myModal1").modal("show");
               return false;
             }
-          
+
           }
-          
-          
-          
-          
