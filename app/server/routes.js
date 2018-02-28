@@ -357,7 +357,7 @@ module.exports = function(app) {
  						USD : usd,
  						SIP : sip,
  						message : 'Referral Data Found',
-             planAmt: o.planAmt
+            planAmt: o.planAmt
  					})
  				})
  				.catch((err)=>{
