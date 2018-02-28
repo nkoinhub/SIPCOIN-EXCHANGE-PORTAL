@@ -2334,7 +2334,7 @@ app.post('/signup', function(req, res){
 													res.status(200).send('ok');
 												});
 
-                        /*//----=============================================
+                        ///----=============================================
                         //Here it is
                         // Incrementing Left/Right Count of parents.
                         // variables have the selfReferralCode of themselves
@@ -2435,7 +2435,7 @@ app.post('/signup', function(req, res){
 											res.status(200).send('ok');
 										});
 
-                    /*//----=============================================
+                    ///----=============================================
                     // Incrementing Left/Right Count of parents.
                     // variables have the selfReferralCode of themselves
                     var parent = parentNode;

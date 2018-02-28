@@ -1016,7 +1016,7 @@ exports.incrementCountOfParent = function(self, link, callback)
 	})
 }*/
 
-/*exports.incrementCountOfParent = function(parent, link, callback)
+exports.incrementCountOfParent = function(parent, link, callback)
 {
 	//console.log("Inside ICOP");
 	console.log("Parent: " + parent + " Link: " + link);
