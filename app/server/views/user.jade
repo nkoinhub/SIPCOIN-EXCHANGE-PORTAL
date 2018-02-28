@@ -3,7 +3,7 @@ html(lang='en')
   head
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge,chrome=1')
-    title SIPcoin - Crypto Currency 
+    title SIPcoin - Crypto Currency
     meta(content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0', name='viewport')
     meta(name='viewport', content='width=device-width')
     // Bootstrap core CSS
@@ -13,8 +13,14 @@ html(lang='en')
     // Fonts and icons
     link(href='/font-awesome/css/font-awesome.min.css', rel='stylesheet')
     link(href='http://fonts.googleapis.com/css?family=Roboto:400,700,300|Material+Icons', rel='stylesheet', type='text/css')
+
+    link(rel='apple-touch-icon', sizes='180x180', href='/images/favicon/apple-touch-icon.png')
+    link(rel='icon', type='image/png', sizes='32x32', href='/images/favicon/favicon-32x32.png')
+    link(rel='icon', type='image/png', sizes='16x16', href='/images/favicon/favicon-16x16.png')
+    link(rel='manifest', href='/images/favicon/manifest.json')
+    link(rel='mask-icon', href='favicons/safari-pinned-tab.svg', color='#5bbad5')
     style.
-    
+
       input{
       @include transition(all 0.30s ease-in-out);
       outline: none;
@@ -43,14 +49,14 @@ html(lang='en')
       .valuesDoll{
       display: none;
       }
-      
+
       .move_to_the_left{
       margin-left:60px;
       }
 
       }
   body
-  
+
     #myModal.modal.fade(role='dialog')
       .modal-dialog
         .modal-content
@@ -76,7 +82,7 @@ html(lang='en')
                 i.material-icons dashboard
                 p Dashboard
             li
-              a(href='/dashboard')
+              a(href='/referral')
                 i.material-icons group
                 p My Referrals
             li
@@ -110,10 +116,10 @@ html(lang='en')
                 span.icon-bar
                 span.icon-bar
                 span.icon-bar
-              a.navbar-brand(href='#',style='font-weight:400;')  Profile 
-              a.navbar-brand.valuesDoll.valuesDollBTC(style='margin-left:327px;') 
-              a.navbar-brand.valuesDoll.valuesDollETH 
-              a.navbar-brand.valuesDoll  SIP/USD $#{SIP} 
+              a.navbar-brand(href='#',style='font-weight:400;')  Profile
+              a.navbar-brand.valuesDoll.valuesDollBTC(style='margin-left:327px;')
+              a.navbar-brand.valuesDoll.valuesDollETH
+              a.navbar-brand.valuesDoll  SIP/USD $#{SIP}
             .collapse.navbar-collapse
               ul.nav.navbar-nav.navbar-right
                 li.dropdown
@@ -155,16 +161,16 @@ html(lang='en')
                           thead.text-warning
                           tbody
                             tr
-                              td User Name	
+                              td User Name
                               td#userName #{userDetails.user}
                             tr
-                              td Full Name	
-                              td#userFullName #{userDetails.name}	
+                              td Full Name
+                              td#userFullName #{userDetails.name}
                             tr
-                              td Email ID	
-                              td#userEmail #{userDetails.email}	
+                              td Email ID
+                              td#userEmail #{userDetails.email}
                             tr
-                              td Phone No.	
+                              td Phone No.
                               td#phoneInput #{userDetails.mobile}
                     //
                       <h6 class="category text-gray">CEO / Co-Founder</h6>
@@ -210,7 +216,7 @@ html(lang='en')
                             .col-sm-12
                               br
                               |                                               To disable 2FA, enter 2FA code from Google Authenticator APP
-                              
+
                             .col-sm-12
                               .row
                                 br
@@ -229,19 +235,19 @@ html(lang='en')
                               .col-sm-12 Scan the QR code in Google Authenticator APP
                               img#qr_image(src='', style='height:200px;width:200px;')
                             .col-sm-12
-                            | Or Enter the secret in the Google Authenticator APP 
+                            | Or Enter the secret in the Google Authenticator APP
                             .cols-sm-12.secret_class(style='font-weight:bold;margin-top:15px;')
                             .col-sm-12(style='margin-top:20px;')
                               input#authCodeEnable.form_inputs(type='number', placeholder='Auth Code', name='twoFachangeCode', required='')
                               center
                                 button.btn.btn-primary.sendButtons(onclick='start_twofa_function()') Enable 2FA
                             .col-sm-12(style='text-align:left;font-size:16px;line-height:150%;')
-                              | Dear User, 
+                              | Dear User,
                               br
                               |                                               To enable 2 factor authentication on your account please follow the instructions below:-
                             .col-sm-12(style='text-align:left;line-height:200%;')
                               ol
-                                li  Log into your Dekado account. 
+                                li  Log into your Dekado account.
                                 li  Click on the "my profile" tab on the left
                                 li  Scroll down to the security section and choose Two-Factor Auth.
                                 li  Download Google Authenticator or Authy app in your phone/Device.
@@ -279,10 +285,10 @@ html(lang='en')
                                 table.table.table-hover
                                   thead.text-warning
                                     th  Browser Name
-                                    th Browser Version 
+                                    th Browser Version
                                     th IP Address
-                                    th Status 
-                                    th Remove 
+                                    th Status
+                                    th Remove
                                   tbody
                                     tr
                                       td Chrome
@@ -374,17 +380,17 @@ html(lang='en')
     {
       $('.generateSecret').css('display','block');
     }
-    
+
     if ('#{userDetails.twoFA}' == "true")
     {
       $('.twoFAEnabled').css('display','block');
     }
-    
+
     $('#myModal').on('hidden.bs.modal', function () {
       $('.responseText').html('');
     })
 
     console.log(typeof('#{userDetails.twoFA}'))
-    
+
     $('.valuesDollBTC').html('BTC/USD $'+parseFloat('#{BTC}').toFixed(2));
     $('.valuesDollETH').html('ETH/USD $'+parseFloat('#{ETH}').toFixed(2));
