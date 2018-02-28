@@ -44,6 +44,10 @@ html(lang='en')
         height:1200px;
       }
 
+      .cardHeightChange{
+        height:500px;
+      }
+
       .popover{
         text-align: left;
         background-color:#222222;
@@ -380,10 +384,7 @@ html(lang='en')
       font-size: 36px;
       margin-left: 50px;
       }
-      @media screen and (max-height: 450px) {
-      .sidenav {padding-top: 15px;}
-      .sidenav a {font-size: 18px;}
-      }
+
       .loader {
       border: 16px solid #f3f3f3;
       border-radius: 50%;
@@ -990,14 +991,14 @@ html(lang='en')
                  var left_people="<h5 style='display:inline;padding:10px;font-size:12px;'> Left Count - </h5>"+output_data[i].leftCount+"<br>";
                  var right_people="<h5 style='display:inline;padding:10px;font-size:12px;'> Right Count -  </h5>"+output_data[i].rightCount+"<br>";
 
-                 //var left_business="<h5 style='display:inline;padding:10px;font-size:12px;'> Total Left Business -  </h5>"+output_data[i].totalLeftSideBusiness+"<br>";
-                 //var right_business="<h5 style='display:inline;padding:10px;font-size:12px;'> Total Right Business -  </h5>"+output_data[i].totalRightSideBusiness+"<br>";
+                 var left_business="<h5 style='display:inline;padding:10px;font-size:12px;'> Total Left Business -  </h5>"+output_data[i].totalLeftSideBusiness+"<br>";
+                 var right_business="<h5 style='display:inline;padding:10px;font-size:12px;'> Total Right Business -  </h5>"+output_data[i].totalRightSideBusiness+"<br>";
 
 
                  var self_refferal_code="<h5 style='display:inline;padding:10px;font-size:12px;'> Self Referral Code - </h5>"+output_data[i].key+"<br>";
                  var parent_refferal_code="<h5 style='display:inline;padding:10px;font-size:12px;'> Parent Referral Code - </h5>"+output_data[i].parent+"<br>";
                  //var Income_code="<h5 style='display:inline;padding:10px;font-size:12px;'> Income - </h5>"+"10000"+"<br>";
-                 var final_data="<div style='font-size:12px;'>"+user_name+"<center><hr style='width:80%;'></center>"+self_refferal_code+parent_refferal_code+left_people+right_people+"<br></div>";
+                 var final_data="<div style='font-size:12px;'>"+user_name+"<center><hr style='width:80%;'></center>"+self_refferal_code+parent_refferal_code+left_people+right_people+left_business+right_business+"<br></div>";
 
                  if(i==0)
                  {
@@ -1020,14 +1021,14 @@ html(lang='en')
                       if(output_data[1].key!="Empty")
                       {
                         left_people="<h5 style='display:inline;padding:10px;font-size:12px;'> Left Count - </h5>"+(output_data[1].leftCount+output_data[1].rightCount+1)+"<br>";
-                        //left_business="<h5 style='display:inline;padding:10px;font-size:12px;'> Total Left Business - </h5>"+(output_data[3].totalLeftSideBusiness)+"<br>";
+                        left_business="<h5 style='display:inline;padding:10px;font-size:12px;'> Total Left Business - </h5>"+(output_data[3].totalLeftSideBusiness)+"<br>";
 
                       }
 
                       if(output_data[2].key!="Empty")
                       {
                         right_people="<h5 style='display:inline;padding:10px;font-size:12px;'> Right Count -  </h5>"+(output_data[2].leftCount+output_data[2].rightCount+1)+"<br>";
-                        //right_business="<h5 style='display:inline;padding:10px;font-size:12px;'> Total Right Business - </h5>"+(output_data[3].totalRightSideBusiness)+"<br>";
+                        right_business="<h5 style='display:inline;padding:10px;font-size:12px;'> Total Right Business - </h5>"+(output_data[3].totalRightSideBusiness)+"<br>";
                       }
 
                       final_data="<div style='font-size:12px;'>"+user_name+"<center><hr style='width:80%;'></center>"+self_refferal_code+left_people+right_people+"<br></div>";

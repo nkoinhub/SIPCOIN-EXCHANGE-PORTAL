@@ -101,7 +101,7 @@ var k = schedule.scheduleJob({hour: 1, minute: 54, dayOfWeek: [0,1,2,3,4,5,6]}, 
 var getChildren = function(referral)
 {
 	return new Promise(function(resolve,reject){
-		referrals.find({parentReferralCode:referral},{_id:0,selfReferralCode:1,parentReferralCode:1,sponsorReferralCode:1,link:1,username:1,leftCount:1,rightCount:1,planAmt:1}).toArray(function(e,res){
+		referrals.find({parentReferralCode:referral},{_id:0,selfReferralCode:1,parentReferralCode:1,sponsorReferralCode:1,link:1,username:1,leftCount:1,rightCount:1,planAmt:1, totalLeftSideBusiness:1, totalRightSideBusiness:1}).toArray(function(e,res){
 			resolve(res);
 		})
 	})
@@ -361,7 +361,9 @@ exports.formTreeData = function(referral, callback)
 						name : resArray[0].username,
 						leftCount : resArray[0].leftCount,
 						rightCount : resArray[0].rightCount,
-						planAmt : resArray[0].planAmt
+						planAmt : resArray[0].planAmt,
+						totalLeftSideBusiness : resArray[0].totalLeftSideBusiness,
+						totalRightSideBusiness : resArray[0].totalRightSideBusiness
 					})
 					finalData.push({
 						key : resArray[1].selfReferralCode,
@@ -369,7 +371,9 @@ exports.formTreeData = function(referral, callback)
 						name : resArray[1].username,
 						leftCount : resArray[1].leftCount,
 						rightCount : resArray[1].rightCount,
-						planAmt : resArray[1].planAmt
+						planAmt : resArray[1].planAmt,
+						totalLeftSideBusiness : resArray[1].totalLeftSideBusiness,
+						totalRightSideBusiness : resArray[1].totalRightSideBusiness
 					})
 
 				}
@@ -380,7 +384,9 @@ exports.formTreeData = function(referral, callback)
 						name : resArray[1].username,
 						leftCount : resArray[1].leftCount,
 						rightCount : resArray[1].rightCount,
-						planAmt : resArray[1].planAmt
+						planAmt : resArray[1].planAmt,
+						totalLeftSideBusiness : resArray[1].totalLeftSideBusiness,
+						totalRightSideBusiness : resArray[1].totalRightSideBusiness
 					})
 					finalData.push({
 						key : resArray[0].selfReferralCode,
@@ -388,7 +394,9 @@ exports.formTreeData = function(referral, callback)
 						name : resArray[0].username,
 						leftCount : resArray[0].leftCount,
 						rightCount : resArray[0].rightCount,
-						planAmt : resArray[0].planAmt
+						planAmt : resArray[0].planAmt,
+						totalLeftSideBusiness : resArray[0].totalLeftSideBusiness,
+						totalRightSideBusiness : resArray[0].totalRightSideBusiness
 					})
 				}
 				return resArray;
@@ -403,7 +411,9 @@ exports.formTreeData = function(referral, callback)
 						name : resArray[0].username,
 						leftCount : resArray[0].leftCount,
 						rightCount : resArray[0].rightCount,
-						planAmt : resArray[0].planAmt
+						planAmt : resArray[0].planAmt,
+						totalLeftSideBusiness : resArray[0].totalLeftSideBusiness,
+						totalRightSideBusiness : resArray[0].totalRightSideBusiness
 					})
 					finalData.push({
 						key : "Empty",
@@ -411,7 +421,9 @@ exports.formTreeData = function(referral, callback)
 						name : "No Child",
 						leftCount : 0,
 						rightCount : 0,
-						planAmt : "No Plan Amount"
+						planAmt : "No Plan Amount",
+						totalLeftSideBusiness : 0,
+						totalRightSideBusiness : 0
 					})
 
 				}
@@ -423,7 +435,9 @@ exports.formTreeData = function(referral, callback)
 						name : "No Child",
 						leftCount : 0,
 						rightCount : 0,
-						planAmt : "No Plan Amount"
+						planAmt : "No Plan Amount",
+						totalLeftSideBusiness : 0,
+						totalRightSideBusiness : 0
 					})
 					finalData.push({
 						key : resArray[0].selfReferralCode,
@@ -431,7 +445,9 @@ exports.formTreeData = function(referral, callback)
 						name : resArray[0].username,
 						leftCount : resArray[0].leftCount,
 						rightCount : resArray[0].rightCount,
-						planAmt : resArray[0].planAmt
+						planAmt : resArray[0].planAmt,
+						totalLeftSideBusiness : resArray[0].totalLeftSideBusiness,
+						totalRightSideBusiness : resArray[0].totalRightSideBusiness
 					})
 				}
 				return resArray;
