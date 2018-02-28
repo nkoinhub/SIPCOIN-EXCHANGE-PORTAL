@@ -1016,29 +1016,39 @@ exports.incrementCountOfParent = function(self, link, callback)
 	})
 }*/
 
-exports.incrementCountOfParent = function(parent, link, callback)
+/*exports.incrementCountOfParent = function(parent, link, callback)
 {
 	//console.log("Inside ICOP");
 	console.log("Parent: " + parent + " Link: " + link);
 
+	var changeParent = function(parent, link)
+	{
 			referrals.findOne({selfReferralCode:parent},function(e,o){
 
 			console.log(o);
 			//parent = o.selfReferralCode;
-			if(parent != null || parent != undefined)
+			if(link != null)
 			{
 				if(link == "left")
 				{
 					referrals.updateOne({selfReferralCode: parent}, {$inc : {leftCount : 1}});
+					link = o.link;
+					parent = o.parentReferralCode;
+					changeParent(parent, link);
 				} else if (link == "right"){
 					referrals.updateOne({selfReferralCode: parent}, {$inc : {rightCount : 1}});
+					link = o.link;
+					parent = o.parentReferralCode;
+					changeParent(parent, link);
 				}
-				link = o.link;
-				parent = o.parentReferralCode;
-				incrementCountOfParent(parent, link, callback);
+				//link = o.link;
+				//parent = o.parentReferralCode;
+				//changeParent(parent, link);
 			}
 			callback('Incremented Left/Right counts of all the parents.');
 		})
+	}
+
 
 }
 //-------================*/
