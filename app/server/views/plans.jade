@@ -1,0 +1,397 @@
+doctype html
+html(lang='en')
+  head
+    title SIPCOIN - Crypto Currency 
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    // Favicon
+    link(rel='shortcut icon', href='/images/favicon.ico')
+    // Google Fonts
+    link(href='https://fonts.googleapis.com/css?family=PT+Sans&Ubuntu:400,500,700', rel='stylesheet')
+    // Bootstrap CSS
+    link(rel='stylesheet', type='text/css', href='/css/bootstrap.min.css')
+    // Magnific Popup CSS
+    link(rel='stylesheet', type='text/css', href='/css/magnific-popup/magnific-popup.css')
+    // owl-carousel CSS
+    link(rel='stylesheet', type='text/css', href='/css/owl-carousel/owl.carousel.css')
+    // Animate CSS
+    link(rel='stylesheet', type='text/css', href='/css/animate.css')
+    // Font Awesome
+    link(rel='stylesheet', type='text/css', href='/css/font-awesome.css')
+    // Ionicons CSS
+    link(rel='stylesheet', type='text/css', href='/css/ionicons.min.css')
+    // Flaticon CSS
+    link(rel='stylesheet', type='text/css', href='/css/flaticon.css')
+    // Flaticon CSS
+    link(rel='stylesheet', type='text/css', href='/css/shop.css')
+    // REVOLUTION STYLE SHEETS
+    link(rel='stylesheet', type='text/css', href='/revslider/css/settings.css')
+    // style CSS
+    link(rel='stylesheet', type='text/css', href='/css/style.css')
+    // Responsive CSS
+    link(rel='stylesheet', type='text/css', href='/css/responsive.css')
+    // Custom CSS
+    link(rel='stylesheet', type='text/css', href='/css/custom.css')
+    style.
+      #captcha_input{
+      margin-top:10%;
+      margin-left:6%;
+      }
+      
+      .remember_class{
+      margin-left:25px;
+      }
+      
+      .forgot_class{
+      margin-left:65px;
+      }  
+      
+      
+      @media(max-width:767px) {
+      .remember_class{
+      margin-left:15px;
+      }
+      
+      .forgot_class{
+      margin-left:25px;
+      }  
+
+      
+      .text_class{
+      font-size:13px;
+      }
+      
+      #captcha_input{
+        margin-left:-4%;
+      }
+      
+      #captcha_input1{
+        margin-left:-5%;
+      }
+
+      }
+
+  body
+    // loading
+    #loading
+      #loading-center
+        img(src='/images/loader_sip.gif', alt='loder')
+    // loading End
+    // Header
+    header
+      .topbar
+        .container
+          .row
+            .col-lg-6.col-md-6.col-sm-6
+              .topbar-left
+                ul.list-inline
+            .col-lg-6.col-md-6.col-sm-6
+              .topbar-right.text-right
+                ul.list-inline
+                  li.list-inline-item
+                    ul.list-inline.iq-left
+                      li.list-inline-item
+                        a(href='/login')
+                          i.fa.fa-lock
+                          | Login
+                      li.list-inline-item
+                        a(href='/signup')
+                          i.fa.fa-user
+                          | Register
+                  li.list-inline-item
+                    a(href='#')
+                      i.fa.fa-comments-o
+                      | Free Consulting
+      .iq-header
+        .container
+          .row
+            .col-md-12
+              .logo
+                a(href='/')
+                  img.img-fluid(src='/images/logo/sipcoin_black.png', alt='logo')
+              nav
+                a#resp-menu.responsive-menu(href='javascript:void(0);')
+                  i.fa.fa-reorder
+                  |  Menu
+                ul.menu.text-right
+                  li
+                    a(href='/') HOME
+                  li
+                    a(href='/about') About Us
+                  li
+                    a.active(href='/plans') Plans
+                  li
+                    // <a href="faq.html">FAQ's</a>
+                    a(href='javascript:void(0);') FAQ's
+                  li
+                    // <a href="blog.html">Blog</a>
+                    a(href='javascript:void(0);') Blog
+                  li
+                    // <a href="coming-soon.html">Live Trading</a>
+                    a(href='javascript:void(0);') Live Trading
+                  li
+                    a(href='/contact') Contact
+                  li
+                    .iq-search
+                      a.search-btn.not_click(href='javascript:void(0);')
+                        span Search Button
+                      .search-box.not-click
+                        input#search.form-control.not-click(type='text', placeholder='Search')
+                        i.ti-search
+    // Header End
+    .clearfix
+    // ======= Breadcrumb Inner Page =======
+    section.iq-bg.iq-bg-fixed.iq-over-black-80.jarallax.iq-breadcrumb.text-center.iq-font-white(style="background-image: url('/images/bg/plan3.jpg'); background-position: center center;")
+      .container
+        .row
+          .col-lg-8.offset-lg-2
+            .heading-title
+              h3.title.text-uppercase.iq-font-white.iq-tw-6 Plans
+            p Sipcoin is a next generation fully decentralised lending platform.
+      nav(aria-label='breadcrumb')
+        ol.breadcrumb
+          li.breadcrumb-item
+            a(href='index.html') Home
+          li.breadcrumb-item.active(aria-current='page') Plans
+    // ======= Breadcrumb Inner Page =======
+    // Main Content
+    .main-content
+      // Pricing
+      section.overview-block-ptb
+        .container
+          .row
+            .col-sm-12
+              .heading-title
+                h3.title.iq-tw-5.iq-mb-20 Sipcoin Plans
+          // New 2 Cards for Plans
+          .row
+            .col-md-6.col-sm-6
+              .iq-pricing
+                span.icon
+                  i.ion-social-usd-outline(aria-hidden='true')
+                .pricing-header
+                  h3.title Staking Plan
+                  span.price-value 12 Months
+                ul.pricing-content
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Monthly Payout
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | 10% Fixed
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Coins Free For Trading - 12 Months
+                a.button(href='http://ico.sipcoin.io', target='_blank') Invest
+            .col-md-6.col-sm-6
+              .iq-pricing
+                span.icon
+                  i.ion-social-usd-outline(aria-hidden='true')
+                .pricing-header
+                  h3.title Staking Plan
+                  span.price-value 18 Months
+                ul.pricing-content
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Monthly Payout
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | 12% Fixed
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Coins Free For Trading - 18 Months
+                a.button(href='http://ico.sipcoin.io', target='_blank') Invest
+          // New 2 Cards for Plans Finished
+          .row
+            .col-md-3.col-sm-6
+              .iq-pricing
+                span.icon
+                  i.ion-social-usd-outline(aria-hidden='true')
+                .pricing-header
+                  h3.title Lend
+                  span.price-value  $100 - $1000
+                ul.pricing-content
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Daily Returns
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Up to 42% Monthly
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Capital Release - 8 Months 
+                    br
+                    br
+                a.button(href='http://ico.sipcoin.io', target='_blank') Invest
+            .col-md-3.col-sm-6
+              .iq-pricing
+                span.icon
+                  i.ion-social-usd-outline(aria-hidden='true')
+                .pricing-header
+                  h3.title Lend
+                  span.price-value $1010 - $10000
+                ul.pricing-content
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Daily Returns
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Up to 42% Monthly + 
+                    br
+                    |  0.1% Fixed Daily 
+                    br
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Capital Release - 7 Months
+                a.button(href='http://ico.sipcoin.io', target='_blank') Invest
+            .col-md-3.col-sm-6
+              .iq-pricing
+                span.icon
+                  i.ion-social-usd-outline(aria-hidden='true')
+                .pricing-header
+                  h3.title Lend
+                  span.price-value $10010 - $50000
+                ul.pricing-content
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Daily Returns
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Up to 42% Monthly + 
+                    br
+                    |  0.15% Fixed Daily 
+                    br
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Capital Release - 5 Months
+                a.button(href='http://ico.sipcoin.io', target='_blank') Invest
+            .col-md-3.col-sm-6
+              .iq-pricing
+                span.icon
+                  i.ion-social-usd-outline(aria-hidden='true')
+                .pricing-header
+                  h3.title Lend
+                  span.price-value $50010 - $100000
+                ul.pricing-content
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Daily Returns
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Up to 42% Monthly + 
+                    br
+                    |  0.2% Fixed Daily 
+                    br
+                  li
+                    i.iq-mr-10.ion-checkmark-round(aria-hidden='true')
+                    | Capital Release - 4 Months
+                a.button(href='http://ico.sipcoin.io', target='_blank') Invest
+      // Pricing
+      // Counter
+      // Testimonial
+      // Clients
+      .iq-our-clients.particles-bg.yellow-bg.iq-ptb-40
+        canvas#canvas
+        .container
+          .row
+            .col-lg-12.col-md-12
+              .owl-carousel(data-nav-dots='false', data-nav-arrow='false', data-items='5', data-sm-items='3', data-lg-items='5', data-md-items='4', data-autoplay='true')
+                .item
+                  img.img-fluid(src='/images/clients/white/01.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/02.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/03.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/04.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/05.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/06.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/01.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/02.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/03.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/04.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/05.png', alt='#')
+                .item
+                  img.img-fluid(src='/images/clients/white/06.png', alt='#')
+      // Clients
+    // Main Content End
+    //
+      =================================
+      Footer
+    footer.iq-footer-3.dark-bg
+      .footer-top.overview-block-pt.iq-pb-0
+        .container
+          .row
+            .col-lg-4.col-md-3.col-sm-12.iq-contact.iq-r4-mt-40
+              .heading-left
+                h5.title.iq-tw-5.iq-font-white Contact Sipcoin
+              .iq-mb-20
+                .blog
+                  i.ion-ios-telephone-outline
+                  .content
+                    .iq-tw-6.title
+                      a(href='http://support.sipcoin.io/support/')  Support Center
+            .logo.col-lg-4.text-center
+              img(src='/images/revolution/sipcoin.png', alt='logo')
+            .col-lg-4.col-md-6.col-sm-6
+              .logo
+                img.img-fluid.iq-ml-60(src='/images/logo/sipcoin_white.png ', alt='#')
+                .iq-font-white.iq-mt-15(align='justify')
+                  | SIPcoin is based on Ethereum smart contracts. Ethereum is the number two Blockchain of the world. It is opensource, decentralized and transparent & cannot be manipulated.
+                br
+      .footer-bottom.iq-ptb-20
+        .container
+          .row
+            .col-sm-12.text-center
+              ul.iq-media-blog.iq-mt-20.text-center
+                li
+                  a(href=' https://twitter.com/sipcoin_io ')
+                    i.fa.fa-twitter
+                li
+                  a(href=' https://www.facebook.com/sipcoin/ ')
+                    i.fa.fa-facebook
+                li
+                  a(href=' https://www.instagram.com/sipcoin.io/?hl=en ')
+                    i.fa.fa-instagram
+                li
+                  a(href=' https://goo.gl/e37G3Z ')
+                    i.fa.fa-slack
+            .col-sm-12.text-center
+              .iq-copyright.iq-mt-10.iq-font-white
+                | Copyright 
+                span#copyright
+                  script.
+                    document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+                a(href='index.html') Sipoin
+                |  All Rights Reserved
+    //
+      =================================
+      Footer
+    // back-to-top
+    #back-to-top
+      a#top.top(href='#top')
+        i.ion-ios-upload-outline
+    // back-to-top End
+    // jquery-min JavaScript
+    script(src='/js/views/js1/jquery-min.js ')
+    // popper JavaScript
+    script(src='/js/views/js1/popper.min.js ')
+    // Bootstrap JavaScript
+    script(src='/js/views/js1/bootstrap.min.js ')
+    // Bitcoin widget JavaScript
+    script(src='/js/views/js1/widget.js ')
+    // All-plugins JavaScript
+    script(src='/js/views/js1/all-plugins.js ')
+    // particles JavaScript
+    script(src='/js/views/js1/particles.js ')
+    // Custom JavaScript
+    script(src='/js/views/js1/custom.js ')
+    script(src='https://www.google.com/recaptcha/api.js')

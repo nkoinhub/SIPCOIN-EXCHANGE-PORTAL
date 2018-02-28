@@ -1,0 +1,258 @@
+doctype html
+html(lang='en')
+  head
+    title SIPCOIN - Crypto Currency
+    // Required meta tags
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1, shrink-to-fit=no')
+    // Favicon
+    link(rel='shortcut icon', href='/images/favicon.ico')
+    // Google Fonts
+    link(href='https://fonts.googleapis.com/css?family=PT+Sans&Ubuntu:400,500,700', rel='stylesheet')
+    // Bootstrap CSS
+    link(rel='stylesheet', type='text/css', href='/css/bootstrap.min.css')
+    // Magnific Popup CSS
+    link(rel='stylesheet', type='text/css', href='/css/magnific-popup/magnific-popup.css')
+    // owl-carousel CSS
+    link(rel='stylesheet', type='text/css', href='/css/owl-carousel/owl.carousel.css')
+    // Animate CSS
+    link(rel='stylesheet', type='text/css', href='/css/animate.css')
+    // Font Awesome
+    link(rel='stylesheet', type='text/css', href='/css/font-awesome.css')
+    // Ionicons CSS
+    link(rel='stylesheet', type='text/css', href='/css/ionicons.min.css')
+    // Flaticon CSS
+    link(rel='stylesheet', type='text/css', href='/css/flaticon.css')
+    // Flaticon CSS
+    link(rel='stylesheet', type='text/css', href='/css/shop.css')
+    // REVOLUTION STYLE SHEETS
+    link(rel='stylesheet', type='text/css', href='/revslider/css/settings.css')
+    // style CSS
+    link(rel='stylesheet', type='text/css', href='/css/style.css')
+    // Responsive CSS
+    link(rel='stylesheet', type='text/css', href='/css/responsive.css')
+    // Custom CSS
+    link(rel='stylesheet', type='text/css', href='/css/custom.css')
+
+    style.
+      #captcha_input{
+      margin-top:10%;
+      margin-left:6%;
+      }
+
+      .remember_class{
+      margin-left:25px;
+      }
+
+      .forgot_class{
+      margin-left:65px;
+      }
+
+
+      @media(max-width:767px) {
+      .remember_class{
+      margin-left:15px;
+      }
+
+      .forgot_class{
+      margin-left:25px;
+      }
+
+
+      .text_class{
+      font-size:13px;
+      }
+
+      #captcha_input{
+        margin-left:-4%;
+      }
+
+      #captcha_input1{
+        margin-left:-5%;
+      }
+
+      }
+
+  body
+    // loading
+    #loading
+      #loading-center
+        img(src='/images/loader_sip.gif', alt='loder')
+    // loading End
+    // Header
+    header
+      .topbar
+        .container
+          .row
+            .col-lg-6.col-md-6.col-sm-6
+              .topbar-left
+            .col-lg-6.col-md-6.col-sm-6
+              .topbar-right.text-right
+                ul.list-inline
+                  li.list-inline-item
+                    ul.list-inline.iq-left
+                      li.list-inline-item
+                        a(href='/login')
+                          i.fa.fa-lock
+                          | Login
+                      li.list-inline-item
+                        a(href='/signup')
+                          i.fa.fa-user
+                          | Register
+                  li.list-inline-item
+                    a(href='#')
+                      i.fa.fa-comments-o
+                      | Free Consulting
+      .iq-header
+        .container
+          .row
+            .col-md-12
+              .logo
+                a(href='/')
+                  img.img-fluid(src='/images/logo/sipcoin_black.png', alt='logo')
+              nav
+                a#resp-menu.responsive-menu(href='javascript:void(0);')
+                  i.fa.fa-reorder
+                  |  Menu
+                ul.menu.text-right
+                  li
+                    a(href='/') HOME
+                  li
+                    a(href='/about') About Us
+                  li
+                    a(href='/plans') Plans
+                  li
+                    // <a href="faq.html">FAQ's</a>
+                    a(href='javascript:void(0);') FAQ's
+                  li
+                    // <a href="blog.html">Blog</a>
+                    a(href='javascript:void(0);') Blog
+                  li
+                    // <a href="coming-soon.html">Live Trading</a>
+                    a(href='javascript:void(0);') Live Trading
+                  li
+                    a.active(href='/contact') Contact
+                  li
+                    .iq-search
+                      a.search-btn.not_click(href='javascript:void(0);')
+                        span Search Button
+                      .search-box.not-click
+                        input#search.form-control.not-click(type='text', placeholder='Search')
+                        i.ti-search
+    // Header End
+    .clearfix
+    // ======= Breadcrumb Inner Page =======
+    section.iq-bg.iq-bg-fixed.iq-over-black-80.jarallax.iq-breadcrumb.text-center.iq-font-white(style="background-image: url('/images/bg/contact1.jpg'); background-position: center center;")
+      .container
+        .row
+          .col-lg-8.offset-lg-2
+            .heading-title
+              h3.title.text-uppercase.iq-font-white.iq-tw-6 Contact Us
+            p
+              | We are always happy to answer your question.Contact us through the form below and we shall respond as soon as possible.
+              | We are available for supporting our customers round the clock. Our team of dedicated customer care professionals makes a difference to your business.
+      nav(aria-label='breadcrumb')
+        ol.breadcrumb
+          li.breadcrumb-item
+            a(href='index.html') Home
+          li.breadcrumb-item.active(aria-current='page') Contact Us
+    // ======= Breadcrumb Inner Page =======
+    .main-content
+      // Contact Us
+      section.contact-2
+        .container.text-center
+          .col-lg-6.iq-ptb-60.text-center
+            .col-lg-12
+              h3.iq-mtb-30 Contact Form
+              #formmessage Success/Error Message Goes Here
+              form#contactform.form-vertical(method='post', action='/contact-form')
+                .contact-form
+                  .section-field.iq-mb-30
+                    input#name(type='text', placeholder='Name*', name='name')
+                  .section-field.iq-mb-30
+                    input#email(type='email', placeholder='Email*', name='email')
+                  .section-field.iq-mb-30
+                    input#phone(type='text', placeholder='Phone*', name='phone')
+                  .section-field.iq-mb-30
+                    textarea.input-message(placeholder='Comment*', name='message')
+                    input(type='hidden', name='action', value='sendEmail')
+                    button#submit.button.pull-right.iq-mt-40(name='submit', type='submit', value='Send') Send Message
+                    br
+              #ajaxloader(style='display:none')
+                img.center-block.mt-30.mb-30(src='/images/ajax-loader.gif', alt='')
+        // Maps here
+      // Contact Us
+    // Main Content End
+    .clearfix
+    //
+      =================================
+      Footer
+    footer.iq-footer-3.dark-bg
+      .footer-top.overview-block-pt.iq-pb-0
+        .container
+          .row
+            .col-lg-4.col-md-3.col-sm-12.iq-contact.iq-r4-mt-40
+              .heading-left
+                h5.title.iq-tw-5.iq-font-white Contact Sipcoin
+              .iq-mb-20
+                .blog
+                  i.ion-ios-telephone-outline
+                  .content
+                    .iq-tw-6.title
+                      a(href='http://support.sipcoin.io/support/')  Support Center
+            .logo.col-lg-4.text-center
+              img(src='/images/revolution/sipcoin.png', alt='logo')
+            .col-lg-4.col-md-6.col-sm-6
+              .logo
+                img.img-fluid.iq-ml-60(src='/images/logo/sipcoin_white.png ', alt='#')
+                .iq-font-white.iq-mt-15(align='justify')
+                  | SIPcoin is based on Ethereum smart contracts. Ethereum is the number two Blockchain of the world. It is opensource, decentralized and transparent & cannot be manipulated.
+                br
+      .footer-bottom.iq-ptb-20
+        .container
+          .row
+            .col-sm-12.text-center
+              ul.iq-media-blog.iq-mt-20.text-center
+                li
+                  a(href=' https://twitter.com/sipcoin_io ')
+                    i.fa.fa-twitter
+                li
+                  a(href=' https://www.facebook.com/sipcoin/ ')
+                    i.fa.fa-facebook
+                li
+                  a(href=' https://www.instagram.com/sipcoin.io/?hl=en ')
+                    i.fa.fa-instagram
+                li
+                  a(href=' https://goo.gl/e37G3Z ')
+                    i.fa.fa-slack
+            .col-sm-12.text-center
+              .iq-copyright.iq-mt-10.iq-font-white
+                | Copyright
+                span#copyright
+                  script.
+                    document.getElementById('copyright').appendChild(document.createTextNode(new Date().getFullYear()))
+                a(href='index.html') Sipoin
+                |  All Rights Reserved
+    //
+      =================================
+      Footer
+    // back-to-top
+    #back-to-top
+      a#top.top(href='#top')
+        i.ion-ios-upload-outline
+    // back-to-top End
+    // jquery-min JavaScript
+    script(src='/js/views/js1/jquery-min.js ')
+    // popper JavaScript
+    script(src='/js/views/js1/popper.min.js ')
+    // Bootstrap JavaScript
+    script(src='/js/views/js1/bootstrap.min.js ')
+    // Bitcoin widget JavaScript
+    script(src='/js/views/js1/widget.js ')
+    // All-plugins JavaScript
+    script(src='/js/views/js1/all-plugins.js ')
+    // particles JavaScript
+    script(src='/js/views/js1/particles.js ')
+    // Custom JavaScript
+    script(src='/js/views/js1/custom.js ')
+    script(src='https://www.google.com/recaptcha/api.js')

@@ -1,0 +1,29 @@
+{
+  "Credentials":{
+    "sipCoinEmailId" : "admin@sipcoin.io",
+    "sipCoinEmailPass" : "adminadmin@123"
+  },
+
+  "Server":{
+    "IP" : "http://18.218.66.230:3000"
+  },
+
+  "Transporter":{
+    "host" : "smtp.zoho.com",
+    "port" : 465,
+    "secure" : true,
+    "auth" : {
+      "user" : "admin@sipcoin.io",
+      "pass" : "adminadmin@123"
+    }
+  },
+
+  "Captcha":{
+    "key" : "6LdO6j0UAAAAAA04cC4pU1jeWWla3e6cL2Nm7xlz"
+  },
+
+  "Referral":{
+    "Admin" : "SIP35970SIPADM"
+  }
+
+}
