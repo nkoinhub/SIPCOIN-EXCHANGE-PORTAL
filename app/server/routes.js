@@ -76,6 +76,7 @@ var getAccountDetails = function(user, email) {
 // 	})
 // }
 
+
 //current bitcoin value in USD
 var btcCheck = function(){
 	return new Promise(function(resolve,reject){
@@ -214,6 +215,28 @@ module.exports = function(app) {
 	// 		res.send(data);
 	// 	})
 	// })
+
+  //btcCheck get request for adminPanel
+  app.get('/btcAndTokenCheck', function(req, res){
+    var usd;
+    var sip;
+    var body = {usd : "", sip : ""};
+    btcCheck().then((USD)=>{
+      usd = USD;
+      //console.log("USD: " +usd);
+      return getTokenValue().then((SIP)=>{return SIP});
+    })
+    .then((SIP)=>{
+      sip = SIP;
+      //console.log("SIP: " +sip);
+      body = {
+        sip : sip,
+        usd : usd
+      }
+      console.log("USD: " + body.usd + " SIP: " + body.sip);
+      res.status(200).send(body);
+    })
+  })
 
   //tree generation algorithm call and respond - EDITED
 	 app.post('/referralTree',function(req,res){
@@ -1172,6 +1195,7 @@ app.get('/getTxListForAdmin',function(req,res){
     res.status(200).send(result);
   })
 })
+
 
 //subtract the dollars from dollarWallet =======================================
 app.post('/subtractDollarWallet',function(req,res){
@@ -2649,6 +2673,106 @@ app.post('/signup', function(req, res){
 		}
 	});
 
+  // post addAmount for adminPanel
+  //add tokens of already registered user
+   app.post('/addAmount',function(req,res){ // change addAmount to assignCoins
+
+     var username = req.body["username"];
+     var tokens = req.body["tokens"];
+     //var total = req.body["total"];
+     var tokenValue = req.body["tokenValue"];
+     var USD = req.body["USD"];
+
+     var TID = (username).substr(0,3) + moment().format('x');
+
+     var dataCollection = {
+       TID : TID,
+       username : username,
+       email : "",
+       amount : (tokens * tokenValue),
+       typeCode : 0,
+       CNAV : "",
+       dateOfRequest : moment().format('MMMM Do YYYY, h:mm:ss a'),
+       dateOfCompletion : "STILL IN PROCESS",
+       sourceAddress : "System",    //As it is offline payment and coins will transfer from our System to Client
+       sourcePrivateKey : "",
+       destinationAddress : "Direct Payment to Wallet", //No add as offline payment
+       destinationPrivateKey : "",
+       transactionHash : "Offline Payment",
+       transactionComplete : false,
+       //demandedTokens : tokens, // get the input box value
+       //Feilds below are newely added in addition to fields related to blockchain
+       BTCofTokens : (tokens*tokenValue)/USD, //calculate (tokens*valueOfOneToken/BTCtoUSD)
+       valueOfOneToken : tokenValue,
+       BTCtoUSD : USD,
+       BTCpaid : (tokens*tokenValue)/USD,
+       tokens : parseFloat(tokens) //demandedTokens
+     }
+
+     var data = {
+       BTCvalue : (tokens*tokenValue)/USD,
+       transaction_hash : "Offline Payment",
+       address : "Direct Payment to Wallet",
+       TID : TID
+     }
+
+     AM.getAccountByUsername(username, function(result){
+       if(result != null)
+       {
+         console.log(result);
+         console.log("ADMIN PANEL : ACCOUNT FOUND FOR THE USERNAME");
+
+         AM.insertResponse(data, function(){
+           console.log(data);
+          })
+          AM.getCNAV(function(CNAV){
+            dataCollection.CNAV = CNAV;
+            console.log("CNAV SET: "+ dataCollection.CNAV);
+          })
+         AM.incrementTokens(username, parseFloat(tokens), function(message){
+           console.log("Tokens Updated : " + username + " :: " + tokens);
+           AM.checkForPlanAmtSet(username, function(isSet){
+             var value = parseFloat(tokens)*parseFloat(tokenValue);
+             console.log("is set : " + isSet + " value :" + value);
+             if(isSet == false){
+               //console.log("INSIDE 3242");
+               AM.incrementTokensAmtInReferral(username,value , function(message){console.log(message);})
+             }
+             else console.log("plan amount already set");
+           })
+         });
+         AM.incrementTotalCoins(parseFloat(tokens), function(message){
+           console.log("INSIDE INC_TOTAL_COINS: MESSAGE: " + message + " :: " + tokens)});
+         AM.getDataForResend(username, function(account){
+           dataCollection.email=account.email;
+           console.log("EMAIL SET: " + dataCollection.email);
+
+           AM.insertTransaction(dataCollection);
+         });
+
+         var body = {
+           username : username,
+           tokens : tokens
+           //total : total
+         }
+         res.send(body);
+
+       }
+       else {
+         console.log("ADMIN PANEL ERROR : ACCOUNT NOT FOUND FOR THE USERNAME");
+         var message={
+               'UserName':'none',
+               'CoinsUpdation':'none',
+               'TotalCoins':'none',
+               'wrong_value':'yes'
+         }
+
+         res.send(message);
+       }
+     })
+
+   })
+
   ////////////////////////////////// OLD ICO//////////////////////////////////////
 
 // app.post('/withdrawal',function(req,res){
@@ -2804,7 +2928,7 @@ app.post('/signup', function(req, res){
 
   ////////////////////////////////// OLD ICO//////////////////////////////////////
 
-//route for addding coins
+//route for addding coins for admin
 // app.get('/addAmount',function(req,res){
 //
 //   if(req.query.secret == "SIPcoinICO")
