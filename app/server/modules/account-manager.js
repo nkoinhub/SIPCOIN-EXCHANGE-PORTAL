@@ -62,6 +62,7 @@ var referrals = db.collection('referrals');
 //////////////////////////// OLD ICO ///////////////////////////////////////////
 // var referrals = db.collection('referrals');
 var sipStage = db.collection('SIPStage');
+var customer_plan = db.collection('customer_plan');
 var Res = db.collection('RES');
 var withdrawalCol=db.collection('withdrawals');
 
@@ -1397,6 +1398,7 @@ var btcCheck = function(){
 		console.log("inside btcCheck");
 		request('https://blockchain.info/ticker', { json: true }, (err, res, body) => {
 			if (err) { return console.log(err); }
+			console.log(body.USD.last);
 			resolve(body.USD.last);
 		});
 	});
@@ -1488,3 +1490,26 @@ var btcCheck = function(){
 // 		test(i);
 // 	}
 // }
+//Written by sharad for insert the staking value into customer plan database
+exports.savecustomerplan  = function(savestakingplan, callback)
+{ 
+	//console.log("checking new data "+ JSON.stringify(savestakingplan ));
+	customer_plan.insert(savestakingplan, callback("Data Placed Successfully"));
+}
+
+exports.getuserstakingplane = function(data, callback){	
+	//console.log("checking the condition data"+data);
+	customer_plan.findOne({username:data},function(e,result){
+		if(!e){
+			console.log(result);
+			callback(result);
+		}
+		else {
+			callback(null);
+		}
+	});
+	
+}
+
+
+

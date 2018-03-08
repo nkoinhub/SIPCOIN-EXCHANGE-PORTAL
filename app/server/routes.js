@@ -265,27 +265,23 @@ module.exports = function(app) {
   //   })
   // });
 
-	//main page render
-	app.get('/',function(req,res){ if(req.session.user != null) res.redirect('/dashboard');
-		else {
-			var usd;
-			var sip;
-
-			btcCheck().then((USD)=>{
-				usd = USD;
-				//return getTokenValue().then((SIP)=>{return SIP});
-			})
-			.then((SIP)=>{
-				//sip = SIP;
-        res.render('main',{
-          USD : usd
-        })
-			})
-			.catch((err)=>{
-				console.log("Error Occurred on Get Request at '/' : " + err)
-			})
-		}
-	})
+	 //main page render
+	 app.get('/',function(req,res){ 
+		 if(req.session.user != null)
+			 res.redirect('/dashboard');
+		 else {
+			 var usd;
+			 var sip;
+			 btcCheck().then((USD)=>{
+				 usd = USD;			
+			 }).then((SIP)=>{
+				 res.render('main',{ USD : usd})
+			 }).catch((err)=>{
+				 console.log("Error Occurred on Get Request at '/' : " + err)
+			 })
+		 }
+		 res.render('main.jade',{ USD : usd});
+	 });
 
   // about us page get request
   app.get('/about',function(req,res){
@@ -323,7 +319,7 @@ module.exports = function(app) {
           subject: ' SIPCOIN || Resend Activation Link',
           html: part1 +URLforVerification+part2,
         };
-
+console.log(mailOptions);
         transporter.sendMail(mailOptions, function(error, info){
           if (error) {
             console.log(error);
@@ -1196,7 +1192,6 @@ app.get('/getTxListForAdmin',function(req,res){
   })
 })
 
-
 //subtract the dollars from dollarWallet =======================================
 app.post('/subtractDollarWallet',function(req,res){
   var username = req.body['username'];
@@ -1828,7 +1823,6 @@ app.post('/changePassword',function(req,res){
 
 // logged-in user homepage //
 	app.get('/dashboard', function(req, res) {
-
 		var btc;
 		var sip;
     var eth;
@@ -1856,32 +1850,25 @@ app.post('/changePassword',function(req,res){
         ethCheck().then((value)=>{
           eth = value;
           console.log("## ETH : "+eth);
+          AM.getuserstakingplane(req.session.user.user, function(userplan){ //written by sharad
+        	  console.log("checking user plan in dashbord"+userplan.plantype);
+        	  var userSplan = userplan.plantype;       	  
           AM.getAccountByUsername(req.session.user.user, function(result){
             var lastVerified = new Date(result.lastVerified);
+            
             if((currentDate - lastVerified)/1000 > 880){
               AM.resetBrowserVerification(result.user, function(result){
                 console.log(result);
               })
-              res.render('dashboard',{
-                userDetails : result,
-                BTC : btc,
-                SIP : sip,
-                ETH : eth,
-                browserVerified : false
-              })
+              res.render('dashboard',{ userDetails : result,BTC : btc,SIP : sip,ETH : eth, browserVerified : false, customerplan : userSplan })
               //res.send({browserVerified : false});
             }
             else {
-              res.render('dashboard',{
-                userDetails : result,
-                BTC : btc,
-                SIP : sip,
-                ETH : eth,
-                browserVerified : true
-              })
+              res.render('dashboard',{userDetails : result,BTC : btc,SIP : sip, ETH : eth, browserVerified : true, customerplan : userSplan })
               //res.send({browserVerified : true});
             }
-          })
+          });
+          });
         })
 			})
 
@@ -3212,6 +3199,40 @@ app.post('/contact-form',function(req,res){
 
 });
 
+ 
+ 
+ //Written by sharad for saving user staking plane  
+ 
+ app.post('/savestackingplan', function(req, res){
+	 var username = req.session.user.user;
+	 var plantype = req.body.stakingplane;
+	 var startdate = req.body.startdate;
+	 var enddate = req.body.enddate;
+	 var daydiff = req.body.diffDays;
+	 AM.getReferrals(req.session.user.user,req.session.user.email,function(err,result){
+		 if(err) {res.redirect('/dashboard');}
+		 else {
+			 var referalcode =  result.selfReferralCode;			
+			 var savestakingplan = {
+					 username 	: username,
+					 plantype 	: plantype,
+					 startdate 	: startdate,
+					 enddate : enddate,
+					 daydiff	: daydiff,
+					 selfReferralCode : referalcode		         
+			 }
+			 console.log("checkins the customer staking data "+JSON.stringify(savestakingplan));
+			 AM.savecustomerplan(savestakingplan, function(data){
+				 if (data = "Data Placed Successfully"){
+					 console.log(data);
+					 res.send();
+				 }else{			            	
+					 res.send();
+				 }	
+			 });
+		 }
+	 });
+ });
 
 
 //redirect to main page if wrong routes tried
