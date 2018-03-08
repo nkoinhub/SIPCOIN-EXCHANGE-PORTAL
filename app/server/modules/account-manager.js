@@ -62,8 +62,8 @@ var referrals = db.collection('referrals');
 //////////////////////////// OLD ICO ///////////////////////////////////////////
 // var referrals = db.collection('referrals');
 var sipStage = db.collection('SIPStage');
-// var Res = db.collection('RES');
-// var withdrawalCol=db.collection('withdrawals');
+var Res = db.collection('RES');
+var withdrawalCol=db.collection('withdrawals');
 
 //daily scheduled job for the calculation of returns on the basis of investment and updating the investment collection and accounts of each user
 var k = schedule.scheduleJob({hour: 1, minute: 54, dayOfWeek: [0,1,2,3,4,5,6]}, function(){
@@ -1234,6 +1234,7 @@ exports.subtractInDollarWallet = function(username, amt, callback)
 
 exports.insertTransaction = function(newData, callback)
 {
+	console.log("INSIDE INSERT TX");
 	transactions.insert(newData);
 }
 
