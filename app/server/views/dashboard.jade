@@ -14,6 +14,10 @@ html.perfect-scrollbar-off(lang='en')
     script(src='/js/views/jquery-3.2.1.min.js', type='text/javascript')
     script(src='/js/views/bootstrap.min.js', type='text/javascript')
     script(src='/js/views/material.min.js', type='text/javascript')
+
+    //script(src='/js/views/notify.js', type='text/javascript')
+    script(src='/js/views/notify.min.js', type='text/javascript')
+
     script(src='/js/views/perfect-scrollbar.jquery.min.js')
     script(src='/js/views/material-dashboard.js?v=1.2.0')
     script(src='/js/views/js1/dashboard_ajax.js')
@@ -167,7 +171,7 @@ html.perfect-scrollbar-off(lang='en')
       padding-right: 10px;
       }
       }
-      
+
   body(onclick='customerplan()')
 
     #myModal1.modal.fade(role='dialog')
@@ -434,7 +438,7 @@ html.perfect-scrollbar-off(lang='en')
                     img(src='/images/money-bag.png', style='height:50px;width:50px;margin-top:2px;')
                   .card-content
                     p.category ESCROW Balance
-                    h4.title $ 1234
+                    h4.title $ #{ESCROW}
                   //
                     <div class="card-footer">
                     <div class="stats">
@@ -636,12 +640,12 @@ html.perfect-scrollbar-off(lang='en')
                         .col-sm-3
                             .radio
                               label
-                                input#optionsRadios1.option1(type='radio', name='optionsRadios', value='A', onchange="customerplan()")
+                                input#optionsRadios1.option1(type='radio', name='optionsRadios', value='A', onchange="checkESCROW()")
                                 | 12 Months
                          .col-sm-3
                             .radio
                               label
-                                input#optionsRadios2.option2(type='radio', name='optionsRadios', value='B', onchange="customerplan()")
+                                input#optionsRadios2.option2(type='radio', name='optionsRadios', value='B', onchange="checkESCROW()")
                                 | 18 Months
 
                          .col-sm-3
@@ -1133,24 +1137,29 @@ html.perfect-scrollbar-off(lang='en')
             }
 
           }
-          
+
           function saveplan(){
              var splan = $("input[type='radio'][name='optionsRadios']:checked").val();
-             var now = new Date();            
+             if(splan == undefined || splan == null)
+             {
+              $.notify("Please Select An Option!");
+              return false;
+             }
+             var now = new Date();
              var oneDay = 24*60*60*1000;
              var enddate ;
              var diffDays ;
-            
+
              if(splan == "A"){
                 enddate = new Date(now.getFullYear()+1, now.getMonth(), now.getDate());
-                diffDays = Math.round(Math.abs((now.getTime() - enddate.getTime())/(oneDay))); 
-              
+                diffDays = Math.round(Math.abs((now.getTime() - enddate.getTime())/(oneDay)));
+
               }else{
                 enddate = new Date(now.getFullYear()+1, now.getMonth()+6, now.getDate());
                 diffDays = Math.round(Math.abs((now.getTime() - enddate.getTime())/(oneDay)));
-             }            
+             }
              //alert("Start date"+ now + "end date "+ enddate +"calculate daye"+diffDays);
-             
+
               $.ajax({
                      type : 'POST',
                      url : '/savestackingplan',
@@ -1162,31 +1171,42 @@ html.perfect-scrollbar-off(lang='en')
                     diffDays : diffDays
                     },
                     success: function(response){
-                     alert("Customer staking plan selected successfully");  
-                     window.location.href ="/dashboard";                   
+                    $.notify("Customer Staking Plan Selected Successfully", "success");
+                     window.location.href ="/dashboard";
                     },
-                    error: function(){                    
-                     alert("Error to select customer staking plan");    
-                    
-                    }                        
+                    error: function(){
+                      $.notify("Error Selecting Customer Staking Plan");
+                    }
              });
-                        
+
           }
-          
-          function customerplan(){   
-           var plan = '#{customerplan}'  
-           if(plan =="A" || plan =="B"){ 
-           
+
+          function customerplan(){
+           var plan = '#{customerplan}'
+           if(plan =="A" || plan =="B"){
+
                $('#plansubmit').hide();
-                if(plan == "A"){         
+                if(plan == "A"){
                   $('#optionsRadios1').attr('checked', true);
-                  $('#optionsRadios2').attr('disabled', true);           
+                  $('#optionsRadios2').attr('disabled', true);
               }else{
                  $('#optionsRadios2').attr('checked', true);
-                 $('#optionsRadios1').attr('disabled', true);               
-            }
-            
+                 $('#optionsRadios1').attr('disabled', true);
+              }
+
            }
-         
+
           }
-          
+
+          function checkESCROW(){
+            var ESCROW = '#{ESCROW}'
+            if(!(ESCROW >= 150))
+            {
+              $('#optionsRadios1').prop('checked', false);
+              $('#optionsRadios2').prop('checked', false);
+
+              $.notify("INSUFFICIENT ESCROW FUNDS!");
+
+            }
+
+          }

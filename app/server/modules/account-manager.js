@@ -590,6 +590,23 @@ exports.checkForReferral = function(ref, callback)
 	})
 }
 
+//get currentAmt for dashboard
+exports.getCurrentAmt = function(username, callback)
+{
+	referrals.findOne({username: username}, function(e, res){
+		if(!e)
+		{
+			console.log("currentAmt: " + res.currentAmt);
+			callback(res.currentAmt);
+		}
+		else
+		{
+			console.log("Error Occured: " + e);
+			callback(null);
+		}
+	})
+}
+
 //check if link available
 exports.checkIfLinkAvailable = function(parentRef, link, callback)
 {
@@ -1492,12 +1509,12 @@ var btcCheck = function(){
 // }
 //Written by sharad for insert the staking value into customer plan database
 exports.savecustomerplan  = function(savestakingplan, callback)
-{ 
+{
 	//console.log("checking new data "+ JSON.stringify(savestakingplan ));
 	customer_plan.insert(savestakingplan, callback("Data Placed Successfully"));
 }
 
-exports.getuserstakingplane = function(data, callback){	
+exports.getuserstakingplane = function(data, callback){
 	//console.log("checking the condition data"+data);
 	customer_plan.findOne({username:data},function(e,result){
 		if(!e){
@@ -1508,8 +1525,5 @@ exports.getuserstakingplane = function(data, callback){
 			callback(null);
 		}
 	});
-	
+
 }
-
-
-

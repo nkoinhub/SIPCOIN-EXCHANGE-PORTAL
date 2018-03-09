@@ -266,14 +266,14 @@ module.exports = function(app) {
   // });
 
 	 //main page render
-	 app.get('/',function(req,res){ 
+	 app.get('/',function(req,res){
 		 if(req.session.user != null)
 			 res.redirect('/dashboard');
 		 else {
 			 var usd;
 			 var sip;
 			 btcCheck().then((USD)=>{
-				 usd = USD;			
+				 usd = USD;
 			 }).then((SIP)=>{
 				 res.render('main',{ USD : usd})
 			 }).catch((err)=>{
@@ -1843,6 +1843,8 @@ app.post('/changePassword',function(req,res){
       })
 
       var currentDate = new Date();
+      var userSplan;
+      var ESCROW = 0;
 
 			btcCheck().then((value)=>{
 				btc = value;
@@ -1850,21 +1852,38 @@ app.post('/changePassword',function(req,res){
         ethCheck().then((value)=>{
           eth = value;
           console.log("## ETH : "+eth);
-          AM.getuserstakingplane(req.session.user.user, function(userplan){ //written by sharad
-        	  console.log("checking user plan in dashbord"+userplan.plantype);
-        	  var userSplan = userplan.plantype;       	  
+
+          AM.getuserstakingplane(req.session.user.user, function(userplan, callback){ //written by sharad
+            if(callback != null)
+            {
+              console.log("checking user plan in dashbord: "+userplan.plantype);
+              userSplan = userplan.plantype;
+            }
+            else {
+              userSplan = null;
+            }
           AM.getAccountByUsername(req.session.user.user, function(result){
+            AM.getCurrentAmt(req.session.user.user, function(currentAmt, callback){
+              if(currentAmt)
+              {
+                console.log("ESCROW: " + currentAmt);
+                ESCROW = currentAmt;
+              }
+              else {
+                console.log("Error while fetching ESCROW value :" + currentAmt);
+              }
+            });
             var lastVerified = new Date(result.lastVerified);
-            
+
             if((currentDate - lastVerified)/1000 > 880){
               AM.resetBrowserVerification(result.user, function(result){
                 console.log(result);
               })
-              res.render('dashboard',{ userDetails : result,BTC : btc,SIP : sip,ETH : eth, browserVerified : false, customerplan : userSplan })
+              res.render('dashboard',{ userDetails : result,BTC : btc,SIP : sip,ETH : eth, browserVerified : false, customerplan : userSplan, ESCROW : ESCROW })
               //res.send({browserVerified : false});
             }
             else {
-              res.render('dashboard',{userDetails : result,BTC : btc,SIP : sip, ETH : eth, browserVerified : true, customerplan : userSplan })
+              res.render('dashboard',{userDetails : result,BTC : btc,SIP : sip, ETH : eth, browserVerified : true, customerplan : userSplan, ESCROW : ESCROW })
               //res.send({browserVerified : true});
             }
           });
@@ -3199,10 +3218,10 @@ app.post('/contact-form',function(req,res){
 
 });
 
- 
- 
- //Written by sharad for saving user staking plane  
- 
+
+
+ //Written by sharad for saving user staking plane
+
  app.post('/savestackingplan', function(req, res){
 	 var username = req.session.user.user;
 	 var plantype = req.body.stakingplane;
@@ -3212,23 +3231,23 @@ app.post('/contact-form',function(req,res){
 	 AM.getReferrals(req.session.user.user,req.session.user.email,function(err,result){
 		 if(err) {res.redirect('/dashboard');}
 		 else {
-			 var referalcode =  result.selfReferralCode;			
+			 var referalcode =  result.selfReferralCode;
 			 var savestakingplan = {
 					 username 	: username,
 					 plantype 	: plantype,
 					 startdate 	: startdate,
 					 enddate : enddate,
 					 daydiff	: daydiff,
-					 selfReferralCode : referalcode		         
+					 selfReferralCode : referalcode
 			 }
 			 console.log("checkins the customer staking data "+JSON.stringify(savestakingplan));
 			 AM.savecustomerplan(savestakingplan, function(data){
 				 if (data = "Data Placed Successfully"){
 					 console.log(data);
 					 res.send();
-				 }else{			            	
+				 }else{
 					 res.send();
-				 }	
+				 }
 			 });
 		 }
 	 });
