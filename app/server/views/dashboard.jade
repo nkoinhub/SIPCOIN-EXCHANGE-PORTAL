@@ -167,7 +167,8 @@ html.perfect-scrollbar-off(lang='en')
       padding-right: 10px;
       }
       }
-  body
+      
+  body(onclick='customerplan()')
 
     #myModal1.modal.fade(role='dialog')
       .modal-dialog
@@ -330,7 +331,7 @@ html.perfect-scrollbar-off(lang='en')
                 i.material-icons monetization_on
                 p Investment History
             li
-              a(href='/user')
+              a(href='/admin1')
                 i.material-icons person
                 p My Profile
             li
@@ -618,6 +619,40 @@ html.perfect-scrollbar-off(lang='en')
                 </div>
                 </div>
                 </div>
+
+              .col-lg-12.col-md-12
+                .card
+                  .card-header(style="background-color:#f9b707;")
+                    h4.title STAKING PLAN
+                  .row(style='border:2px dashed rgb(217,217,217);margin:20px;')
+                    .col-lg-offset-1.col-sm-10(style='margin-top:20px;')
+                      .row
+                        .col-sm-3
+                          div
+                            h5.title Choose Your Staking Plan
+                            br
+
+
+                        .col-sm-3
+                            .radio
+                              label
+                                input#optionsRadios1.option1(type='radio', name='optionsRadios', value='A', onchange="customerplan()")
+                                | 12 Months
+                         .col-sm-3
+                            .radio
+                              label
+                                input#optionsRadios2.option2(type='radio', name='optionsRadios', value='B', onchange="customerplan()")
+                                | 18 Months
+
+                         .col-sm-3
+                          center
+                            button.btn.btn-primary(type='button', id="plansubmit" style='cursor:pointer;margin-top:10px;',onclick='saveplan()') Submit
+                         .col-sm-12
+                          br
+                         .col-sm-12
+
+
+
               .col-lg-12.col-md-12
                 .card
                   .card-header(style="background-color:#f9b707;")
@@ -1129,3 +1164,60 @@ html.perfect-scrollbar-off(lang='en')
             }
 
           }
+          
+          function saveplan(){
+             var splan = $("input[type='radio'][name='optionsRadios']:checked").val();
+             var now = new Date();            
+             var oneDay = 24*60*60*1000;
+             var enddate ;
+             var diffDays ;
+            
+             if(splan == "A"){
+                enddate = new Date(now.getFullYear()+1, now.getMonth(), now.getDate());
+                diffDays = Math.round(Math.abs((now.getTime() - enddate.getTime())/(oneDay))); 
+              
+              }else{
+                enddate = new Date(now.getFullYear()+1, now.getMonth()+6, now.getDate());
+                diffDays = Math.round(Math.abs((now.getTime() - enddate.getTime())/(oneDay)));
+             }            
+             //alert("Start date"+ now + "end date "+ enddate +"calculate daye"+diffDays);
+             
+              $.ajax({
+                     type : 'POST',
+                     url : '/savestackingplan',
+                     datatype : 'application/json',
+                    data : {
+                    stakingplane : splan,
+                    startdate : now,
+                    enddate : enddate,
+                    diffDays : diffDays
+                    },
+                    success: function(response){
+                     alert("Customer staking plan selected successfully");  
+                     window.location.href ="/dashboard";                   
+                    },
+                    error: function(){                    
+                     alert("Error to select customer staking plan");    
+                    
+                    }                        
+             });
+                        
+          }
+          
+          function customerplan(){   
+           var plan = '#{customerplan}'  
+           if(plan =="A" || plan =="B"){ 
+           
+               $('#plansubmit').hide();
+                if(plan == "A"){         
+                  $('#optionsRadios1').attr('checked', true);
+                  $('#optionsRadios2').attr('disabled', true);           
+              }else{
+                 $('#optionsRadios2').attr('checked', true);
+                 $('#optionsRadios1').attr('disabled', true);               
+            }
+            
+           }
+         
+          }
+          

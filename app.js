@@ -32,16 +32,19 @@ if (app.get('env') == 'live'){
 	dbURL = 'mongodb://'+process.env.DB_USER+':'+process.env.DB_PASS+'@'+dbHost+':'+dbPort+'/'+dbName;
 }
 
-app.use(session({
+app.use(session({ secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',resave:true,saveUninitialized:true }));
+
+//commited by sharad
+/*app.use(session({
 	secret: 'faeb4453e5d14fe6f6d04637f78077c76c73d1b4',
 	proxy: true,
 	resave: true,
-	saveUninitialized: false,
+	saveUninitialized: true,
 	cookie:{ maxAge: 620000},
 	store: new MongoStore({ url: dbURL })
 	})
 );
-
+*/
 require('./app/server/routes')(app);
 
 http.createServer(app).listen(app.get('port'), function(){
