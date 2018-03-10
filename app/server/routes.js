@@ -280,7 +280,6 @@ module.exports = function(app) {
 				 console.log("Error Occurred on Get Request at '/' : " + err)
 			 })
 		 }
-		 res.render('main.jade',{ USD : usd});
 	 });
 
   // about us page get request
@@ -1853,6 +1852,16 @@ app.post('/changePassword',function(req,res){
           eth = value;
           console.log("## ETH : "+eth);
 
+          AM.getCurrentAmt(req.session.user.user, function(currentAmt, callback){
+            if(currentAmt)
+            {
+              console.log("ESCROW: " + currentAmt);
+              ESCROW = currentAmt;
+            }
+            else {
+              console.log("Error while fetching ESCROW value :" + currentAmt);
+            }
+          });
           AM.getuserstakingplane(req.session.user.user, function(userplan, callback){ //written by sharad
             if(callback != null)
             {
@@ -1863,16 +1872,6 @@ app.post('/changePassword',function(req,res){
               userSplan = null;
             }
           AM.getAccountByUsername(req.session.user.user, function(result){
-            AM.getCurrentAmt(req.session.user.user, function(currentAmt, callback){
-              if(currentAmt)
-              {
-                console.log("ESCROW: " + currentAmt);
-                ESCROW = currentAmt;
-              }
-              else {
-                console.log("Error while fetching ESCROW value :" + currentAmt);
-              }
-            });
             var lastVerified = new Date(result.lastVerified);
 
             if((currentDate - lastVerified)/1000 > 880){
