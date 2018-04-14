@@ -1,11 +1,11 @@
 {
   "Credentials":{
-    "sipCoinEmailId" : "admin@sipcoin.io",
-    "sipCoinEmailPass" : "adminadmin@123"
+    "sipCoinEmailId" : "",
+    "sipCoinEmailPass" : ""
   },
 
   "Server":{
-    "IP" : "http://18.218.66.230:3000"
+    "IP" : ""
   },
 
   "Transporter":{
@@ -13,8 +13,8 @@
     "port" : 465,
     "secure" : true,
     "auth" : {
-      "user" : "admin@sipcoin.io",
-      "pass" : "adminadmin@123"
+      "user" : "",
+      "pass" : ""
     }
   },
 

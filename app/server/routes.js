@@ -104,7 +104,7 @@ var acntBalance = function(address){
   return new Promise(function(resolve,reject){
     request({
       headers : {'content-type' : 'application/x-www-form-urlencoded'},
-      url : 'http://54.169.149.54:9326/acntBalance',
+      url : '',
       method : 'POST',
       form : {
         'apikey' : "ironmandiesininfinityWars",
@@ -122,7 +122,7 @@ var createAccount = function(username){
   return new Promise(function(resolve,reject){
     request({
       headers : {'content-type' : 'application/x-www-form-urlencoded'},
-      url : 'http://54.169.149.54:9326/ethAcnt',
+      url : '',
       method : "POST",
       form : {
         'apikey' : "ironmandiesininfinityWars",
@@ -143,7 +143,7 @@ var createAccount = function(username){
 // 		if(process.env.NODE_ENV == "production")
 // 		{
 // 			var API = 'https://api.blockchain.info/v2/receive?';
-// 			var xPub = 'xpub6D9eFNDYtCsbwd7xQdGDeQX9SejSpAFsBKRNzaViBprjXcoHs6933e9STs61Boo4P3REpeLNRXv1FW9oKWZp43PVTSD5AZbAFny9MFGHMb9';
+// 			var xPub = '';
 // 			var callback = 'http%3A%2F%2Fsipcoin.io/getInvoice%3FTID%3D'+TID;
 // 			var key = '09195d68-3873-4237-92fd-cdc6bda54aa4'
 //
