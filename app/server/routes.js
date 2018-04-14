@@ -728,6 +728,8 @@ console.log(mailOptions);
     var username = req.body['username'];
     var password = req.body['password'];
     req.session.tempUser=username;
+    console.log("g recpathca");
+    console.log(req.body['g-recaptcha-response'])
     // var twoFAcode = req.body['2faCode'];
     // var userFA = req.body['userFA'];
 
